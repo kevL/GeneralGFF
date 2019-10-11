@@ -67,14 +67,13 @@ namespace GeneralGFF
 
 		/// <summary>
 		/// Replaces a file with another file (that has a ".t" extension) after
-		/// making a backup of the destination file. If the destination file
-		/// does not exist, a copy-delete operation is performed instead of a
-		/// backup.
+		/// making a backup (".ggf") of the destination file. If the destination
+		/// file does not exist, a copy-delete operation is performed instead of
+		/// a backup.
 		/// IMPORTANT: The source file must have the name and extension of the
-		/// destination file plus the 'GlobalsXC.TEMPExt' extension. In other
-		/// words, the standard save-procedure is to write to file_ext_[t.ext]
-		/// then call ReplaceFile() by passing in the original file_ext.
-		/// @note The backup will be in the 'GlobalsXC.MV_Backup' subdirectory.
+		/// destination file plus the extension ".t". In other words, the
+		/// standard save-procedure is to write to file_ext_[.t] then call
+		/// ReplaceFile() by passing in the original file_ext.
 		/// </summary>
 		/// <param name="pfe">path-file-extension of the destination file</param>
 		/// <returns>true if everything goes according to plan</returns>
@@ -82,7 +81,7 @@ namespace GeneralGFF
 		{
 			if (File.Exists(pfe))
 			{
-				string pfeBackup = pfe + ".cse";
+				string pfeBackup = pfe + ".ggf"; // backupfile
 
 				if (File.Exists(pfeBackup))
 				{
