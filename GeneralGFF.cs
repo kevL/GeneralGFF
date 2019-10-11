@@ -132,8 +132,8 @@ namespace GeneralGFF
 				string label = Path.GetFileNameWithoutExtension(Data._pfe).ToUpper();
 				TreeNode root = _tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
 
-				logfile.Log("");
-				logfile.Log(label);
+				//logfile.Log("");
+				//logfile.Log(label);
 
 				List<GffData.Field> fields = Data._fields;
 
@@ -160,7 +160,7 @@ namespace GeneralGFF
 		internal void AddField(GffData.Field field, TreeNode node, GffData.Locale locale = null)
 		{
 			string text = ConstructNodeText(field, locale);
-			logfile.Log(text);
+			//logfile.Log(text);
 
 			var node_ = new Sortable(text, field.label);
 			node_.Tag = field;
@@ -233,7 +233,8 @@ namespace GeneralGFF
 			while (label.Length != LENGTH_LABEL)
 				label += " ";
 
-			bool token = locale != null && locale.langid == Languages.GffToken;
+			bool token = locale != null
+					  && locale.langid == Languages.GffToken;
 
 			string label2 = " [" + GffReader.GetTypeString(field.type, token) + "]";
 			while (label2.Length != LENGTH_TYPE)

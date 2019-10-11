@@ -516,8 +516,7 @@ namespace GeneralGFF
 								{
 									field.Locales = new List<GffData.Locale>();
 
-									logfile.Log("");
-									logfile.Log("label= " + field.label);
+									//logfile.Log("label= " + field.label);
 									for (j = 0; j != count; ++j)
 									{
 										var locale = new GffData.Locale();
@@ -535,14 +534,14 @@ namespace GeneralGFF
 
 										if (!le) Array.Reverse(buffer);
 										length = BitConverter.ToUInt32(buffer, 0);
-										logfile.Log("length= " + length);
+										//logfile.Log("length= " + length);
 
 										buffer = new byte[length];
 										for (b = 0; b != length; ++b)
 											buffer[b] = bytes[offset++];
 
 										locale.local = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-										logfile.Log("local= " + locale.local);
+										//logfile.Log("local= " + locale.local);
 
 										field.Locales.Add(locale);
 									}
