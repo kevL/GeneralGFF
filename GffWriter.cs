@@ -566,7 +566,7 @@ namespace GeneralGFF
 				{
 					string str = field.CExoString;
 					DataBlock.AddRange(GetBytes((uint)str.Length));
-					DataBlock.AddRange(Encoding.ASCII.GetBytes(str)); // TODO: Should probably be UTF8. But perhaps not.
+					DataBlock.AddRange(Encoding.ASCII.GetBytes(str));
 					break;
 				}
 
@@ -621,7 +621,7 @@ namespace GeneralGFF
 						total += buffer.Length;
 
 
-						buffer = Encoding.ASCII.GetBytes(local); // TODO: Should probably be UTF8.
+						buffer = Encoding.UTF8.GetBytes(local);
 						bytesList.Add(buffer);
 						total += buffer.Length;
 					}

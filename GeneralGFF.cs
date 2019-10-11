@@ -156,7 +156,7 @@ namespace GeneralGFF
 		/// </summary>
 		/// <param name="field">a Field to add</param>
 		/// <param name="node">a treenode to add it to</param>
-		/// <param name="locale">a locale-translated string if applicable</param>
+		/// <param name="locale">a locale if applicable</param>
 		internal void AddField(GffData.Field field, TreeNode node, GffData.Locale locale = null)
 		{
 			string text = ConstructNodeText(field, locale);
@@ -473,19 +473,21 @@ namespace GeneralGFF
 				var field = (GffData.Field)node.Tag;
 				switch (field.type)
 				{
+					case FieldTypes.CHAR:
+					{
+//						char result;
+//						if (valid = Char.TryParse(val, out result))
+						byte result;
+						if (valid = Byte.TryParse(val, out result))
+							field.CHAR = result;
+						break;
+					}
+
 					case FieldTypes.BYTE:
 					{
 						byte result;
 						if (valid = Byte.TryParse(val, out result))
 							field.BYTE = result;
-						break;
-					}
-
-					case FieldTypes.CHAR:
-					{
-						char result;
-						if (valid = Char.TryParse(val, out result))
-							field.CHAR = result;
 						break;
 					}
 
@@ -521,14 +523,6 @@ namespace GeneralGFF
 						break;
 					}
 
-					case FieldTypes.FLOAT:
-					{
-						float result;
-						if (valid = float.TryParse(val, out result))
-							field.FLOAT = result;
-						break;
-					}
-
 					case FieldTypes.DWORD64:
 					{
 						ulong result;
@@ -542,6 +536,14 @@ namespace GeneralGFF
 						long result;
 						if (valid = Int64.TryParse(val, out result))
 							field.INT64 = result;
+						break;
+					}
+
+					case FieldTypes.FLOAT:
+					{
+						float result;
+						if (valid = float.TryParse(val, out result))
+							field.FLOAT = result;
 						break;
 					}
 

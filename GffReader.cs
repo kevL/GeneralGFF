@@ -58,7 +58,7 @@ namespace GeneralGFF
 					for (b = 0; b != 8; ++b)
 						buffer[b] = bytes[pos++];
 
-					string ver = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+					string ver = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 
 					if (ver.Substring(3) != SupportedVersion)
 					{
@@ -301,7 +301,7 @@ namespace GeneralGFF
 						for (b = 0; b != 16; ++b)
 							buffer[b] = bytes[pos++];
 
-						label = Encoding.ASCII.GetString(buffer, 0, buffer.Length).TrimEnd('\0'); // TODO: Could be UTF8 ...
+						label = Encoding.ASCII.GetString(buffer, 0, buffer.Length).TrimEnd('\0');
 						data._labels.Add(label);
 					}
 
@@ -364,12 +364,13 @@ namespace GeneralGFF
 							// equal to 4-bytes are (according to the doc) contained
 							// in the first byte(s) of the dataordataoffset 'DWORD'.
 
-							case FieldTypes.BYTE:
-								field.BYTE = buffer[0];
+							case FieldTypes.CHAR:
+//								field.CHAR = (char)buffer[0]; // TODO: Are these "chars" ascii-bytes or utf8-chunks
+								field.CHAR = buffer[0];
 								break;
 
-							case FieldTypes.CHAR:
-								field.CHAR = (char)buffer[0]; // TODO: Are these "chars" ascii-bytes or utf8-chunks
+							case FieldTypes.BYTE:
+								field.BYTE = buffer[0];
 								break;
 
 							case FieldTypes.WORD:
@@ -418,11 +419,6 @@ namespace GeneralGFF
 								field.INT = BitConverter.ToInt32(buffer, 0);
 								break;
 
-							case FieldTypes.FLOAT:
-								if (!le) Array.Reverse(buffer);
-								field.FLOAT = BitConverter.ToSingle(buffer, 0);
-								break;
-
 							case FieldTypes.DWORD64:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
@@ -443,6 +439,11 @@ namespace GeneralGFF
 
 								if (!le) Array.Reverse(buffer);
 								field.INT64 = BitConverter.ToInt64(buffer, 0);
+								break;
+
+							case FieldTypes.FLOAT:
+								if (!le) Array.Reverse(buffer);
+								field.FLOAT = BitConverter.ToSingle(buffer, 0);
 								break;
 
 							case FieldTypes.DOUBLE:
@@ -466,7 +467,7 @@ namespace GeneralGFF
 								for (b = 0; b != length; ++b)
 									buffer[b] = bytes[offset++];
 
-								field.CResRef = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+								field.CResRef = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 								break;
 
 							case FieldTypes.CExoString:
@@ -484,7 +485,7 @@ namespace GeneralGFF
 								for (b = 0; b != length; ++b)
 									buffer[b] = bytes[offset++];
 
-								field.CExoString = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+								field.CExoString = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 								break;
 
 							case FieldTypes.CExoLocString:

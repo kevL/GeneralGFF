@@ -173,8 +173,9 @@ namespace GeneralGFF
 
 			internal string label;
 
+//			internal char   CHAR;
+			internal byte   CHAR; // because idiot decided to use 'char' for 'byte' in BIC/IFO files.
 			internal byte   BYTE;
-			internal char   CHAR;
 			internal ushort WORD;
 			internal short  SHORT;
 			internal uint   DWORD;
@@ -275,11 +276,11 @@ namespace GeneralGFF
 		{
 			switch (field.type)
 			{
-				case FieldTypes.BYTE:
-					return field.BYTE.ToString();
-
 				case FieldTypes.CHAR:
 					return field.CHAR.ToString();
+
+				case FieldTypes.BYTE:
+					return field.BYTE.ToString();
 
 				case FieldTypes.WORD:
 					return field.WORD.ToString();
