@@ -171,7 +171,7 @@ namespace GeneralGFF
 		{
 			internal FieldTypes type;
 
-			internal string label;
+			internal string label; // treated as ASCII
 
 //			internal char   CHAR;
 			internal byte   CHAR; // because idiot decided to use 'char' for 'byte' in BIC/IFO files.
@@ -187,8 +187,8 @@ namespace GeneralGFF
 			internal float  FLOAT;
 			internal double DOUBLE;
 
-			internal string CResRef;
-			internal string CExoString;
+			internal string CResRef; // treated as ASCII
+			internal string CExoString; // treated as ASCII
 
 			internal uint CExoLocStrref;
 			internal List<Locale> Locales;
@@ -214,7 +214,7 @@ namespace GeneralGFF
 			internal Languages langid;
 			internal bool F;
 
-			internal string local;
+			internal string local; // treated as UTF8
 
 			/// <summary>
 			/// Converts a GFF-LanguageId into its true LanguageId with

@@ -185,13 +185,13 @@ namespace GeneralGFF
 					List<Struct> allStructs = GffData.allStructs;
 
 					List<uint> list = field.List;
-					for (uint i = 0; i != list.Count; ++i)
+					for (int i = 0; i != list.Count; ++i)
 					{
 						var field_ = new GffData.Field();
 
 						field_.label  = i.ToString();		// NOTE: Structs in Lists do not have a Label inside a GFF-file.
 						field_.type   = FieldTypes.Struct;	// so give Structs in Lists a pseudo-Label for their treenode(s)
-						field_.Struct = allStructs[(int)list[(int)i]];
+						field_.Struct = allStructs[(int)list[i]];
 
 						AddField(field_, node_, null);
 					}
