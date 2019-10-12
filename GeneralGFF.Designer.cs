@@ -75,7 +75,7 @@ namespace GeneralGFF
 			this.sc_body.Panel2.Controls.Add(this.tb_Val);
 			this.sc_body.Panel2.Controls.Add(this.cb_GenderF);
 			this.sc_body.Panel2MinSize = 0;
-			this.sc_body.Size = new System.Drawing.Size(679, 533);
+			this.sc_body.Size = new System.Drawing.Size(792, 574);
 			this.sc_body.SplitterDistance = 450;
 			this.sc_body.SplitterWidth = 2;
 			this.sc_body.TabIndex = 0;
@@ -84,10 +84,10 @@ namespace GeneralGFF
 			// 
 			this.la_GenderF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_GenderF.Location = new System.Drawing.Point(20, 79);
+			this.la_GenderF.Location = new System.Drawing.Point(25, 80);
 			this.la_GenderF.Margin = new System.Windows.Forms.Padding(0);
 			this.la_GenderF.Name = "la_GenderF";
-			this.la_GenderF.Size = new System.Drawing.Size(91, 17);
+			this.la_GenderF.Size = new System.Drawing.Size(310, 17);
 			this.la_GenderF.TabIndex = 6;
 			this.la_GenderF.Text = "Feminine";
 			this.la_GenderF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -97,10 +97,10 @@ namespace GeneralGFF
 			// 
 			this.btn_Revert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_Revert.Enabled = false;
-			this.btn_Revert.Location = new System.Drawing.Point(164, 55);
+			this.btn_Revert.Location = new System.Drawing.Point(280, 55);
 			this.btn_Revert.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Revert.Name = "btn_Revert";
-			this.btn_Revert.Size = new System.Drawing.Size(60, 22);
+			this.btn_Revert.Size = new System.Drawing.Size(57, 20);
 			this.btn_Revert.TabIndex = 5;
 			this.btn_Revert.Text = "revert";
 			this.btn_Revert.UseVisualStyleBackColor = true;
@@ -111,10 +111,10 @@ namespace GeneralGFF
 			this.btn_Apply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_Apply.Enabled = false;
-			this.btn_Apply.Location = new System.Drawing.Point(1, 101);
+			this.btn_Apply.Location = new System.Drawing.Point(1, 100);
 			this.btn_Apply.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Apply.Name = "btn_Apply";
-			this.btn_Apply.Size = new System.Drawing.Size(223, 26);
+			this.btn_Apply.Size = new System.Drawing.Size(336, 25);
 			this.btn_Apply.TabIndex = 4;
 			this.btn_Apply.Text = "APPLY";
 			this.btn_Apply.UseVisualStyleBackColor = true;
@@ -127,7 +127,7 @@ namespace GeneralGFF
 			this.la_Description.Location = new System.Drawing.Point(5, 3);
 			this.la_Description.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Description.Name = "la_Description";
-			this.la_Description.Size = new System.Drawing.Size(219, 29);
+			this.la_Description.Size = new System.Drawing.Size(332, 29);
 			this.la_Description.TabIndex = 0;
 			this.la_Description.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
@@ -138,7 +138,7 @@ namespace GeneralGFF
 			this.la_Val.Location = new System.Drawing.Point(5, 55);
 			this.la_Val.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Val.Name = "la_Val";
-			this.la_Val.Size = new System.Drawing.Size(159, 17);
+			this.la_Val.Size = new System.Drawing.Size(275, 20);
 			this.la_Val.TabIndex = 2;
 			this.la_Val.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
@@ -151,7 +151,7 @@ namespace GeneralGFF
 			this.tb_Val.Location = new System.Drawing.Point(2, 36);
 			this.tb_Val.Margin = new System.Windows.Forms.Padding(0);
 			this.tb_Val.Name = "tb_Val";
-			this.tb_Val.Size = new System.Drawing.Size(221, 20);
+			this.tb_Val.Size = new System.Drawing.Size(334, 20);
 			this.tb_Val.TabIndex = 1;
 			this.tb_Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.tb_Val.WordWrap = false;
@@ -161,10 +161,11 @@ namespace GeneralGFF
 			// 
 			this.cb_GenderF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
+			this.cb_GenderF.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
 			this.cb_GenderF.Location = new System.Drawing.Point(8, 79);
 			this.cb_GenderF.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_GenderF.Name = "cb_GenderF";
-			this.cb_GenderF.Size = new System.Drawing.Size(91, 17);
+			this.cb_GenderF.Size = new System.Drawing.Size(17, 17);
 			this.cb_GenderF.TabIndex = 3;
 			this.cb_GenderF.UseVisualStyleBackColor = true;
 			this.cb_GenderF.Visible = false;
@@ -173,7 +174,7 @@ namespace GeneralGFF
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(679, 533);
+			this.ClientSize = new System.Drawing.Size(792, 574);
 			this.Controls.Add(this.sc_body);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);

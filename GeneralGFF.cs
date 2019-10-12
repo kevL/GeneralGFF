@@ -98,6 +98,7 @@ namespace GeneralGFF
 			MinimumSize = new Size(sc_body.Panel1MinSize + sc_body.SplitterWidth
 														 + Width - ClientSize.Width, // <- border
 								   150);
+			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
 
 //			LoadUtcfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\creature1_test.UTC");
 

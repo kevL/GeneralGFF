@@ -1127,6 +1127,25 @@ namespace GeneralGFF
 		}
 
 		/// <summary>
+		/// - helper for click_Select()
+		/// </summary>
+		void ResetValuePanel()
+		{
+			_f.la_Description.Text =
+			_f.la_Val.Text         =
+			_f.tb_Val.Text         = String.Empty;
+
+			_f.tb_Val.Enabled   = false;
+			_f.tb_Val.BackColor = Color.Violet;
+
+			_f.cb_GenderF.Visible =
+			_f.la_GenderF.Visible = false;
+
+			_f._preval  = String.Empty;
+			_f._prevalF = false;
+		}
+
+		/// <summary>
 		/// @note Ensure that 'node' is valid before call.
 		/// </summary>
 		/// <param name="node"></param>
@@ -1306,25 +1325,6 @@ namespace GeneralGFF
 				}
 				_f._preval = _f.tb_Val.Text;
 			}
-		}
-
-		/// <summary>
-		/// - helper for click_Select()
-		/// </summary>
-		void ResetValuePanel()
-		{
-			_f.la_Description.Text =
-			_f.la_Val.Text         =
-			_f.tb_Val.Text         = String.Empty;
-
-			_f.tb_Val.Enabled   = false;
-			_f.tb_Val.BackColor = Color.Violet;
-
-			_f.cb_GenderF.Visible =
-			_f.la_GenderF.Visible = false;
-
-			_f._preval  = String.Empty;
-			_f._prevalF = false;
 		}
 
 
