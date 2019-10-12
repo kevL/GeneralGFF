@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using System.Text;
 
 
@@ -86,7 +85,7 @@ namespace GeneralGFF
 					//logfile.Log("StructOffset= " + StructOffset);
 
 					// The Struct-section will always start at 56-bytes (0x38)
-					if (StructOffset != 56)
+					if (StructOffset != Globals.Length_HEADER)
 					{
 						FileService.ShowErrorBox("That does not appear to be a GFF file.");
 						return null;
@@ -279,11 +278,11 @@ namespace GeneralGFF
 								//logfile.Log(". . data._fieldids Length= " + (data._fieldids.Count * 4));
 								//logfile.Log(". . data._fields.Count= " + data._fields.Count);
 
-								fieldid = data._fieldids[(int)(idoroffset / 4 + j)];	// 4 bytes in each DWORD (ie. convert offset to id id)
+								fieldid = data._fieldids[(int)(idoroffset / Globals.Length_DWORD + j)];	// 4 bytes in each DWORD (ie. convert offset to id id)
 								//logfile.Log(". . fieldid= " + fieldid);
-								st.fieldids.Add(fieldid);								// isn't the GFF format wonderful ... at least it works
-							}															// the Bioware documentation could be better.
-						}																// Ps. it contains inaccurate and unspecific info
+								st.fieldids.Add(fieldid);												// isn't the GFF format wonderful ... at least it works
+							}																			// the Bioware documentation could be better.
+						}																				// Ps. it contains inaccurate and unspecific info
 
 						GffData.allStructs.Add(st);
 					}
@@ -297,8 +296,8 @@ namespace GeneralGFF
 					pos = LabelOffset;
 					for (i = 0; i != LabelCount; ++i)
 					{
-						buffer = new byte[16]; // 16-byte CHAR(s) - label length
-						for (b = 0; b != 16; ++b)
+						buffer = new byte[Globals.Length_LABEL]; // 16-byte CHAR(s) - label length
+						for (b = 0; b != Globals.Length_LABEL; ++b)
 							buffer[b] = bytes[pos++];
 
 						label = Encoding.ASCII.GetString(buffer, 0, buffer.Length).TrimEnd('\0');

@@ -10,6 +10,13 @@ namespace GeneralGFF
 	/// </summary>
 	static class FileService
 	{
+		#region Fields (static)
+		internal const string EXT_T = ".t";
+		const string EXT_B = ".ggf";
+		#endregion Fields (static)
+
+
+		#region Methods (static)
 		/// <summary>
 		/// Reads all the bytes of a specified file and returns it in a buffer.
 		/// The file will be closed.
@@ -81,7 +88,7 @@ namespace GeneralGFF
 		{
 			if (File.Exists(pfe))
 			{
-				string pfeBackup = pfe + ".ggf"; // backupfile
+				string pfeBackup = pfe + EXT_B;
 
 				if (File.Exists(pfeBackup))
 				{
@@ -100,7 +107,7 @@ namespace GeneralGFF
 				{
 					Directory.CreateDirectory(Path.GetDirectoryName(pfeBackup));
 					File.Replace(
-							pfe + ".t",
+							pfe + EXT_T,
 							pfe,
 							pfeBackup,
 							true);
@@ -112,7 +119,7 @@ namespace GeneralGFF
 				}
 			}
 			else
-				MoveFile(pfe + ".t", pfe);
+				MoveFile(pfe + EXT_T, pfe);
 
 			return true;
 		}
@@ -164,5 +171,6 @@ namespace GeneralGFF
 						MessageBoxDefaultButton.Button1,
 						0);
 		}
+		#endregion Methods (static)
 	}
 }

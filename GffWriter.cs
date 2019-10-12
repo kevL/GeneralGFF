@@ -11,13 +11,6 @@ namespace GeneralGFF
 	static class GffWriter
 	{
 		#region Fields (static)
-		const int Length_HEADER = 56; // 56-bytes in the header section
-
-		const int Length_STRUCT = 12; // 12-bytes per Struct  ( 3 uints)
-		const int Length_FIELD  = 12; // 12-bytes per Field   ( 3 uints)
-		const int Length_LABEL  = 16; // 16-bytes per Label   (16 'chars') <- TODO: just use ascii-bytes (7-bit byte: 0..127).
-
-
 		static readonly List<string> LabelsList = new List<string>();
 
 		static readonly List<byte> Structs   = new List<byte>();
@@ -45,11 +38,11 @@ namespace GeneralGFF
 		{
 			//logfile.Log("");
 			//logfile.Log("");
-			//logfile.Log("WriteUtcFile()");
+			//logfile.Log("WriteGFFfile()");
 
 			string pfeT;
 			if (File.Exists(pfe))
-				pfeT = pfe + ".t";
+				pfeT = pfe + FileService.EXT_T;
 			else
 				pfeT = pfe;
 
@@ -81,14 +74,14 @@ namespace GeneralGFF
 				fs.Write(buffer, 0, buffer.Length);
 
 				// Header STRUCTS ->
-				const uint start_Structs = Length_HEADER;
+				const uint start_Structs = Globals.Length_HEADER;
 				//logfile.Log("start_Structs= " + start_Structs);
 				buffer = BitConverter.GetBytes(start_Structs);
 				if (!_le) Array.Reverse(buffer);
 
 				fs.Write(buffer, 0, buffer.Length);
 
-				uint records_Structs = (uint)(Structs.Count / Length_STRUCT); // count of entries in Structs
+				uint records_Structs = (uint)(Structs.Count / Globals.Length_STRUCT); // count of entries in Structs
 				//logfile.Log("records_Structs= " + records_Structs);
 				buffer = BitConverter.GetBytes(records_Structs);
 				if (!_le) Array.Reverse(buffer);
@@ -104,7 +97,7 @@ namespace GeneralGFF
 
 				fs.Write(buffer, 0, buffer.Length);
 
-				uint records_Fields = (uint)(Fields.Count / Length_FIELD); // count of entries in Fields
+				uint records_Fields = (uint)(Fields.Count / Globals.Length_FIELD); // count of entries in Fields
 				//logfile.Log("records_Fields= " + records_Fields);
 				buffer = BitConverter.GetBytes(records_Fields);
 				if (!_le) Array.Reverse(buffer);
@@ -122,7 +115,7 @@ namespace GeneralGFF
 
 				fs.Write(buffer, 0, buffer.Length);
 
-				uint records_Labels = (uint)(Labels.Count / Length_LABEL); // count of entries in Labels
+				uint records_Labels = (uint)(Labels.Count / Globals.Length_LABEL); // count of entries in Labels
 				//logfile.Log("records_Labels= " + records_Labels);
 				buffer = BitConverter.GetBytes(records_Labels);
 				if (!_le) Array.Reverse(buffer);
@@ -234,15 +227,15 @@ namespace GeneralGFF
 		/// </summary>
 		static void SwapTlsToStart()
 		{
-			var a = new byte[Length_STRUCT];
+			var a = new byte[Globals.Length_STRUCT];
 
-			for (int i = 0; i != Length_STRUCT; ++i)
-				a[i] = Structs[Structs.Count - Length_STRUCT + i];
+			for (int i = 0; i != Globals.Length_STRUCT; ++i)
+				a[i] = Structs[Structs.Count - Globals.Length_STRUCT + i];
 
-			for (int i = Structs.Count - Length_STRUCT - 1; i != -1; --i)
-				Structs[i + Length_STRUCT] = Structs[i];
+			for (int i = Structs.Count - Globals.Length_STRUCT - 1; i != -1; --i)
+				Structs[i + Globals.Length_STRUCT] = Structs[i];
 
-			for (int i = 0; i != Length_STRUCT; ++i)
+			for (int i = 0; i != Globals.Length_STRUCT; ++i)
 				Structs[i] = a[i];
 		}
 
@@ -282,7 +275,7 @@ namespace GeneralGFF
 			var field = (GffData.Field)node.Tag;
 			if (!tls && fields != field.Struct.fieldids.Count) // test.
 			{
-				logfile.Log("AddStruct" + /*iSt +*/ " ERROR: nodes.count vs fieldids.count Not Equal");
+				logfile.Log("AddStruct" + /*iSt +*/ " ErROr: nodes.count vs fieldids.count Not Equal");
 				structid = UInt32.MaxValue;
 			}
 			else
@@ -297,7 +290,7 @@ namespace GeneralGFF
 
 				if (fields == 0)
 				{
-					structid = (uint)(Structs.Count / Length_STRUCT);
+					structid = (uint)(Structs.Count / Globals.Length_STRUCT);
 
 					Structs.AddRange(GetBytes(typeid));						// -> write typeid
 					Structs.AddRange(GetBytes((uint)0));					// -> write fieldid
@@ -309,7 +302,7 @@ namespace GeneralGFF
 					uint fieldid = AddField(node.Nodes[0]);					// write a Field and get its id
 					//logfile.Log("AddStruct(" + iSt + ") . . fieldid= " + fieldid);
 
-					structid = (uint)(Structs.Count / Length_STRUCT);
+					structid = (uint)(Structs.Count / Globals.Length_STRUCT);
 
 					Structs.AddRange(GetBytes(typeid));						// -> write typeid
 					Structs.AddRange(GetBytes(fieldid));					// -> write fieldid - st.fieldids[0]
@@ -331,7 +324,7 @@ namespace GeneralGFF
 
 					FieldIds.AddRange(fieldids); // yep that's it. FieldIds is just a list of fieldids (accessed only by Structs).
 
-					structid = (uint)(Structs.Count / Length_STRUCT);
+					structid = (uint)(Structs.Count / Globals.Length_STRUCT);
 
 					Structs.AddRange(GetBytes(typeid));						// -> write typeid
 					Structs.AddRange(GetBytes(offset));						// -> write FieldIds offset
@@ -430,7 +423,7 @@ namespace GeneralGFF
 			// labelid  (DWORD)
 			// data     (DWORD)
 
-			uint id = (uint)(Fields.Count / Length_FIELD); // id into Fields
+			uint id = (uint)(Fields.Count / Globals.Length_FIELD); // id into Fields
 
 			var field = (GffData.Field)node.Tag;
 
@@ -515,7 +508,7 @@ namespace GeneralGFF
 
 			// kL_Note: why didn't you guys go with either ids or offsets instead of both.
 
-			uint id = (uint)(Fields.Count / Length_FIELD); // id into Fields
+			uint id = (uint)(Fields.Count / Globals.Length_FIELD); // id into Fields
 
 			var field = (GffData.Field)node.Tag;
 
@@ -678,7 +671,7 @@ namespace GeneralGFF
 				++structs;
 			}
 
-			uint id = (uint)(Fields.Count / Length_FIELD); // id into Fields
+			uint id = (uint)(Fields.Count / Globals.Length_FIELD); // id into Fields
 
 			var field = (GffData.Field)node.Tag;
 			Fields.AddRange(GetBytes((uint)field.type)); // <- FieldTypes.List
@@ -712,7 +705,7 @@ namespace GeneralGFF
 			// labelid  (DWORD)
 			// data     (DWORD) - id into Structs
 
-			uint fieldid = (uint)(Fields.Count / Length_FIELD); // id into Fields
+			uint fieldid = (uint)(Fields.Count / Globals.Length_FIELD); // id into Fields
 
 			var field = (GffData.Field)node.Tag;
 
@@ -761,7 +754,7 @@ namespace GeneralGFF
 			{
 				byte[] ascii = Encoding.ASCII.GetBytes(label);
 
-				var buffer = new byte[Length_LABEL]; // inits all bytes to "0"
+				var buffer = new byte[Globals.Length_LABEL]; // inits all bytes to "0"
 				for (int i = 0; i != ascii.Length; ++i)
 					buffer[i] = ascii[i];
 
