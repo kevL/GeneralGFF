@@ -1126,23 +1126,55 @@ namespace generalgff
 			}
 		}
 
+
+		bool _RtbEnabled;
+
 		/// <summary>
 		/// - helper for click_Select()
 		/// </summary>
 		void ResetValuePanel()
 		{
-			_f.la_Description.Text =
-			_f.la_Val.Text         =
-			_f.tb_Val.Text         = String.Empty;
+			_f.la_Des.Text =
+			_f.la_Val.Text =
+			_f.tb_Val.Text =
+			_f.rt_Val.Text = String.Empty;
 
 			_f.tb_Val.Enabled   = false;
-			_f.tb_Val.BackColor = Color.Violet;
+			_f.tb_Val.BackColor = Color.Thistle;
+
+			if (_RtbEnabled)
+			{
+				_RtbEnabled = false;
+
+				_f.rt_Val.BackColor = Color.Thistle;
+				_f.rt_Val.ReadOnly  = true;
+				_f.rt_Val.TabStop   = false;
+				_f.rt_Val.Cursor    = Cursors.Default;
+				_f.rt_Val.Enter    += _f.enter_Richtextbox;
+			}
 
 			_f.cb_GenderF.Visible =
 			_f.la_GenderF.Visible = false;
 
 			_f._preval  = String.Empty;
 			_f._prevalF = false;
+		}
+
+		/// <summary>
+		/// Enables the richtextbox.
+		/// </summary>
+		void EnableRtbVal()
+		{
+			if (!_RtbEnabled)
+			{
+				_RtbEnabled = true;
+
+				_f.rt_Val.BackColor = Color.Honeydew;
+				_f.rt_Val.ReadOnly  = false;
+				_f.rt_Val.TabStop   = true;
+				_f.rt_Val.Cursor    = Cursors.IBeam;
+				_f.rt_Val.Enter    -= _f.enter_Richtextbox;
+			}
 		}
 
 		/// <summary>
@@ -1159,78 +1191,105 @@ namespace generalgff
 
 				switch (field.type)
 				{
-					case FieldTypes.BYTE:
-						_f.la_Description.Text = Byte.MinValue + ".." + Byte.MaxValue;
-						_f.la_Val.Text = "BYTE";
-						_f.tb_Val.Text = field.BYTE.ToString();
-
-						_f.tb_Val.Enabled   = true;
-						_f.tb_Val.BackColor = Color.Honeydew;
-						break;
-
-					case FieldTypes.CHAR:
-						_f.la_Description.Text = Char.MinValue + ".." + Char.MaxValue;
+					case FieldTypes.CHAR: // treat as Byte
+						_f.la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
 						_f.la_Val.Text = "CHAR";
+
 						_f.tb_Val.Text = field.CHAR.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
+						break;
+
+					case FieldTypes.BYTE:
+						_f.la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
+						_f.la_Val.Text = "BYTE";
+
+						_f.tb_Val.Text = field.BYTE.ToString();
+
+						_f.tb_Val.Enabled   = true;
+						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.WORD:
-						_f.la_Description.Text = UInt16.MinValue + ".." + UInt16.MaxValue;
+						_f.la_Des.Text = UInt16.MinValue + ".." + UInt16.MaxValue;
 						_f.la_Val.Text = "WORD";
+
 						_f.tb_Val.Text = field.WORD.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.SHORT:
-						_f.la_Description.Text = Int16.MinValue + ".." + Int16.MaxValue;
+						_f.la_Des.Text = Int16.MinValue + ".." + Int16.MaxValue;
 						_f.la_Val.Text = "SHORT";
+
 						_f.tb_Val.Text = field.SHORT.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD:
-						_f.la_Description.Text = UInt32.MinValue + ".." + UInt32.MaxValue;
+						_f.la_Des.Text = UInt32.MinValue + ".." + UInt32.MaxValue;
 						_f.la_Val.Text = "DWORD";
+
 						_f.tb_Val.Text = field.DWORD.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT:
-						_f.la_Description.Text = Int32.MinValue + ".." + Int32.MaxValue;
+						_f.la_Des.Text = Int32.MinValue + ".." + Int32.MaxValue;
 						_f.la_Val.Text = "INT";
+
 						_f.tb_Val.Text = field.INT.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD64:
-						_f.la_Description.Text = UInt64.MinValue + ".." + UInt64.MaxValue;
+						_f.la_Des.Text = UInt64.MinValue + ".." + UInt64.MaxValue;
 						_f.la_Val.Text = "DWORD64";
+
 						_f.tb_Val.Text = field.DWORD64.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT64:
-						_f.la_Description.Text = Int64.MinValue + ".." + Int64.MaxValue;
+						_f.la_Des.Text = Int64.MinValue + ".." + Int64.MaxValue;
 						_f.la_Val.Text = "INT64";
+
 						_f.tb_Val.Text = field.INT64.ToString();
+
+						_f.tb_Val.Enabled   = true;
+						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.FLOAT:
 					{
-						_f.la_Description.Text = float.MinValue + ".." + float.MaxValue;
+						_f.la_Des.Text = float.MinValue + ".." + float.MaxValue;
 						_f.la_Val.Text = "FLOAT";
 
 						string f = field.FLOAT.ToString();
@@ -1239,41 +1298,53 @@ namespace generalgff
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 					}
 
 					case FieldTypes.DOUBLE:
 					{
-						_f.la_Description.Text = Double.MinValue + ".." + Double.MaxValue;
+						_f.la_Des.Text = Double.MinValue + ".." + Double.MaxValue;
 						_f.la_Val.Text = "DOUBLE";
 
 						string d = field.DOUBLE.ToString();
 						if (!d.Contains(".")) d += ".0";
 						_f.tb_Val.Text = d;
-						break;
-					}
-
-					case FieldTypes.CExoString:
-						_f.la_Description.Text = "string";
-						_f.la_Val.Text = "CExoString";
-						_f.tb_Val.Text = field.CExoString;
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
+					}
 
 					case FieldTypes.CResRef:
-						_f.la_Description.Text = "32-chars NwN2" + Environment.NewLine + "16-chars NwN1";
+						_f.la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII";
 						_f.la_Val.Text = "CResRef";
+
 						_f.tb_Val.Text = field.CResRef;
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
+						break;
+
+					case FieldTypes.CExoString:
+						_f.la_Des.Text = "ASCII";
+						_f.la_Val.Text = "CExoString";
+
+						_f.rt_Val.Text = field.CExoString;
+
+						EnableRtbVal();
+
+						_f._preval = _f.rt_Val.Text;
 						break;
 
 					case FieldTypes.CExoLocString:
 					{
-						_f.la_Description.Text = "talktable strref" + Environment.NewLine + "-1..16777215";
+						_f.la_Des.Text = "talktable strref" + Environment.NewLine + "-1..16777215"; // TODO: special strref flag
 						_f.la_Val.Text = "CExoLocString";
 
 						uint strref = field.CExoLocStrref;
@@ -1284,46 +1355,68 @@ namespace generalgff
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
+
+						_f._preval = _f.tb_Val.Text;
 						break;
 					}
 
 					case FieldTypes.VOID:
-						_f.la_Description.Text = "binary data";
+					{
+						_f.la_Des.Text = "binary data";
 						_f.la_Val.Text = "VOID";
-						_f.tb_Val.Text = "bindata";
-						break;
 
-					case FieldTypes.Struct:
-						_f.la_Description.Text = "id" + Environment.NewLine + UInt32.MinValue + ".." + UInt32.MaxValue;
-						_f.la_Val.Text = "Struct";
-						_f.tb_Val.Text = "[" + field.Struct.typeid + "]";
+						_f.rt_Val.Text = BitConverter.ToString(field.VOID).Replace("-", " ");
+
+						EnableRtbVal();
+
+						_f._preval = _f.rt_Val.Text;
 						break;
+					}
 
 					case FieldTypes.List:
 						_f.la_Val.Text = "List";
-						_f.tb_Val.Text = String.Empty;
 						break;
 
-					case FieldTypes.locale:
-					{
-						_f.la_Description.Text = "localized string" + Environment.NewLine + "neutral or felicitous";
-						_f.la_Val.Text = "locale";
+					case FieldTypes.Struct:
+						_f.la_Des.Text = "TypeId" + Environment.NewLine + UInt32.MinValue + ".." + UInt32.MaxValue;
+						_f.la_Val.Text = "Struct";
 
-						var CExoLocString = (GffData.Field)node.Parent.Tag;
-						GffData.Locale locale = CExoLocString.Locales[(int)field.localeid];
-						_f.tb_Val.Text = locale.local;
-
-						_f.cb_GenderF.Visible =
-						_f.la_GenderF.Visible = true;
-						_f.cb_GenderF.Checked = (_f._prevalF = locale.F);
+						_f.tb_Val.Text = "[" + field.Struct.typeid + "]";
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
+						_f._preval = _f.tb_Val.Text;
+						break;
+
+					case FieldTypes.locale:
+					{
+						var CExoLocString = (GffData.Field)node.Parent.Tag;
+						GffData.Locale locale = CExoLocString.Locales[(int)field.localeid];
+
+						if (locale.langid == Languages.GffToken)
+						{
+							_f.la_Des.Text = "UTF8";
+							_f.la_Val.Text = "GffToken";
+						}
+						else
+						{
+							_f.la_Des.Text = "UTF8 localized";
+							_f.la_Val.Text = "locale";
+
+							_f.cb_GenderF.Visible =
+							_f.la_GenderF.Visible = true;
+							_f.cb_GenderF.Checked = (_f._prevalF = locale.F);
+						}
+
+						_f.rt_Val.Text = locale.local;
+
+						EnableRtbVal();
+
+						_f._preval = _f.rt_Val.Text;
 						break;
 					}
 				}
-				_f._preval = _f.tb_Val.Text;
 			}
 		}
 

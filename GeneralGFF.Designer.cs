@@ -14,9 +14,10 @@ namespace generalgff
 
 		SplitContainerCp sc_body;
 
-		internal Label la_Description;
+		internal Label la_Des;
 		internal TextBox tb_Val;
 		internal Label la_Val;
+		internal RichTextBox rt_Val;
 		internal CheckBox cb_GenderF;
 		internal Label la_GenderF;
 		Button btn_Apply;
@@ -44,10 +45,11 @@ namespace generalgff
 		private void InitializeComponent()
 		{
 			this.sc_body = new generalgff.SplitContainerCp();
+			this.rt_Val = new System.Windows.Forms.RichTextBox();
 			this.la_GenderF = new System.Windows.Forms.Label();
 			this.btn_Revert = new System.Windows.Forms.Button();
 			this.btn_Apply = new System.Windows.Forms.Button();
-			this.la_Description = new System.Windows.Forms.Label();
+			this.la_Des = new System.Windows.Forms.Label();
 			this.la_Val = new System.Windows.Forms.Label();
 			this.tb_Val = new System.Windows.Forms.TextBox();
 			this.cb_GenderF = new System.Windows.Forms.CheckBox();
@@ -67,10 +69,11 @@ namespace generalgff
 			// sc_body.Panel2
 			// 
 			this.sc_body.Panel2.BackColor = System.Drawing.Color.Linen;
+			this.sc_body.Panel2.Controls.Add(this.rt_Val);
 			this.sc_body.Panel2.Controls.Add(this.la_GenderF);
 			this.sc_body.Panel2.Controls.Add(this.btn_Revert);
 			this.sc_body.Panel2.Controls.Add(this.btn_Apply);
-			this.sc_body.Panel2.Controls.Add(this.la_Description);
+			this.sc_body.Panel2.Controls.Add(this.la_Des);
 			this.sc_body.Panel2.Controls.Add(this.la_Val);
 			this.sc_body.Panel2.Controls.Add(this.tb_Val);
 			this.sc_body.Panel2.Controls.Add(this.cb_GenderF);
@@ -80,14 +83,35 @@ namespace generalgff
 			this.sc_body.SplitterWidth = 2;
 			this.sc_body.TabIndex = 0;
 			// 
+			// rt_Val
+			// 
+			this.rt_Val.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
+			this.rt_Val.BackColor = System.Drawing.Color.Thistle;
+			this.rt_Val.Cursor = System.Windows.Forms.Cursors.Arrow;
+			this.rt_Val.Font = new System.Drawing.Font("Courier New", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.rt_Val.HideSelection = false;
+			this.rt_Val.Location = new System.Drawing.Point(0, 145);
+			this.rt_Val.Margin = new System.Windows.Forms.Padding(0);
+			this.rt_Val.Name = "rt_Val";
+			this.rt_Val.ReadOnly = true;
+			this.rt_Val.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
+			this.rt_Val.Size = new System.Drawing.Size(338, 427);
+			this.rt_Val.TabIndex = 7;
+			this.rt_Val.TabStop = false;
+			this.rt_Val.Text = "";
+			this.rt_Val.Enter += new System.EventHandler(this.enter_Richtextbox);
+			this.rt_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Richtextbox);
+			// 
 			// la_GenderF
 			// 
 			this.la_GenderF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_GenderF.Location = new System.Drawing.Point(25, 80);
+			this.la_GenderF.Location = new System.Drawing.Point(30, 80);
 			this.la_GenderF.Margin = new System.Windows.Forms.Padding(0);
 			this.la_GenderF.Name = "la_GenderF";
-			this.la_GenderF.Size = new System.Drawing.Size(310, 17);
+			this.la_GenderF.Size = new System.Drawing.Size(305, 17);
 			this.la_GenderF.TabIndex = 6;
 			this.la_GenderF.Text = "Feminine";
 			this.la_GenderF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -97,7 +121,7 @@ namespace generalgff
 			// 
 			this.btn_Revert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_Revert.Enabled = false;
-			this.btn_Revert.Location = new System.Drawing.Point(280, 55);
+			this.btn_Revert.Location = new System.Drawing.Point(280, 56);
 			this.btn_Revert.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Revert.Name = "btn_Revert";
 			this.btn_Revert.Size = new System.Drawing.Size(57, 20);
@@ -120,22 +144,22 @@ namespace generalgff
 			this.btn_Apply.UseVisualStyleBackColor = true;
 			this.btn_Apply.Click += new System.EventHandler(this.click_Apply);
 			// 
-			// la_Description
+			// la_Des
 			// 
-			this.la_Description.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.la_Des.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_Description.Location = new System.Drawing.Point(5, 3);
-			this.la_Description.Margin = new System.Windows.Forms.Padding(0);
-			this.la_Description.Name = "la_Description";
-			this.la_Description.Size = new System.Drawing.Size(332, 29);
-			this.la_Description.TabIndex = 0;
-			this.la_Description.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+			this.la_Des.Location = new System.Drawing.Point(5, 3);
+			this.la_Des.Margin = new System.Windows.Forms.Padding(0);
+			this.la_Des.Name = "la_Des";
+			this.la_Des.Size = new System.Drawing.Size(332, 29);
+			this.la_Des.TabIndex = 0;
+			this.la_Des.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
 			// la_Val
 			// 
 			this.la_Val.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_Val.Location = new System.Drawing.Point(5, 55);
+			this.la_Val.Location = new System.Drawing.Point(5, 56);
 			this.la_Val.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Val.Name = "la_Val";
 			this.la_Val.Size = new System.Drawing.Size(275, 20);
@@ -146,7 +170,7 @@ namespace generalgff
 			// 
 			this.tb_Val.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
-			this.tb_Val.BackColor = System.Drawing.Color.Violet;
+			this.tb_Val.BackColor = System.Drawing.Color.Thistle;
 			this.tb_Val.Enabled = false;
 			this.tb_Val.Location = new System.Drawing.Point(2, 36);
 			this.tb_Val.Margin = new System.Windows.Forms.Padding(0);
@@ -155,17 +179,15 @@ namespace generalgff
 			this.tb_Val.TabIndex = 1;
 			this.tb_Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.tb_Val.WordWrap = false;
-			this.tb_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Val);
+			this.tb_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Textbox);
 			// 
 			// cb_GenderF
 			// 
-			this.cb_GenderF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
 			this.cb_GenderF.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-			this.cb_GenderF.Location = new System.Drawing.Point(8, 79);
+			this.cb_GenderF.Location = new System.Drawing.Point(10, 80);
 			this.cb_GenderF.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_GenderF.Name = "cb_GenderF";
-			this.cb_GenderF.Size = new System.Drawing.Size(17, 17);
+			this.cb_GenderF.Size = new System.Drawing.Size(15, 16);
 			this.cb_GenderF.TabIndex = 3;
 			this.cb_GenderF.UseVisualStyleBackColor = true;
 			this.cb_GenderF.Visible = false;

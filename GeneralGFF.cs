@@ -100,13 +100,13 @@ namespace generalgff
 								   150);
 			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
 
-//			LoadUtcfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\creature1_test.UTC");
-
 
 			var t1 = new Timer(); // workaround that bypasses TextChanged ...
 			t1.Tick += OnTick;
 			t1.Interval = 100;
 			t1.Start();
+
+//			LoadUtcfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\creature1_test.UTC");
 		}
 		#endregion cTor
 
@@ -258,7 +258,7 @@ namespace generalgff
 		#endregion Methods
 
 
-		#region Handlers
+		#region Handlers (menu)
 		/// <summary>
 		/// Loads a file.
 		/// </summary>
@@ -392,9 +392,10 @@ namespace generalgff
 						MessageBoxDefaultButton.Button1,
 						0);
 		}
+		#endregion Handlers (menu)
 
 
-
+		#region Handlers (panel2)
 		internal string _preval = String.Empty;
 		internal bool _prevalF;
 
@@ -424,15 +425,36 @@ namespace generalgff
 		} */
 		void OnTick(object sender, EventArgs e)
 		{
-			btn_Revert.Enabled =
-			btn_Apply .Enabled = _tl.SelectedNode != null && _tl.SelectedNode.Tag != null
-							  && (tb_Val.Text != _preval
-							  || (cb_GenderF.Visible && cb_GenderF.Checked != _prevalF));
+			if (_tl.SelectedNode != null && _tl.SelectedNode.Tag != null)
+			{
+				string text;
+				switch (((GffData.Field)_tl.SelectedNode.Tag).type)
+				{
+					default:
+						text = tb_Val.Text;
+						break;
+
+					case FieldTypes.CExoString:
+					case FieldTypes.VOID:
+					case FieldTypes.locale:
+						text = rt_Val.Text;
+						break;
+				}
+
+				btn_Revert.Enabled =
+				btn_Apply .Enabled = text != _preval
+								  || (cb_GenderF.Visible && cb_GenderF.Checked != _prevalF);
+			}
+			else
+			{
+				btn_Revert.Enabled =
+				btn_Apply .Enabled = false;
+			}
 		}
 
 
 		/// <summary>
-		/// Reselects the current treenode causing the value-panel to repopulate.
+		/// Reselects the current treenode causing panel2 to repopulate.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -442,12 +464,12 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Applies changed data to a field if the valbox is focused and [Enter]
-		/// is keydown'd.
+		/// Applies changed data to a field if the textbox is focused and
+		/// [Enter] is keydown'd.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void keydown_Val(object sender, KeyEventArgs e)
+		void keydown_Textbox(object sender, KeyEventArgs e)
 		{
 			if (e.KeyData == Keys.Enter)
 			{
@@ -455,6 +477,81 @@ namespace generalgff
 				btn_Apply.PerformClick();
 			}
 		}
+
+		/// <summary>
+		/// Disallows invalid characters (only hexadecimal and space allowed) in
+		/// the richtextbox.
+		/// @note 'e.KeyValue' always returns UPPERCASE (even if Shift is not
+		/// keyed). lovely. lovely lovely lovely
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void keydown_Richtextbox(object sender, KeyEventArgs e)
+		{
+			if (((GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.VOID)
+			{
+				if (   e.KeyCode != Keys.Up   && e.KeyCode != Keys.Down && e.KeyCode != Keys.Left   && e.KeyCode != Keys.Right
+					&& e.KeyCode != Keys.Home && e.KeyCode != Keys.End  && e.KeyCode != Keys.PageUp && e.KeyCode != Keys.PageDown
+					&& e.KeyCode != Keys.Back && e.KeyCode != Keys.Delete)
+				{
+					switch (e.KeyData)
+					{
+						case Keys.Space:
+
+						case Keys.D0:
+						case Keys.D1:
+						case Keys.D2:
+						case Keys.D3:
+						case Keys.D4:
+						case Keys.D5:
+						case Keys.D6:
+						case Keys.D7:
+						case Keys.D8:
+						case Keys.D9:
+
+						case Keys.NumPad0:
+						case Keys.NumPad1:
+						case Keys.NumPad2:
+						case Keys.NumPad3:
+						case Keys.NumPad4:
+						case Keys.NumPad5:
+						case Keys.NumPad6:
+						case Keys.NumPad7:
+						case Keys.NumPad8:
+						case Keys.NumPad9:
+
+						case Keys.A:
+						case Keys.B:
+						case Keys.C:
+						case Keys.D:
+						case Keys.E:
+						case Keys.F:
+						case Keys.Shift | Keys.A:
+						case Keys.Shift | Keys.B:
+						case Keys.Shift | Keys.C:
+						case Keys.Shift | Keys.D:
+						case Keys.Shift | Keys.E:
+						case Keys.Shift | Keys.F:
+							break;
+
+						default:
+							e.SuppressKeyPress = true;
+							break;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Shunts focus away from the richtextbox if it's not "enabled".
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		internal void enter_Richtextbox(object sender, EventArgs e)
+		{
+			tb_Val.Select();
+		}
+
 
 		/// <summary>
 		/// Applies changed data to the currently selected field.
@@ -634,6 +731,6 @@ namespace generalgff
 								0);
 			}
 		}
-		#endregion Handlers
+		#endregion Handlers (panel2)
 	}
 }
