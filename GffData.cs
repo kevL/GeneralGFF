@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	#region Enums (global)
 	/// <summary>

@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	sealed class TreeList
 		:

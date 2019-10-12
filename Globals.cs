@@ -1,4 +1,4 @@
-﻿namespace GeneralGFF
+﻿namespace generalgff
 {
 	struct Globals
 	{

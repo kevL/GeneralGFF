@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	partial class GeneralGFF
 	{
@@ -43,7 +43,7 @@ namespace GeneralGFF
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.sc_body = new SplitContainerCp();
+			this.sc_body = new generalgff.SplitContainerCp();
 			this.la_GenderF = new System.Windows.Forms.Label();
 			this.btn_Revert = new System.Windows.Forms.Button();
 			this.btn_Apply = new System.Windows.Forms.Button();

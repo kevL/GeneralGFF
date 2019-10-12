@@ -3,7 +3,7 @@ using System.IO;
 using System.Windows.Forms;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	/// <summary>
 	/// File IO.

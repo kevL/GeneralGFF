@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	static class GffWriter
 	{

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	/// <summary>
 	/// Static object that reads GFF files.

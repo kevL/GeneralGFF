@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	/// <summary>
 	/// Entry point.

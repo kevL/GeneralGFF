@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows.Forms;
 
 
-namespace GeneralGFF
+namespace generalgff
 {
 	/// <summary>
 	/// A dialog for user to add a Locale to a CExoLocString.
