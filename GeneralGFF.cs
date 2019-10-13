@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 
@@ -563,7 +564,7 @@ namespace generalgff
 			TreeNode node = _tl.SelectedNode;
 			if (node != null) // safety.
 			{
-				string val = tb_Val.Text; // test string ->
+				string val = null; // the string to test ->
 
 				bool valid = false;
 				GffData.Locale locale = null;
@@ -573,10 +574,8 @@ namespace generalgff
 				{
 					case FieldTypes.CHAR:
 					{
-//						char result;
-//						if (valid = Char.TryParse(val, out result))
 						byte result;
-						if (valid = Byte.TryParse(val, out result))
+						if (valid = Byte.TryParse((val = tb_Val.Text), out result)) // treat as Byte
 							field.CHAR = result;
 						break;
 					}
@@ -584,7 +583,7 @@ namespace generalgff
 					case FieldTypes.BYTE:
 					{
 						byte result;
-						if (valid = Byte.TryParse(val, out result))
+						if (valid = Byte.TryParse((val = tb_Val.Text), out result))
 							field.BYTE = result;
 						break;
 					}
@@ -592,7 +591,7 @@ namespace generalgff
 					case FieldTypes.WORD:
 					{
 						ushort result;
-						if (valid = UInt16.TryParse(val, out result))
+						if (valid = UInt16.TryParse((val = tb_Val.Text), out result))
 							field.WORD = result;
 						break;
 					}
@@ -600,7 +599,7 @@ namespace generalgff
 					case FieldTypes.SHORT:
 					{
 						short result;
-						if (valid = Int16.TryParse(val, out result))
+						if (valid = Int16.TryParse((val = tb_Val.Text), out result))
 							field.SHORT = result;
 						break;
 					}
@@ -608,7 +607,7 @@ namespace generalgff
 					case FieldTypes.DWORD:
 					{
 						uint result;
-						if (valid = UInt32.TryParse(val, out result))
+						if (valid = UInt32.TryParse((val = tb_Val.Text), out result))
 							field.DWORD = result;
 						break;
 					}
@@ -616,7 +615,7 @@ namespace generalgff
 					case FieldTypes.INT:
 					{
 						int result;
-						if (valid = Int32.TryParse(val, out result))
+						if (valid = Int32.TryParse((val = tb_Val.Text), out result))
 							field.INT = result;
 						break;
 					}
@@ -624,7 +623,7 @@ namespace generalgff
 					case FieldTypes.DWORD64:
 					{
 						ulong result;
-						if (valid = UInt64.TryParse(val, out result))
+						if (valid = UInt64.TryParse((val = tb_Val.Text), out result))
 							field.DWORD64 = result;
 						break;
 					}
@@ -632,7 +631,7 @@ namespace generalgff
 					case FieldTypes.INT64:
 					{
 						long result;
-						if (valid = Int64.TryParse(val, out result))
+						if (valid = Int64.TryParse((val = tb_Val.Text), out result))
 							field.INT64 = result;
 						break;
 					}
@@ -640,7 +639,7 @@ namespace generalgff
 					case FieldTypes.FLOAT:
 					{
 						float result;
-						if (valid = float.TryParse(val, out result))
+						if (valid = float.TryParse((val = tb_Val.Text), out result))
 							field.FLOAT = result;
 						break;
 					}
@@ -648,29 +647,29 @@ namespace generalgff
 					case FieldTypes.DOUBLE:
 					{
 						double result;
-						if (valid = Double.TryParse(val, out result))
+						if (valid = Double.TryParse((val = tb_Val.Text), out result))
 							field.DOUBLE = result;
 						break;
 					}
 
 					case FieldTypes.CResRef:
 					{
-						if (valid = val.Length < 33)	// nwn2-style resrefs
-							field.CResRef = val;		// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
+						if (valid = (val = tb_Val.Text).Length < 33)	// nwn2-style resrefs
+							field.CResRef = val;						// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
 						break;
 					}
 
 					case FieldTypes.CExoString:
 					{
 						valid = true;
-						field.CExoString = val;
+						field.CExoString = (val = rt_Val.Text);
 						break;
 					}
 
 					case FieldTypes.CExoLocString:
 					{
 						int result;
-						if (valid = Int32.TryParse(val, out result)
+						if (valid = Int32.TryParse((val = tb_Val.Text), out result)
 							&& result > -2 && result < 16777216)	// NOTE: The GFF-specification stores strrefs as Uint32.
 						{											// TODO: Support for CUSTOM.Tlk talktables!
 							field.CExoLocStrref = (uint)result;
@@ -678,23 +677,78 @@ namespace generalgff
 						break;
 					}
 
-					case FieldTypes.VOID: // not editable
+					case FieldTypes.VOID:
 					{
-						// test for hexadecimal digits
-						valid = false;
+						val = rt_Val.Text.Trim();
+						val = Regex.Replace(val, @"\s+", " ");
+
+						char[] val2 = null;			// formatted hexadecimal chars (all uppercase)
+						string val3 = String.Empty;	// 'val' w/out spaces (upper and/or lowercase chars)
+
+						bool bork = false;
+						for (int i = 0; i != val.Length && !bork; ++i)
+						{
+							if (i % 3 == 2)
+							{
+								if (val[i] != ' ')
+								{
+									bork = true;
+									break;
+								}
+							}
+							else
+							{
+								val2 = val.ToCharArray();
+								switch (val[i])
+								{
+									case 'a': val2[i] = 'A'; break;
+									case 'b': val2[i] = 'B'; break;
+									case 'c': val2[i] = 'C'; break;
+									case 'd': val2[i] = 'D'; break;
+									case 'e': val2[i] = 'E'; break;
+									case 'f': val2[i] = 'F'; break;
+								}
+
+								switch (val2[i])
+								{
+									case '0': case '1': case '2': case '3': case '4':
+									case '5': case '6': case '7': case '8': case '9':
+									case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
+										val3 += val2[i];
+										break;
+
+									default:
+										bork = true;
+										break;
+								}
+							}
+						}
+
+						if (!bork && (val3.Length & 1) == 0)
+						{
+							valid = true;
+							field.VOID = ParseHex(val3);
+
+							rt_Val.Text = new string(val2); // freshen the richtextbox
+						}
 						break;
 					}
 
-					case FieldTypes.Struct: // not editable
-					{
-						// test for "[" + UInt32 + "]" (StructId)
-						valid = false;
-						break;
-					}
+//					case FieldTypes.List: // not editable
 
-					case FieldTypes.List: // not editable
+					case FieldTypes.Struct:
 					{
-						valid = false;
+						val = tb_Val.Text;
+						if (   val.StartsWith("[", StringComparison.Ordinal)
+							&& val.EndsWith(  "]", StringComparison.Ordinal))
+						{
+							uint result;
+							if (UInt32.TryParse(val.Substring(1, val.Length - 2), out result))
+							{
+								valid = true;
+								field.Struct.typeid = result;
+							}
+						}
 						break;
 					}
 
@@ -705,7 +759,7 @@ namespace generalgff
 						var CExoLocString = (GffData.Field)node.Parent.Tag;
 						locale = CExoLocString.Locales[(int)field.localeid];
 
-						locale.local = val;
+						locale.local = (val = rt_Val.Text);
 
 						field.label = GffData.Locale.GetLanguageString(locale.langid);
 						if (locale.F = _prevalF = cb_GenderF.Checked)
@@ -732,5 +786,37 @@ namespace generalgff
 			}
 		}
 		#endregion Handlers (panel2)
+
+
+		// https://stackoverflow.com/questions/14332496/most-light-weight-conversion-from-hex-to-byte-in-c/14332574#14332574
+		static byte[] ParseHex(string hex)
+		{
+			int length = hex.Length / 2;
+			var b = new byte[length];
+			for (int i = 0, j = -1; i != length; ++i)
+			{
+				int h = ParseNybble(hex[++j]);
+				int l = ParseNybble(hex[++j]);
+				b[i] = (byte)((h << 4) | l);
+			}
+			return b;
+		}
+
+		static int ParseNybble(char c)
+		{
+			switch (c)
+			{
+				case '0': case '1': case '2': case '3': case '4':
+				case '5': case '6': case '7': case '8': case '9':
+					return c - '0';
+
+				case 'A': case 'B': case 'C': case 'D': case 'E': case 'F':
+					return c - ('A' - 10);
+
+				case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
+					return c - ('a' - 10);
+			}
+			return c;
+		}
 	}
 }
