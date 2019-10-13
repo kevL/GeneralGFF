@@ -28,6 +28,9 @@ namespace generalgff
 
 		#region Fields
 		internal TreeList _tl;
+
+		string _editText = String.Empty;
+		int _posCaret = 0;
 		#endregion Fields
 
 
@@ -411,7 +414,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void textchanged_Valuebox(object sender, EventArgs e)
+		void textchanged_Textbox(object sender, EventArgs e)
 		{
 			//tb_Val
 			if (!_tl._bypassTextChanged)
@@ -455,7 +458,7 @@ namespace generalgff
 
 
 		/// <summary>
-		/// Reselects the current treenode causing panel2 to repopulate.
+		/// pseudo-Reselects the current treenode causing panel2 to repopulate.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -464,9 +467,32 @@ namespace generalgff
 			_tl.click_Select(_tl.SelectedNode);
 		}
 
+
 		/// <summary>
-		/// Applies changed data to a field if the textbox is focused and
-		/// [Enter] is keydown'd.
+		/// Shunts focus away from the richtextbox if it's not "enabled".
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		internal void enter_Richtextbox(object sender, EventArgs e)
+		{
+			tb_Val.Select();
+		}
+
+
+		/// <summary>
+		/// Tracks the position of the caret in the textbox.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void mousedown_Textbox(object sender, MouseEventArgs e)
+		{
+			_posCaret = rt_Val.SelectionStart;
+		}
+
+		/// <summary>
+		/// Tracks the position of the caret in the textbox. Also applies
+		/// changed data to a field if the textbox is focused and [Enter] is
+		/// keydown'd.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -477,80 +503,88 @@ namespace generalgff
 				e.SuppressKeyPress = true;
 				btn_Apply.PerformClick();
 			}
+			else
+				_posCaret = rt_Val.SelectionStart;
 		}
 
 		/// <summary>
-		/// Disallows invalid characters (only hexadecimal and space allowed) in
-		/// the richtextbox.
-		/// @note 'e.KeyValue' always returns UPPERCASE (even if Shift is not
-		/// keyed). lovely. lovely lovely lovely
+		/// Prevents non-ASCII characters in CResRefs.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void textchanged_Textbox(object sender, EventArgs e)
+		{
+			switch (((GffData.Field)_tl.SelectedNode.Tag).type)
+			{
+				case FieldTypes.CResRef:
+					if (!isPrintableAscii(tb_Val.Text))
+					{
+						tb_Val.Text = _editText;
+
+						if (_posCaret < tb_Val.Text.Length)
+							tb_Val.SelectionStart = _posCaret;
+						else
+							tb_Val.SelectionStart = tb_Val.Text.Length;
+					}
+					else
+						_editText = tb_Val.Text;
+
+					// Regex.Replace(tb_Val.Text, @"[^\u0020-\u007E]", string.Empty)
+					break;
+			}
+		}
+
+
+		/// <summary>
+		/// Tracks the position of the caret in the richtextbox.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void mousedown_Richtextbox(object sender, MouseEventArgs e)
+		{
+			_posCaret = rt_Val.SelectionStart;
+		}
+
+		/// <summary>
+		/// Tracks the position of the caret in the richtextbox.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		void keydown_Richtextbox(object sender, KeyEventArgs e)
 		{
-			if (((GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.VOID)
-			{
-				if (   e.KeyCode != Keys.Up   && e.KeyCode != Keys.Down && e.KeyCode != Keys.Left   && e.KeyCode != Keys.Right
-					&& e.KeyCode != Keys.Home && e.KeyCode != Keys.End  && e.KeyCode != Keys.PageUp && e.KeyCode != Keys.PageDown
-					&& e.KeyCode != Keys.Back && e.KeyCode != Keys.Delete)
-				{
-					switch (e.KeyData)
-					{
-						case Keys.Space:
-
-						case Keys.D0:
-						case Keys.D1:
-						case Keys.D2:
-						case Keys.D3:
-						case Keys.D4:
-						case Keys.D5:
-						case Keys.D6:
-						case Keys.D7:
-						case Keys.D8:
-						case Keys.D9:
-
-						case Keys.NumPad0:
-						case Keys.NumPad1:
-						case Keys.NumPad2:
-						case Keys.NumPad3:
-						case Keys.NumPad4:
-						case Keys.NumPad5:
-						case Keys.NumPad6:
-						case Keys.NumPad7:
-						case Keys.NumPad8:
-						case Keys.NumPad9:
-
-						case Keys.A:
-						case Keys.B:
-						case Keys.C:
-						case Keys.D:
-						case Keys.E:
-						case Keys.F:
-						case Keys.Shift | Keys.A:
-						case Keys.Shift | Keys.B:
-						case Keys.Shift | Keys.C:
-						case Keys.Shift | Keys.D:
-						case Keys.Shift | Keys.E:
-						case Keys.Shift | Keys.F:
-							break;
-
-						default:
-							e.SuppressKeyPress = true;
-							break;
-					}
-				}
-			}
+			_posCaret = rt_Val.SelectionStart;
 		}
 
 		/// <summary>
-		/// Shunts focus away from the richtextbox if it's not "enabled".
+		/// Prevents non-ASCII characters in CExoString and non-hexadecimal
+		/// characters in VOID.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		internal void enter_Richtextbox(object sender, EventArgs e)
+		void textchanged_Richtextbox(object sender, EventArgs e)
 		{
-			tb_Val.Select();
+			switch (((GffData.Field)_tl.SelectedNode.Tag).type)
+			{
+				case FieldTypes.CExoString:
+					if (!isPrintableAscii(rt_Val.Text))
+					{
+						ResetRichtextbox();
+					}
+					else
+						_editText = rt_Val.Text;
+
+					// Regex.Replace(rt_Val.Text, @"[^\u0020-\u007E]", String.Empty);
+					break;
+
+				case FieldTypes.VOID:
+					if (!isHexadecimal(rt_Val.Text))
+					{
+						ResetRichtextbox();
+					}
+					else
+						_editText = rt_Val.Text;
+					break;
+			}
 		}
 
 
@@ -654,24 +688,33 @@ namespace generalgff
 
 					case FieldTypes.CResRef:
 					{
-						if (valid = (val = tb_Val.Text).Length < 33)	// nwn2-style resrefs
-							field.CResRef = val;						// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
+						// nwn2-style resrefs (32-chars)
+						// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
+						if (tb_Val.Text.Length < 33 && isPrintableAscii(tb_Val.Text))
+						{
+							valid = true;
+							field.CResRef = (val = tb_Val.Text);
+						}
 						break;
 					}
 
 					case FieldTypes.CExoString:
 					{
-						valid = true;
-						field.CExoString = (val = rt_Val.Text);
+						if (isPrintableAscii(rt_Val.Text))
+						{
+							valid = true;
+							field.CExoString = (val = rt_Val.Text);
+						}
 						break;
 					}
 
 					case FieldTypes.CExoLocString:
 					{
+						// TODO: Support for CUSTOM.Tlk talktables!
 						int result;
 						if (valid = Int32.TryParse((val = tb_Val.Text), out result)
-							&& result > -2 && result < 16777216)	// NOTE: The GFF-specification stores strrefs as Uint32.
-						{											// TODO: Support for CUSTOM.Tlk talktables!
+							&& result > -2 && result < 16777216) // NOTE: The GFF-specification stores strrefs as Uint32.
+						{
 							field.CExoLocStrref = (uint)result;
 						}
 						break;
@@ -682,8 +725,8 @@ namespace generalgff
 						val = rt_Val.Text.Trim();
 						val = Regex.Replace(val, @"\s+", " ");
 
-						char[] val2 = null;			// formatted hexadecimal chars (all uppercase)
-						string val3 = String.Empty;	// 'val' w/out spaces (upper and/or lowercase chars)
+						char[] val2 = null;			// formatted hexadecimal chars (all uppercase w/ spaces)
+						string val3 = String.Empty;	// 'val' w/out spaces (upper and/or lowercase chars - will be converted to byte[])
 
 						bool bork = false;
 						for (int i = 0; i != val.Length && !bork; ++i)
@@ -727,7 +770,7 @@ namespace generalgff
 						if (!bork && (val3.Length & 1) == 0)
 						{
 							valid = true;
-							field.VOID = ParseHex(val3);
+							field.VOID = ParseHecate(val3);
 
 							rt_Val.Text = new string(val2); // freshen the richtextbox
 						}
@@ -775,34 +818,138 @@ namespace generalgff
 					_preval = val;
 				}
 				else
-					MessageBox.Show(
-								this,
-								"That dog don't hunt.",
-								" Error",
-								MessageBoxButtons.OK,
-								MessageBoxIcon.Error,
-								MessageBoxDefaultButton.Button1,
-								0);
+					baddog("That dog don't hunt.");
 			}
 		}
 		#endregion Handlers (panel2)
 
 
+		#region Methods
+		/// <summary>
+		/// Roll yer own keyboard-navigation keys checker.
+		/// @note 'keycode' shall include modifers - ie, pass in KeyCode not
+		/// KeyData.
+		/// </summary>
+		/// <param name="keycode"></param>
+		/// <returns></returns>
+		bool isNavigation(Keys keycode)
+		{
+			switch (keycode)
+			{
+				case Keys.Up:
+				case Keys.Down:
+				case Keys.Left:
+				case Keys.Right:
+				case Keys.Home:
+				case Keys.End:
+				case Keys.PageUp:
+				case Keys.PageDown:
+				case Keys.Back:
+				case Keys.Delete:
+					return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Checks if a string is printable ascii.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		bool isPrintableAscii(string text)
+		{
+			int c;
+			for (int i = 0; i != text.Length; ++i)
+			{
+				c = (int)text[i];
+				if (c < 32 || c > 126)
+					return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Checks if a string is hexadecimal.
+		/// @note Spaces are also valid.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		bool isHexadecimal(string text)
+		{
+			int c;
+			for (int i = 0; i != text.Length; ++i)
+			{
+				if ((c = (int)text[i]) != 32
+					&& (    c <  48
+						|| (c >  57 && c < 65)
+						|| (c >  70 && c < 97)
+						||  c > 102))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Resets the richtextbox to a (hopefully) valid state.
+		/// </summary>
+		void ResetRichtextbox()
+		{
+			rt_Val.Text = _editText;
+
+			if (_posCaret < rt_Val.Text.Length)
+				rt_Val.SelectionStart = _posCaret;
+			else
+				rt_Val.SelectionStart = rt_Val.Text.Length;
+		}
+
+
+		/// <summary>
+		/// Generic error dialog.
+		/// </summary>
+		/// <param name="error"></param>
+		void baddog(string error)
+		{
+			MessageBox.Show(
+						this,
+						error,
+						" Error",
+						MessageBoxButtons.OK,
+						MessageBoxIcon.Error,
+						MessageBoxDefaultButton.Button1,
+						0);
+		}
+		#endregion Methods
+
+
+		#region Methods (static)
 		// https://stackoverflow.com/questions/14332496/most-light-weight-conversion-from-hex-to-byte-in-c/14332574#14332574
-		static byte[] ParseHex(string hex)
+		/// <summary>
+		/// Parses a hexadecimal string into a byte-array.
+		/// @note Ensure that the string has only valid hex-chars before call.
+		/// </summary>
+		/// <param name="hex"></param>
+		/// <returns></returns>
+		static byte[] ParseHecate(string hex)
 		{
 			int length = hex.Length / 2;
 			var b = new byte[length];
 			for (int i = 0, j = -1; i != length; ++i)
 			{
-				int h = ParseNybble(hex[++j]);
-				int l = ParseNybble(hex[++j]);
-				b[i] = (byte)((h << 4) | l);
+				int hi = getnibble(hex[++j]);
+				int lo = getnibble(hex[++j]);
+				b[i] = (byte)((hi << 4) | lo);
 			}
 			return b;
 		}
 
-		static int ParseNybble(char c)
+		/// <summary>
+		/// - helper for ParseHex()
+		/// </summary>
+		/// <param name="c"></param>
+		/// <returns></returns>
+		static int getnibble(char c)
 		{
 			switch (c)
 			{
@@ -816,7 +963,8 @@ namespace generalgff
 				case 'a': case 'b': case 'c': case 'd': case 'e': case 'f':
 					return c - ('a' - 10);
 			}
-			return c;
+			return -1;
 		}
+		#endregion Methods (static)
 	}
 }

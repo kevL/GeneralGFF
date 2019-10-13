@@ -101,8 +101,10 @@ namespace generalgff
 			this.rt_Val.TabIndex = 7;
 			this.rt_Val.TabStop = false;
 			this.rt_Val.Text = "";
+			this.rt_Val.TextChanged += new System.EventHandler(this.textchanged_Richtextbox);
 			this.rt_Val.Enter += new System.EventHandler(this.enter_Richtextbox);
 			this.rt_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Richtextbox);
+			this.rt_Val.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mousedown_Richtextbox);
 			// 
 			// la_GenderF
 			// 
@@ -179,7 +181,9 @@ namespace generalgff
 			this.tb_Val.TabIndex = 1;
 			this.tb_Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.tb_Val.WordWrap = false;
+			this.tb_Val.TextChanged += new System.EventHandler(this.textchanged_Textbox);
 			this.tb_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Textbox);
+			this.tb_Val.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mousedown_Textbox);
 			// 
 			// cb_GenderF
 			// 
