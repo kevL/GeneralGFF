@@ -114,7 +114,7 @@ namespace generalgff
 			this.la_GenderF.Margin = new System.Windows.Forms.Padding(0);
 			this.la_GenderF.Name = "la_GenderF";
 			this.la_GenderF.Size = new System.Drawing.Size(305, 17);
-			this.la_GenderF.TabIndex = 6;
+			this.la_GenderF.TabIndex = 5;
 			this.la_GenderF.Text = "Feminine";
 			this.la_GenderF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
 			this.la_GenderF.Visible = false;
@@ -127,7 +127,7 @@ namespace generalgff
 			this.btn_Revert.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Revert.Name = "btn_Revert";
 			this.btn_Revert.Size = new System.Drawing.Size(57, 20);
-			this.btn_Revert.TabIndex = 5;
+			this.btn_Revert.TabIndex = 3;
 			this.btn_Revert.Text = "revert";
 			this.btn_Revert.UseVisualStyleBackColor = true;
 			this.btn_Revert.Click += new System.EventHandler(this.click_Revert);
@@ -141,7 +141,7 @@ namespace generalgff
 			this.btn_Apply.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Apply.Name = "btn_Apply";
 			this.btn_Apply.Size = new System.Drawing.Size(336, 25);
-			this.btn_Apply.TabIndex = 4;
+			this.btn_Apply.TabIndex = 6;
 			this.btn_Apply.Text = "APPLY";
 			this.btn_Apply.UseVisualStyleBackColor = true;
 			this.btn_Apply.Click += new System.EventHandler(this.click_Apply);
@@ -192,7 +192,7 @@ namespace generalgff
 			this.cb_GenderF.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_GenderF.Name = "cb_GenderF";
 			this.cb_GenderF.Size = new System.Drawing.Size(15, 16);
-			this.cb_GenderF.TabIndex = 3;
+			this.cb_GenderF.TabIndex = 4;
 			this.cb_GenderF.UseVisualStyleBackColor = true;
 			this.cb_GenderF.Visible = false;
 			// 
