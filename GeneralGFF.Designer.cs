@@ -17,7 +17,7 @@ namespace generalgff
 		internal Label la_Des;
 		internal TextBox tb_Val;
 		internal Label la_Val;
-		internal RichTextBox rt_Val;
+		internal RichTextBox2 rt_Val;
 		internal CheckBox cb_GenderF;
 		internal Label la_GenderF;
 		Button btn_Apply;
@@ -45,7 +45,7 @@ namespace generalgff
 		private void InitializeComponent()
 		{
 			this.sc_body = new generalgff.SplitContainerCp();
-			this.rt_Val = new System.Windows.Forms.RichTextBox();
+			this.rt_Val = new generalgff.RichTextBox2();
 			this.la_GenderF = new System.Windows.Forms.Label();
 			this.btn_Revert = new System.Windows.Forms.Button();
 			this.btn_Apply = new System.Windows.Forms.Button();
@@ -232,6 +232,24 @@ namespace generalgff
 				CreateParams cp = base.CreateParams;
 				cp.ExStyle |= 0x02000000; // enable 'WS_EX_COMPOSITED'
 				return cp;
+			}
+		}
+	}
+
+
+	/// <summary>
+	/// a Derived RichTextBox that works around the AutoWordSelection bug.
+	/// </summary>
+	sealed class RichTextBox2 : RichTextBox
+	{
+		protected override void OnHandleCreated(EventArgs e)
+		{
+			base.OnHandleCreated(e);
+
+			if (!base.AutoWordSelection)
+			{
+				base.AutoWordSelection = true;
+				base.AutoWordSelection = false;
 			}
 		}
 	}

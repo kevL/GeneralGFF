@@ -62,6 +62,7 @@ namespace generalgff
 			logfile.CreateLog(); // works in debug-build only.
 			InitializeComponent();
 
+
 			Menu = new MainMenu();
 			Menu.MenuItems.Add("&File"); // #0
 
@@ -110,7 +111,8 @@ namespace generalgff
 			t1.Interval = 100;
 			t1.Start();
 
-//			LoadUtcfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\creature1_test.UTC");
+
+			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\player_test.bic");
 		}
 		#endregion cTor
 
