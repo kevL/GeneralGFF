@@ -38,6 +38,12 @@ namespace generalgff
 		#endregion Fields
 
 
+//		#region Properties
+//		internal bool PrintVoidDec
+//		{ private get; set; }
+//		#endregion Properties
+
+
 		#region Properties (override)
 		/// <summary>
 		/// Prevents flicker.
@@ -1156,6 +1162,8 @@ namespace generalgff
 
 			_f.cb_GenderF.Visible =
 			_f.la_GenderF.Visible = false;
+//			_f.cb_Decimal.Visible =
+//			_f.la_Decimal.Visible =
 
 			_f._preval  = String.Empty;
 			_f._prevalF = false;
@@ -1164,7 +1172,7 @@ namespace generalgff
 		/// <summary>
 		/// Enables the richtextbox.
 		/// </summary>
-		void EnableRtbVal()
+		void EnableRichtextbox()
 		{
 			if (!_RtbEnabled)
 			{
@@ -1338,7 +1346,7 @@ namespace generalgff
 
 						_f.rt_Val.Text = field.CExoString;
 
-						EnableRtbVal();
+						EnableRichtextbox();
 
 						_f._preval = _f.rt_Val.Text;
 						break;
@@ -1366,9 +1374,30 @@ namespace generalgff
 						_f.la_Des.Text = "binary data";
 						_f.la_Val.Text = "VOID";
 
+//						EnableRichtextbox();
+//						if (_f.cb_Decimal.Checked = PrintVoidDec)
+//						{
+//							logfile.Log("PrintVoidDec length= " + field.VOID.Length);
+//							if (field.VOID.Length > 8)
+//							{
+//								logfile.Log(". >8");
+//								_f.rt_Val.Text = "Too many bytes to display as an 8-byte unsigned integer.";
+//								// WHY WHY DON'T YOU JUST FUCKING PRINT YOU FUCKING ASSHOLES.
+//							}
+//							else
+//							{
+//								logfile.Log(". <=8");
+//								ulong u = BitConverter.ToUInt64(field.VOID, 0);
+//								_f.rt_Val.Text = u.ToString();
+//							}
+//						}
+//						else
 						_f.rt_Val.Text = BitConverter.ToString(field.VOID).Replace("-", " ");
 
-						EnableRtbVal();
+						EnableRichtextbox();
+
+//						_f.cb_Decimal.Visible =
+//						_f.la_Decimal.Visible = true;
 
 						_f._preval = _f.rt_Val.Text.ToUpper(CultureInfo.InvariantCulture);
 						break;
@@ -1412,12 +1441,24 @@ namespace generalgff
 
 						_f.rt_Val.Text = locale.local;
 
-						EnableRtbVal();
+						EnableRichtextbox();
 
 						_f._preval = _f.rt_Val.Text;
 						break;
 					}
 				}
+			}
+			else // is TopLevelStruct's node
+			{
+				_f.la_Des.Text = "ASCII";
+				_f.la_Val.Text = "GFF type + version";
+
+				_f.tb_Val.Text = _f.Data.Ver;
+
+				_f.tb_Val.Enabled   = true;
+				_f.tb_Val.BackColor = Color.Honeydew;
+
+				_f._preval = _f.tb_Val.Text;
 			}
 		}
 
