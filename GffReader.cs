@@ -369,9 +369,11 @@ namespace generalgff
 								break;
 
 							case FieldTypes.CHAR:
-								var t = (sbyte[])(object)new[]{ buffer[0] };
-								field.CHAR = t[0];
+							{
+								var a = (sbyte[])(object)new[]{ buffer[0] };
+								field.CHAR = a[0];
 								break;
+							}
 
 							case FieldTypes.WORD:
 							{
@@ -463,7 +465,7 @@ namespace generalgff
 								length = bytes[offset]; // 1-byte size
 
 								++offset;
-								buffer = new byte[length];
+								buffer = new byte[(int)length];
 								for (b = 0; b != length; ++b)
 									buffer[b] = bytes[offset++];
 
@@ -481,7 +483,7 @@ namespace generalgff
 								if (!le) Array.Reverse(buffer);
 								length = BitConverter.ToUInt32(buffer, 0); // 4-byte size
 
-								buffer = new byte[length];
+								buffer = new byte[(int)length];
 								for (b = 0; b != length; ++b)
 									buffer[b] = bytes[offset++];
 
@@ -537,7 +539,7 @@ namespace generalgff
 										length = BitConverter.ToUInt32(buffer, 0);
 										//logfile.Log("length= " + length);
 
-										buffer = new byte[length];
+										buffer = new byte[(int)length];
 										for (b = 0; b != length; ++b)
 											buffer[b] = bytes[offset++];
 
@@ -559,7 +561,7 @@ namespace generalgff
 								if (!le) Array.Reverse(buffer);
 								length = BitConverter.ToUInt32(buffer, 0);
 
-								field.VOID = new byte[length];
+								field.VOID = new byte[(int)length];
 
 								for (j = 0; j != length; ++j)
 									field.VOID[j] = bytes[offset++];

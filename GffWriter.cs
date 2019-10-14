@@ -438,8 +438,11 @@ namespace generalgff
 					break;
 
 				case FieldTypes.CHAR:
-					a[0] = (byte)field.CHAR;
+				{
+					var b = (byte[])(object)new[]{ field.CHAR };
+					a[0] = b[0];
 					break;
+				}
 
 				case FieldTypes.WORD:
 				{
@@ -583,10 +586,16 @@ namespace generalgff
 
 						locale = ((GffData.Field)node.Tag).Locales[i];
 
-						langid = (int)locale.langid * 2;
-						if (locale.F) ++langid;
+						if (locale.langid != Languages.GffToken)
+						{
+							langid = (int)locale.langid * 2;
+							if (locale.F) ++langid;
 
-						buffer = BitConverter.GetBytes(langid); // (INT)
+							buffer = BitConverter.GetBytes(langid); // (INT)
+						}
+						else
+							buffer = BitConverter.GetBytes((uint)locale.langid); // (UINT)->(INT)
+
 						if (!_le) Array.Reverse(buffer);
 
 						bytesList.Add(buffer);
@@ -620,6 +629,7 @@ namespace generalgff
 
 
 				case FieldTypes.VOID:
+					DataBlock.AddRange(GetBytes((uint)field.VOID.Length)); // (DWORD)
 					DataBlock.AddRange(field.VOID);
 					break;
 			}
