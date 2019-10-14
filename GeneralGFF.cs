@@ -29,6 +29,9 @@ namespace generalgff
 		#region Fields
 		internal TreeList _tl;
 
+		internal string _preval = String.Empty;
+		internal bool _prevalF;
+
 		string _editText = String.Empty;
 		int _posCaret = 0;
 		#endregion Fields
@@ -402,9 +405,6 @@ namespace generalgff
 
 
 		#region Handlers (panel2)
-		internal string _preval = String.Empty;
-		internal bool _prevalF;
-
 /*		/// <summary>
 		/// GLITCH: This funct produces a bad flicker on both the textbox and
 		/// the apply-button. But not when the text changes ... when items are
@@ -488,7 +488,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void mousedown_Textbox(object sender, MouseEventArgs e)
 		{
-			_posCaret = rt_Val.SelectionStart;
+			_posCaret = tb_Val.SelectionStart;
 		}
 
 		/// <summary>
@@ -506,7 +506,7 @@ namespace generalgff
 				btn_Apply.PerformClick();
 			}
 			else
-				_posCaret = rt_Val.SelectionStart;
+				_posCaret = tb_Val.SelectionStart;
 		}
 
 		/// <summary>
@@ -521,12 +521,7 @@ namespace generalgff
 				case FieldTypes.CResRef:
 					if (!isPrintableAscii(tb_Val.Text))
 					{
-						tb_Val.Text = _editText;
-
-						if (_posCaret < tb_Val.Text.Length)
-							tb_Val.SelectionStart = _posCaret;
-						else
-							tb_Val.SelectionStart = tb_Val.Text.Length;
+						ResetEditor(tb_Val);
 					}
 					else
 						_editText = tb_Val.Text;
@@ -570,7 +565,7 @@ namespace generalgff
 				case FieldTypes.CExoString:
 					if (!isPrintableAscii(rt_Val.Text))
 					{
-						ResetRichtextbox();
+						ResetEditor(rt_Val);
 					}
 					else
 						_editText = rt_Val.Text;
@@ -581,7 +576,7 @@ namespace generalgff
 				case FieldTypes.VOID:
 					if (!isHexadecimal(rt_Val.Text))
 					{
-						ResetRichtextbox();
+						ResetEditor(rt_Val);
 					}
 					else
 						_editText = rt_Val.Text;
@@ -727,8 +722,8 @@ namespace generalgff
 						val = rt_Val.Text.Trim();
 						val = Regex.Replace(val, @"\s+", " ");
 
-						char[] val2 = null;			// formatted hexadecimal chars (all uppercase w/ spaces)
-						string val3 = String.Empty;	// 'val' w/out spaces (upper and/or lowercase chars - will be converted to byte[])
+						char[] val2 = val.ToCharArray();	// formatted hexadecimal chars (all uppercase w/ spaces)
+						string val3 = String.Empty;			// 'val' w/out spaces (upper and/or lowercase chars - will be converted to byte[])
 
 						bool bork = false;
 						for (int i = 0; i != val.Length && !bork; ++i)
@@ -743,7 +738,6 @@ namespace generalgff
 							}
 							else
 							{
-								val2 = val.ToCharArray();
 								switch (val[i])
 								{
 									case 'a': val2[i] = 'A'; break;
@@ -774,7 +768,10 @@ namespace generalgff
 							valid = true;
 							field.VOID = ParseHecate(val3);
 
-							rt_Val.Text = new string(val2); // freshen the richtextbox
+							val = (rt_Val.Text = new string(val2)); // freshen the richtextbox
+
+							++_posCaret; // not sure why but.
+							RepositionCaret(rt_Val);
 						}
 						break;
 					}
@@ -894,16 +891,24 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Resets the richtextbox to a (hopefully) valid state.
+		/// Resets the textbox/richtextbox to a (hopefully) valid state.
 		/// </summary>
-		void ResetRichtextbox()
+		void ResetEditor(TextBoxBase tbb)
 		{
-			rt_Val.Text = _editText;
+			tbb.Text = _editText;
+			RepositionCaret(tbb);
+		}
 
-			if (_posCaret < rt_Val.Text.Length)
-				rt_Val.SelectionStart = _posCaret;
+		/// <summary>
+		/// Repositions the textbox/richtextbox caret to a suitable position.
+		/// </summary>
+		/// <param name="tbb"></param>
+		void RepositionCaret(TextBoxBase tbb)
+		{
+			if (_posCaret < tbb.Text.Length)
+				tbb.SelectionStart = _posCaret;
 			else
-				rt_Val.SelectionStart = rt_Val.Text.Length;
+				tbb.SelectionStart = tbb.Text.Length;
 		}
 
 

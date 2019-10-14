@@ -2,6 +2,7 @@
 using System.Collections;
 //using System.Collections.Generic;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 
@@ -1369,7 +1370,7 @@ namespace generalgff
 
 						EnableRtbVal();
 
-						_f._preval = _f.rt_Val.Text;
+						_f._preval = _f.rt_Val.Text.ToUpper(CultureInfo.InvariantCulture);
 						break;
 					}
 
