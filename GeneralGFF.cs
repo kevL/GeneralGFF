@@ -605,81 +605,181 @@ namespace generalgff
 				{
 					case FieldTypes.CHAR:
 					{
+						int length = tb_Val.Text.Length;
+
 						byte result;
-						if (valid = Byte.TryParse((val = tb_Val.Text), out result)) // treat as Byte
+						if (valid = Byte.TryParse((val = tb_Val.Text.Trim()), out result)) // treat as Byte
+						{
 							field.CHAR = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.BYTE:
 					{
+						int length = tb_Val.Text.Length;
+
 						byte result;
-						if (valid = Byte.TryParse((val = tb_Val.Text), out result))
+						if (valid = Byte.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.BYTE = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.WORD:
 					{
+						int length = tb_Val.Text.Length;
+
 						ushort result;
-						if (valid = UInt16.TryParse((val = tb_Val.Text), out result))
+						if (valid = UInt16.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.WORD = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.SHORT:
 					{
+						int length = tb_Val.Text.Length;
+
 						short result;
-						if (valid = Int16.TryParse((val = tb_Val.Text), out result))
+						if (valid = Int16.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.SHORT = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.DWORD:
 					{
+						int length = tb_Val.Text.Length;
+
 						uint result;
-						if (valid = UInt32.TryParse((val = tb_Val.Text), out result))
+						if (valid = UInt32.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.DWORD = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.INT:
 					{
+						int length = tb_Val.Text.Length;
+
 						int result;
-						if (valid = Int32.TryParse((val = tb_Val.Text), out result))
+						if (valid = Int32.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.INT = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.DWORD64:
 					{
+						int length = tb_Val.Text.Length;
+
 						ulong result;
-						if (valid = UInt64.TryParse((val = tb_Val.Text), out result))
+						if (valid = UInt64.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.DWORD64 = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.INT64:
 					{
+						int length = tb_Val.Text.Length;
+
 						long result;
-						if (valid = Int64.TryParse((val = tb_Val.Text), out result))
+						if (valid = Int64.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.INT64 = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.FLOAT:
 					{
+						int length = tb_Val.Text.Length;
+
 						float result;
-						if (valid = float.TryParse((val = tb_Val.Text), out result))
+						if (valid = float.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.FLOAT = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
 					case FieldTypes.DOUBLE:
 					{
+						int length = tb_Val.Text.Length;
+
 						double result;
-						if (valid = Double.TryParse((val = tb_Val.Text), out result))
+						if (valid = Double.TryParse((val = tb_Val.Text.Trim()), out result))
+						{
 							field.DOUBLE = result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
+						}
 						break;
 					}
 
@@ -708,11 +808,19 @@ namespace generalgff
 					case FieldTypes.CExoLocString:
 					{
 						// TODO: Support for CUSTOM.Tlk talktables!
+						int length = tb_Val.Text.Length;
+
 						int result;
-						if (valid = Int32.TryParse((val = tb_Val.Text), out result)
+						if (valid = Int32.TryParse((val = tb_Val.Text.Trim()), out result)
 							&& result > -2 && result < 16777216) // NOTE: The GFF-specification stores strrefs as Uint32.
 						{
 							field.CExoLocStrref = (uint)result;
+
+							if (length != val.Length)
+							{
+								tb_Val.Text = val;
+								RepositionCaret(tb_Val);
+							}
 						}
 						break;
 					}
@@ -780,15 +888,25 @@ namespace generalgff
 
 					case FieldTypes.Struct:
 					{
-						val = tb_Val.Text;
+						int length = tb_Val.Text.Length;
+
+						val = tb_Val.Text.Trim();
 						if (   val.StartsWith("[", StringComparison.Ordinal)
 							&& val.EndsWith(  "]", StringComparison.Ordinal))
 						{
 							uint result;
-							if (UInt32.TryParse(val.Substring(1, val.Length - 2), out result))
+							if (UInt32.TryParse(val.Substring(1, val.Length - 2).Trim(), out result))
 							{
 								valid = true;
 								field.Struct.typeid = result;
+
+								val = Regex.Replace(val, @"\s+", String.Empty);
+
+								if (length != val.Length)
+								{
+									tb_Val.Text = val;
+									RepositionCaret(tb_Val);
+								}
 							}
 						}
 						break;
