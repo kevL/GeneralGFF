@@ -33,7 +33,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="pfe">path-file-extension to write to</param>
 		/// <param name="tl">the TreeList</param>
-		/// <param name="ver"></param>
+		/// <param name="ver">GffReader.Ver</param>
 		internal static void WriteGFFfile(string pfe, TreeView tl, string ver)
 		{
 			//logfile.Log("");
@@ -70,7 +70,7 @@ namespace generalgff
 
 				byte[] buffer;
 
-				buffer = Encoding.ASCII.GetBytes(ver); //GffReader.Ver
+				buffer = Encoding.ASCII.GetBytes(ver);
 				fs.Write(buffer, 0, buffer.Length);
 
 				// Header STRUCTS ->
@@ -365,8 +365,8 @@ namespace generalgff
 
 				// Note that if its size is less than 4-bytes it should be
 				// stored in the first bytes of those 4-bytes.
-				case FieldTypes.CHAR:
 				case FieldTypes.BYTE:
+				case FieldTypes.CHAR:
 				case FieldTypes.WORD:
 				case FieldTypes.SHORT:
 				case FieldTypes.DWORD:
@@ -430,24 +430,15 @@ namespace generalgff
 			Fields.AddRange(GetBytes((uint)field.type));
 			Fields.AddRange(GetBytes(GetLabelId(field.label)));
 
-			var a = new byte[4];
+			var a = new byte[4]; // inits to zeros
 			switch (field.type)
 			{
-				// TODO: I don't like ASCII chars being C# chars
-				// (C# chars are 2-bytes but ASCII chars are 1-byte - actually 7-bit)
-				// just use byte.
-				case FieldTypes.CHAR: // 2.2 Single character byte
-					a[0] = (byte)field.CHAR;
-					a[1] = (byte)0;
-					a[2] = (byte)0;
-					a[3] = (byte)0;
-					break;
-
 				case FieldTypes.BYTE:
 					a[0] = (byte)field.BYTE;
-					a[1] = (byte)0;
-					a[2] = (byte)0;
-					a[3] = (byte)0;
+					break;
+
+				case FieldTypes.CHAR:
+					a[0] = (byte)field.CHAR;
 					break;
 
 				case FieldTypes.WORD:
@@ -456,8 +447,6 @@ namespace generalgff
 					if (!_le) Array.Reverse(b);
 					a[0] = b[0];
 					a[1] = b[1];
-					a[2] = (byte)0;
-					a[3] = (byte)0;
 					break;
 				}
 
@@ -467,8 +456,6 @@ namespace generalgff
 					if (!_le) Array.Reverse(b);
 					a[0] = b[0];
 					a[1] = b[1];
-					a[2] = (byte)0;
-					a[3] = (byte)0;
 					break;
 				}
 
@@ -543,8 +530,8 @@ namespace generalgff
 				// arbitrary length in the DataBlock ->
 				case FieldTypes.CResRef:
 				{
-					// TODO: Ensure that user uses only ASCII characters and that
-					// the length is < 256. (16-chars for NwN and 32-chars for NwN2)
+					// Ensure that user uses only ASCII characters and that the
+					// length is < 256. (16-chars for NwN and 32-chars for NwN2)
 					// [I believe that this is the only difference between NwN and NwN2 GFF-data.]
 					//
 					// NOTE: CResRef is stored in lowercase characters w/out extension.

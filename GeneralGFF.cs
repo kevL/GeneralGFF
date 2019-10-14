@@ -331,6 +331,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_ExpandSelected(object sender, EventArgs e)
 		{
+			// TODO: disable OnLoad
 			_tl.SelectedNode.Expand();
 			ExpandChildren(_tl.SelectedNode);
 
@@ -358,6 +359,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_CollapseSelected(object sender, EventArgs e)
 		{
+			// TODO: disable OnLoad
 			_tl.SelectedNode.Collapse();
 			CollapseChildren(_tl.SelectedNode);
 		}
@@ -474,7 +476,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void click_Revert(object sender, EventArgs e)
 		{
-			_tl.click_Select(_tl.SelectedNode);
+			_tl.SelectField(_tl.SelectedNode);
 		}
 
 
@@ -667,14 +669,14 @@ namespace generalgff
 					field = (GffData.Field)node.Tag;
 					switch (field.type)
 					{
-						case FieldTypes.CHAR:
+						case FieldTypes.BYTE:
 						{
 							int length = tb_Val.Text.Length;
 
 							byte result;
-							if (valid = Byte.TryParse((val = tb_Val.Text.Trim()), out result)) // treat as Byte
+							if (valid = Byte.TryParse((val = tb_Val.Text.Trim()), out result))
 							{
-								field.CHAR = result;
+								field.BYTE = result;
 
 								if (length != val.Length)
 								{
@@ -685,14 +687,14 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.BYTE:
+						case FieldTypes.CHAR:
 						{
 							int length = tb_Val.Text.Length;
 
-							byte result;
-							if (valid = Byte.TryParse((val = tb_Val.Text.Trim()), out result))
+							sbyte result;
+							if (valid = sbyte.TryParse((val = tb_Val.Text.Trim()), out result))
 							{
-								field.BYTE = result;
+								field.CHAR = result;
 
 								if (length != val.Length)
 								{
@@ -851,6 +853,7 @@ namespace generalgff
 						{
 							// nwn2-style resrefs (32-chars)
 							// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
+							// TODO: lowercase
 							if (tb_Val.Text.Length < 33 && isPrintableAscii(tb_Val.Text))
 							{
 								valid = true;

@@ -350,6 +350,7 @@ namespace generalgff
 
 						if (!le) Array.Reverse(buffer);
 						field.label = data._labels[(int)BitConverter.ToUInt32(buffer, 0)];
+						//logfile.Log("label= " + field.label);
 
 
 						buffer = new byte[4];		// 4-byte DWORD - field data (val, is not a DWORD per se) or data
@@ -363,13 +364,13 @@ namespace generalgff
 							// equal to 4-bytes are (according to the doc) contained
 							// in the first byte(s) of the dataordataoffset 'DWORD'.
 
-							case FieldTypes.CHAR:
-//								field.CHAR = (char)buffer[0]; // TODO: Are these "chars" ascii-bytes or utf8-chunks
-								field.CHAR = buffer[0];
-								break;
-
 							case FieldTypes.BYTE:
 								field.BYTE = buffer[0];
+								break;
+
+							case FieldTypes.CHAR:
+								var t = (sbyte[])(object)new[]{ buffer[0] };
+								field.CHAR = t[0];
 								break;
 
 							case FieldTypes.WORD:

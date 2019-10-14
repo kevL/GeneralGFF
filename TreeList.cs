@@ -1119,7 +1119,7 @@ namespace generalgff
 		{
 			//logfile.Log("OnAfterSelect() _bypassExpand= " + _bypassExpand);
 
-			click_Select(e.Node);
+			SelectField(e.Node);
 
 			if (!_bypassExpand) // prevent key-navigation and/or node-deletion from expanding treenodes ->
 			{
@@ -1190,7 +1190,7 @@ namespace generalgff
 		/// @note Ensure that 'node' is valid before call.
 		/// </summary>
 		/// <param name="node"></param>
-		internal void click_Select(TreeNode node)
+		internal void SelectField(TreeNode node)
 		{
 			ResetValuePanel();
 
@@ -1200,11 +1200,11 @@ namespace generalgff
 
 				switch (field.type)
 				{
-					case FieldTypes.CHAR: // treat as Byte
+					case FieldTypes.BYTE:
 						_f.la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
-						_f.la_Val.Text = "CHAR";
+						_f.la_Val.Text = "BYTE";
 
-						_f.tb_Val.Text = field.CHAR.ToString();
+						_f.tb_Val.Text = field.BYTE.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
@@ -1212,11 +1212,11 @@ namespace generalgff
 						_f._preval = _f.tb_Val.Text;
 						break;
 
-					case FieldTypes.BYTE:
-						_f.la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
-						_f.la_Val.Text = "BYTE";
+					case FieldTypes.CHAR:
+						_f.la_Des.Text = sbyte.MinValue + ".." + sbyte.MaxValue;
+						_f.la_Val.Text = "CHAR";
 
-						_f.tb_Val.Text = field.BYTE.ToString();
+						_f.tb_Val.Text = field.CHAR.ToString();
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
@@ -1382,7 +1382,7 @@ namespace generalgff
 //							{
 //								logfile.Log(". >8");
 //								_f.rt_Val.Text = "Too many bytes to display as an 8-byte unsigned integer.";
-//								// WHY WHY DON'T YOU JUST FUCKING PRINT YOU FUCKING ASSHOLES.
+//								// WHY WHY DON'T YOU JUST FUCKING PRINT YOU FUCKING ASSHOLES. sry /sheesh
 //							}
 //							else
 //							{

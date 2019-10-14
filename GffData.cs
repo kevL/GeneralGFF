@@ -54,9 +54,9 @@ namespace generalgff
 		// or
 		//   "LastName" (eg. "DoneOnce7=1")
 		// within an item's Struct under either
-		//   "Equip_ItemList"
-		// or
 		//   "ItemList"
+		// or
+		//   "Equip_ItemList"
 		// .
 		GffToken = 4294967294 // 0xFFFFFFFE
 	}
@@ -173,9 +173,8 @@ namespace generalgff
 
 			internal string label; // treated as ASCII
 
-//			internal char   CHAR;
-			internal byte   CHAR; // because idiot decided to use 'char' for 'byte' in BIC/IFO files.
 			internal byte   BYTE;
+			internal sbyte  CHAR;
 			internal ushort WORD;
 			internal short  SHORT;
 			internal uint   DWORD;
@@ -276,11 +275,11 @@ namespace generalgff
 		{
 			switch (field.type)
 			{
-				case FieldTypes.CHAR:
-					return field.CHAR.ToString();
-
 				case FieldTypes.BYTE:
 					return field.BYTE.ToString();
+
+				case FieldTypes.CHAR:
+					return field.CHAR.ToString();
 
 				case FieldTypes.WORD:
 					return field.WORD.ToString();
