@@ -31,17 +31,11 @@ namespace generalgff
 		/// </summary>
 		readonly GeneralGFF _f;
 
-		/// <summary>
+/*		/// <summary>
 		/// Prevents a treenode from expanding after selected if true.
 		/// </summary>
-		bool _bypassExpand;
+		bool _bypassExpand; */
 		#endregion Fields
-
-
-//		#region Properties
-//		internal bool PrintVoidDec
-//		{ private get; set; }
-//		#endregion Properties
 
 
 		#region Properties (override)
@@ -89,7 +83,33 @@ namespace generalgff
 
 
 		#region Context
-		/// <summary>
+		void contextopening(object sender, EventArgs e)
+		{
+			ContextMenu.MenuItems.Clear();
+
+			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
+			if (info != null)
+			{
+				TreeNode node = info.Node;
+				if (node != null)
+				{
+					SelectedNode = node;
+
+					if (SelectedNode.Nodes.Count != 0)
+					{
+						string toggle;
+						if (SelectedNode.IsExpanded)
+							toggle = "Collapse";
+						else
+							toggle = "Expand";
+
+						var it = new MenuItem(toggle, contextclick_Toggle);
+						ContextMenu.MenuItems.Add(it);
+					}
+				}
+			}
+		}
+/*		/// <summary>
 		/// Opens the ContextMenu for a treenode or serves as an RMB-click on a
 		/// treenode (expand/collapse).
 		/// @note UTC files are defined in such a way that only one type of
@@ -100,7 +120,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void contextopening(object sender, EventArgs e)
 		{
-/*			ContextMenu.MenuItems.Clear();
+			ContextMenu.MenuItems.Clear();
 
 			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
 			if (info != null)
@@ -306,8 +326,8 @@ namespace generalgff
 					else
 						node.Toggle();
 				}
-			} */
-		}
+			}
+		} */
 
 
 		/// <summary>
@@ -320,7 +340,7 @@ namespace generalgff
 			SelectedNode.Toggle();
 		}
 
-		/// <summary>
+/*		/// <summary>
 		/// Handles clicking CollapseChildren on the context.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -329,9 +349,9 @@ namespace generalgff
 		{
 			foreach (TreeNode node in SelectedNode.Nodes)
 				node.Collapse();
-		}
+		} */
 
-		/// <summary>
+/*		/// <summary>
 		/// Handles clicking ExpandChildren on the context.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -340,10 +360,10 @@ namespace generalgff
 		{
 			foreach (TreeNode node in SelectedNode.Nodes)
 				node.Expand();
-		}
+		} */
 
 
-		/// <summary>
+/*		/// <summary>
 		/// Deletes a deletable Struct.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -382,7 +402,7 @@ namespace generalgff
 				_bypassExpand = true;
 				SelectedNode = parent;
 			}
-		}
+		} */
 		// TODO:
 		// a) remove the Fields and their FieldIds of current Struct's Lists' Structs' Fields
 		// b) remove the Fields and their FieldIds of current Struct's Lists' Structs
@@ -900,7 +920,7 @@ namespace generalgff
 
 		internal Languages _langid;
 
-		/// <summary>
+/*		/// <summary>
 		/// Adds a Locale to a CExoLocString Field.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -928,9 +948,9 @@ namespace generalgff
 					_f.AddField(field, SelectedNode, locale);
 				}
 			}
-		}
+		} */
 
-		/// <summary>
+/*		/// <summary>
 		/// Deletes a Locale from a CExoLocString.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -962,7 +982,7 @@ namespace generalgff
 				_bypassExpand = true;
 				SelectedNode = parent;
 			}
-		}
+		} */
 
 
 
@@ -1121,16 +1141,16 @@ namespace generalgff
 
 			SelectField(e.Node);
 
-			if (!_bypassExpand) // prevent key-navigation and/or node-deletion from expanding treenodes ->
-			{
-				//logfile.Log(". _bypassExpand is false");
-				e.Node.Expand();
-			}
-			else
-			{
-				//logfile.Log(". set _bypassExpand FALSE");
-				_bypassExpand = false;
-			}
+//			if (!_bypassExpand) // prevent key-navigation and/or node-deletion from expanding treenodes ->
+//			{
+//				//logfile.Log(". _bypassExpand is false");
+//				e.Node.Expand();
+//			}
+//			else
+//			{
+//				//logfile.Log(". set _bypassExpand FALSE");
+//				_bypassExpand = false;
+//			}
 		}
 
 
@@ -1457,7 +1477,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-			_bypassExpand = false;
+//			_bypassExpand = false;
 
 			switch (e.KeyData)
 			{
@@ -1466,12 +1486,12 @@ namespace generalgff
 					BeginInvoke(DontBeepEvent);
 					break;
 
-				case Keys.Up:
-				case Keys.Down:
-				case Keys.Left:
-				case Keys.Right:
-					_bypassExpand = true;
-					break;
+//				case Keys.Up:
+//				case Keys.Down:
+//				case Keys.Left:
+//				case Keys.Right:
+//					_bypassExpand = true;
+//					break;
 			}
 		}
 

@@ -26,15 +26,15 @@ namespace generalgff
 		internal const string SUF_F = "[F]";
 
 		const int MI_FILE = 0;
-		const int MI_EDIT = 1;
+		const int MI_VIEW = 1;
 		const int MI_HELP = 2;
 
 		const int MI_FILE_OPEN   = 0;
 		const int MI_FILE_SAVE   = 1;
 		const int MI_FILE_QUIT   = 3;
 
-		const int MI_EDIT_EXPAND = 0;
-		const int MI_EDIT_COLLAP = 1;
+		const int MI_VIEW_EXPAND = 0;
+		const int MI_VIEW_COLLAP = 1;
 
 		const int MI_HELP_ABOUT  = 0;
 		#endregion Fields (static)
@@ -98,15 +98,15 @@ namespace generalgff
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Click += fileclick_Quit;
 
 
-			Menu.MenuItems.Add("&Edit"); // #1
+			Menu.MenuItems.Add("&View"); // #1
 
-			Menu.MenuItems[MI_EDIT].Popup += editpop;
+			Menu.MenuItems[MI_VIEW].Popup += editpop;
 
-			Menu.MenuItems[MI_EDIT].MenuItems.Add("&Expand all under selected");	// #0
-			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_EXPAND].Click += editclick_ExpandSelected;
+			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Expand all in selected");	// #0
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Click += editclick_ExpandSelected;
 
-			Menu.MenuItems[MI_EDIT].MenuItems.Add("&Collapse all under selected");	// #1
-			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_COLLAP].Click += editclick_CollapseSelected;
+			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Collapse all in selected");	// #1
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Click += editclick_CollapseSelected;
 
 
 			Menu.MenuItems.Add("&Help"); // #2
@@ -134,7 +134,7 @@ namespace generalgff
 			t1.Start();
 
 
-			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\player_test.bic");
+			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\creature1.UTC");
 		}
 		#endregion cTor
 
@@ -354,8 +354,8 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editpop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_EXPAND].Enabled =
-			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_COLLAP].Enabled = _tl.SelectedNode != null;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Enabled =
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null;
 		}
 
 		/// <summary>
