@@ -1327,7 +1327,7 @@ namespace generalgff
 					}
 
 					case FieldTypes.CResRef:
-						_f.la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII";
+						_f.la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII lc";
 						_f.la_Val.Text = "CResRef";
 
 						_f.tb_Val.Text = field.CResRef;
@@ -1362,7 +1362,7 @@ namespace generalgff
 
 						bool @checked =  strref != UInt32.MaxValue
 									 && (strref & 0x01000000) != 0;
-						_f.cb_Checker.Checked = (_f._prevalCheckboxChecked = @checked);
+						_f.cb_Checker.Checked = _f._prevalCheckboxChecked = @checked;
 
 						_f.la_Checker.Text = "Custom talktable";
 

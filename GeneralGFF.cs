@@ -853,11 +853,18 @@ namespace generalgff
 						{
 							// nwn2-style resrefs (32-chars)
 							// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
-							// TODO: lowercase
 							if (tb_Val.Text.Length < 33 && isPrintableAscii(tb_Val.Text))
 							{
 								valid = true;
-								field.CResRef = (val = tb_Val.Text);
+
+								val = tb_Val.Text.ToLower(CultureInfo.InvariantCulture);
+								field.CResRef = val;
+
+								if (val != tb_Val.Text)
+								{
+									tb_Val.Text = val;
+									RepositionCaret(tb_Val);
+								}
 							}
 							break;
 						}
