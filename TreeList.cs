@@ -1160,11 +1160,11 @@ namespace generalgff
 				_f.rt_Val.Enter    += _f.enter_Richtextbox;
 			}
 
-			_f.cb_GenderF.Visible =
-			_f.la_GenderF.Visible = false;
+			_f.cb_Checker.Visible =
+			_f.la_Checker.Visible = false;
 
-			_f._preval  = String.Empty;
-			_f._prevalF = false;
+			_f._prevalText = String.Empty;
+			_f._prevalCheckboxChecked = false;
 		}
 
 		/// <summary>
@@ -1207,7 +1207,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.CHAR:
@@ -1219,7 +1219,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.WORD:
@@ -1231,7 +1231,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.SHORT:
@@ -1243,7 +1243,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD:
@@ -1255,7 +1255,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT:
@@ -1267,7 +1267,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD64:
@@ -1279,7 +1279,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT64:
@@ -1291,7 +1291,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.FLOAT:
@@ -1306,7 +1306,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 					}
 
@@ -1322,7 +1322,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 					}
 
@@ -1335,7 +1335,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.CExoString:
@@ -1346,24 +1346,33 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._preval = _f.rt_Val.Text;
+						_f._prevalText = _f.rt_Val.Text;
 						break;
 
 					case FieldTypes.CExoLocString:
 					{
-						_f.la_Des.Text = "talktable strref" + Environment.NewLine + "-1..16777215"; // TODO: special strref flag
+						_f.la_Des.Text = "talktable strref" + Environment.NewLine + "-1.." + 0x00FFFFFF;
 						_f.la_Val.Text = "CExoLocString";
 
 						uint strref = field.CExoLocStrref;
 						if (strref != UInt32.MaxValue)
-							_f.tb_Val.Text = strref.ToString();
+							_f.tb_Val.Text = (strref & 0x00FFFFFF).ToString();
 						else
 							_f.tb_Val.Text = "-1";
+
+						bool @checked =  strref != UInt32.MaxValue
+									 && (strref & 0x01000000) != 0;
+						_f.cb_Checker.Checked = (_f._prevalCheckboxChecked = @checked);
+
+						_f.la_Checker.Text = "Custom talktable";
+
+						_f.cb_Checker.Visible =
+						_f.la_Checker.Visible = true;
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 					}
 
@@ -1376,7 +1385,7 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._preval = _f.rt_Val.Text.ToUpper(CultureInfo.InvariantCulture);
+						_f._prevalText = _f.rt_Val.Text.ToUpper(CultureInfo.InvariantCulture);
 						break;
 					}
 
@@ -1393,7 +1402,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._preval = _f.tb_Val.Text;
+						_f._prevalText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.locale:
@@ -1411,16 +1420,18 @@ namespace generalgff
 							_f.la_Des.Text = "UTF8 localized";
 							_f.la_Val.Text = "locale";
 
-							_f.cb_GenderF.Visible =
-							_f.la_GenderF.Visible = true;
-							_f.cb_GenderF.Checked = (_f._prevalF = locale.F);
+							_f.cb_Checker.Checked = _f._prevalCheckboxChecked = locale.F;
+							_f.la_Checker.Text = "Feminine";
+
+							_f.cb_Checker.Visible =
+							_f.la_Checker.Visible = true;
 						}
 
 						_f.rt_Val.Text = locale.local;
 
 						EnableRichtextbox();
 
-						_f._preval = _f.rt_Val.Text;
+						_f._prevalText = _f.rt_Val.Text;
 						break;
 					}
 				}
@@ -1435,7 +1446,7 @@ namespace generalgff
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Honeydew;
 
-				_f._preval = _f.tb_Val.Text;
+				_f._prevalText = _f.tb_Val.Text;
 			}
 		}
 

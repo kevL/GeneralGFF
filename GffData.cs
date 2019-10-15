@@ -268,6 +268,7 @@ namespace generalgff
 		#region Methods (static)
 		/// <summary>
 		/// Gets the value of a Field by its type.
+		/// @note Is called by GeneralGFF.ConstructNodeText().
 		/// </summary>
 		/// <param name="field"></param>
 		/// <returns>the value as a string</returns>

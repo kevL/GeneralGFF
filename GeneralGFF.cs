@@ -30,8 +30,8 @@ namespace generalgff
 		#region Fields
 		internal TreeList _tl;
 
-		internal string _preval = String.Empty;
-		internal bool _prevalF;
+		internal string _prevalText = String.Empty;
+		internal bool _prevalCheckboxChecked;
 
 		string _editText = String.Empty;
 		int _posCaret = 0;
@@ -458,8 +458,8 @@ namespace generalgff
 				}
 
 				btn_Revert.Enabled =
-				btn_Apply .Enabled = text != _preval
-								  || (cb_GenderF.Visible && cb_GenderF.Checked != _prevalF);
+				btn_Apply .Enabled = text != _prevalText
+								  || (cb_Checker.Visible && cb_Checker.Checked != _prevalCheckboxChecked);
 
 				return;
 			}
@@ -874,14 +874,49 @@ namespace generalgff
 
 						case FieldTypes.CExoLocString:
 						{
-							// TODO: Support for CUSTOM.Tlk talktables!
+							// NOTE: The GFF-specification stores strrefs as Uint32.
 							int length = tb_Val.Text.Length;
 
-							int result;
-							if (valid = Int32.TryParse((val = tb_Val.Text.Trim()), out result)
-								&& result > -2 && result < 16777216) // NOTE: The GFF-specification stores strrefs as Uint32.
+							val = tb_Val.Text.Trim();
+
+							bool isCust = cb_Checker.Checked;
+
+							uint result;
+							if (val == "-1")
 							{
-								field.CExoLocStrref = (uint)result;
+								valid = true;
+								result = UInt32.MaxValue;
+							}
+							else if (UInt32.TryParse(val, out result))
+							{
+								if (result == UInt32.MaxValue)
+								{
+									valid = true;
+									val = "-1";
+								}
+								else
+								{
+									isCust |= (result & 0x01000000) != 0;
+									result &= ~(unchecked((uint)0x01000000));
+									valid   = (result & 0xFF000000) == 0;
+								}
+							}
+
+							if (valid)
+							{
+								if (result != UInt32.MaxValue)
+								{
+									result &= 0x00FFFFFF;
+									val = result.ToString();
+									length = -1;
+
+									if (_prevalCheckboxChecked = isCust)
+										result |= 0x01000000;
+								}
+								else
+									_prevalCheckboxChecked = cb_Checker.Checked = false;
+
+								field.CExoLocStrref = result;
 
 								if (length != val.Length)
 								{
@@ -989,7 +1024,7 @@ namespace generalgff
 							locale.local = (val = rt_Val.Text);
 
 							field.label = GffData.Locale.GetLanguageString(locale.langid);
-							if (locale.F = _prevalF = cb_GenderF.Checked)
+							if (locale.F = _prevalCheckboxChecked = cb_Checker.Checked)
 								field.label += SUF_F;
 
 							break;
@@ -1002,7 +1037,7 @@ namespace generalgff
 					if (field != null)
 						node.Text = ConstructNodeText(field, locale);
 
-					_preval = val;
+					_prevalText = val;
 				}
 				else
 					baddog("That dog don't hunt.");

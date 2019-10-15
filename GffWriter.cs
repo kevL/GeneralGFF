@@ -555,7 +555,6 @@ namespace generalgff
 
 				case FieldTypes.CExoLocString:
 				{
-					// TODO: check that -1 has been converted to 0xFFFFFFFF
 					byte[] bufferStrref = GetBytes((uint)field.CExoLocStrref); // (DWORD)
 
 					// NOTE: what if there are no strings ... does StringCount

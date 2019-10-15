@@ -17,8 +17,8 @@ namespace generalgff
 		internal Label la_Des;
 		internal TextBox tb_Val;
 		internal Label la_Val;
-		internal CheckBox cb_GenderF;
-		internal Label la_GenderF;
+		internal CheckBox cb_Checker;
+		internal Label la_Checker;
 
 		Button btn_Apply;
 		Button btn_Revert;
@@ -48,13 +48,13 @@ namespace generalgff
 		{
 			this.sc_body = new generalgff.SplitContainerCp();
 			this.rt_Val = new generalgff.RichTextBox2();
-			this.la_GenderF = new System.Windows.Forms.Label();
+			this.la_Checker = new System.Windows.Forms.Label();
 			this.btn_Revert = new System.Windows.Forms.Button();
 			this.btn_Apply = new System.Windows.Forms.Button();
 			this.la_Des = new System.Windows.Forms.Label();
 			this.la_Val = new System.Windows.Forms.Label();
 			this.tb_Val = new System.Windows.Forms.TextBox();
-			this.cb_GenderF = new System.Windows.Forms.CheckBox();
+			this.cb_Checker = new System.Windows.Forms.CheckBox();
 			this.sc_body.Panel2.SuspendLayout();
 			this.sc_body.SuspendLayout();
 			this.SuspendLayout();
@@ -72,13 +72,13 @@ namespace generalgff
 			// 
 			this.sc_body.Panel2.BackColor = System.Drawing.Color.Linen;
 			this.sc_body.Panel2.Controls.Add(this.rt_Val);
-			this.sc_body.Panel2.Controls.Add(this.la_GenderF);
+			this.sc_body.Panel2.Controls.Add(this.la_Checker);
 			this.sc_body.Panel2.Controls.Add(this.btn_Revert);
 			this.sc_body.Panel2.Controls.Add(this.btn_Apply);
 			this.sc_body.Panel2.Controls.Add(this.la_Des);
 			this.sc_body.Panel2.Controls.Add(this.la_Val);
 			this.sc_body.Panel2.Controls.Add(this.tb_Val);
-			this.sc_body.Panel2.Controls.Add(this.cb_GenderF);
+			this.sc_body.Panel2.Controls.Add(this.cb_Checker);
 			this.sc_body.Panel2MinSize = 0;
 			this.sc_body.Size = new System.Drawing.Size(792, 574);
 			this.sc_body.SplitterDistance = 450;
@@ -108,18 +108,17 @@ namespace generalgff
 			this.rt_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Richtextbox);
 			this.rt_Val.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mousedown_Richtextbox);
 			// 
-			// la_GenderF
+			// la_Checker
 			// 
-			this.la_GenderF.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.la_Checker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
 			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_GenderF.Location = new System.Drawing.Point(30, 80);
-			this.la_GenderF.Margin = new System.Windows.Forms.Padding(0);
-			this.la_GenderF.Name = "la_GenderF";
-			this.la_GenderF.Size = new System.Drawing.Size(305, 17);
-			this.la_GenderF.TabIndex = 5;
-			this.la_GenderF.Text = "Feminine";
-			this.la_GenderF.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.la_GenderF.Visible = false;
+			this.la_Checker.Location = new System.Drawing.Point(30, 80);
+			this.la_Checker.Margin = new System.Windows.Forms.Padding(0);
+			this.la_Checker.Name = "la_Checker";
+			this.la_Checker.Size = new System.Drawing.Size(305, 17);
+			this.la_Checker.TabIndex = 5;
+			this.la_Checker.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			this.la_Checker.Visible = false;
 			// 
 			// btn_Revert
 			// 
@@ -187,16 +186,16 @@ namespace generalgff
 			this.tb_Val.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keydown_Textbox);
 			this.tb_Val.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mousedown_Textbox);
 			// 
-			// cb_GenderF
+			// cb_Checker
 			// 
-			this.cb_GenderF.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-			this.cb_GenderF.Location = new System.Drawing.Point(10, 80);
-			this.cb_GenderF.Margin = new System.Windows.Forms.Padding(0);
-			this.cb_GenderF.Name = "cb_GenderF";
-			this.cb_GenderF.Size = new System.Drawing.Size(15, 16);
-			this.cb_GenderF.TabIndex = 4;
-			this.cb_GenderF.UseVisualStyleBackColor = true;
-			this.cb_GenderF.Visible = false;
+			this.cb_Checker.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+			this.cb_Checker.Location = new System.Drawing.Point(10, 80);
+			this.cb_Checker.Margin = new System.Windows.Forms.Padding(0);
+			this.cb_Checker.Name = "cb_Checker";
+			this.cb_Checker.Size = new System.Drawing.Size(15, 16);
+			this.cb_Checker.TabIndex = 4;
+			this.cb_Checker.UseVisualStyleBackColor = true;
+			this.cb_Checker.Visible = false;
 			// 
 			// GeneralGFF
 			// 
