@@ -24,6 +24,19 @@ namespace generalgff
 		const int LENGTH_TYPE  = 17;
 
 		internal const string SUF_F = "[F]";
+
+		const int MI_FILE = 0;
+		const int MI_EDIT = 1;
+		const int MI_HELP = 2;
+
+		const int MI_FILE_OPEN   = 0;
+		const int MI_FILE_SAVE   = 1;
+		const int MI_FILE_QUIT   = 3;
+
+		const int MI_EDIT_EXPAND = 0;
+		const int MI_EDIT_COLLAP = 1;
+
+		const int MI_HELP_ABOUT  = 0;
 		#endregion Fields (static)
 
 
@@ -46,7 +59,7 @@ namespace generalgff
 		internal GffData Data
 		{
 			get { return _data; }
-			set
+			private set
 			{
 				if ((_data = value) != null)
 					Text = TITLE + " - " + _data._pfe;
@@ -68,36 +81,41 @@ namespace generalgff
 
 
 			Menu = new MainMenu();
+
 			Menu.MenuItems.Add("&File"); // #0
 
-			Menu.MenuItems[0].MenuItems.Add("&Open GFF file ...");	// #0
-			Menu.MenuItems[0].MenuItems[0].Click += fileclick_Open;
+			Menu.MenuItems[MI_FILE].Popup += filepop;
 
-			Menu.MenuItems[0].MenuItems.Add("&Save GFF file ...");	// #1
-			Menu.MenuItems[0].MenuItems[1].Click += fileclick_Save;
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Open GFF file ...");	// #0
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Click += fileclick_Open;
 
-			Menu.MenuItems[0].MenuItems.Add("-");					// #2
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file ...");	// #1
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Click += fileclick_Save;
 
-			Menu.MenuItems[0].MenuItems.Add("&Quit");				// #3
-			Menu.MenuItems[0].MenuItems[3].Click += fileclick_Quit;
+			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #2
+
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #3
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Click += fileclick_Quit;
 
 
 			Menu.MenuItems.Add("&Edit"); // #1
 
-			Menu.MenuItems[1].MenuItems.Add("&Expand selected");	// #0
-			Menu.MenuItems[1].MenuItems[0].Click += editclick_ExpandSelected;
+			Menu.MenuItems[MI_EDIT].Popup += editpop;
 
-			Menu.MenuItems[1].MenuItems.Add("&Collapse selected");	// #1
-			Menu.MenuItems[1].MenuItems[1].Click += editclick_CollapseSelected;
+			Menu.MenuItems[MI_EDIT].MenuItems.Add("&Expand all under selected");	// #0
+			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_EXPAND].Click += editclick_ExpandSelected;
+
+			Menu.MenuItems[MI_EDIT].MenuItems.Add("&Collapse all under selected");	// #1
+			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_COLLAP].Click += editclick_CollapseSelected;
 
 
 			Menu.MenuItems.Add("&Help"); // #2
 
-//			Menu.MenuItems[2].MenuItems.Add("&Help");	// #
-//			Menu.MenuItems[2].MenuItems[0].Click += ;
+//			Menu.MenuItems[MI_HELP].MenuItems.Add("&Help");		// #
+//			Menu.MenuItems[MI_HELP].MenuItems[0].Click += ;
 
-			Menu.MenuItems[2].MenuItems.Add("&About");	// #0
-			Menu.MenuItems[2].MenuItems[0].Click += helpclick_About;
+			Menu.MenuItems[MI_HELP].MenuItems.Add("&About");	// #0
+			Menu.MenuItems[MI_HELP].MenuItems[MI_HELP_ABOUT].Click += helpclick_About;
 
 			_tl = new TreeList(this);
 			sc_body.Panel1.Controls.Add(_tl);
@@ -269,6 +287,11 @@ namespace generalgff
 
 
 		#region Handlers (menu)
+		void filepop(object sender, EventArgs e)
+		{
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = Data != null;
+		}
+
 		/// <summary>
 		/// Loads a file.
 		/// </summary>
@@ -314,7 +337,7 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// 
+		/// Exits the application.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -325,18 +348,31 @@ namespace generalgff
 
 
 		/// <summary>
+		/// Enables/disables Edit-menu's items appropriately.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void editpop(object sender, EventArgs e)
+		{
+			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_EXPAND].Enabled =
+			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_COLLAP].Enabled = _tl.SelectedNode != null;
+		}
+
+		/// <summary>
 		/// Expands the currently selected treenode and all childs.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		void editclick_ExpandSelected(object sender, EventArgs e)
 		{
-			// TODO: disable OnLoad
-			_tl.SelectedNode.Expand();
-			ExpandChildren(_tl.SelectedNode);
+			if (_tl.SelectedNode != null)
+			{
+				_tl.SelectedNode.Expand();
+				ExpandChildren(_tl.SelectedNode);
 
-			if (!_tl.SelectedNode.IsVisible)
-				_tl.TopNode = _tl.SelectedNode;
+				if (!_tl.SelectedNode.IsVisible)
+					_tl.TopNode = _tl.SelectedNode;
+			}
 		}
 
 		/// <summary>
@@ -359,9 +395,11 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_CollapseSelected(object sender, EventArgs e)
 		{
-			// TODO: disable OnLoad
-			_tl.SelectedNode.Collapse();
-			CollapseChildren(_tl.SelectedNode);
+			if (_tl.SelectedNode != null)
+			{
+				_tl.SelectedNode.Collapse();
+				CollapseChildren(_tl.SelectedNode);
+			}
 		}
 
 		/// <summary>
