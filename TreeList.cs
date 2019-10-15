@@ -1162,8 +1162,6 @@ namespace generalgff
 
 			_f.cb_GenderF.Visible =
 			_f.la_GenderF.Visible = false;
-//			_f.cb_Decimal.Visible =
-//			_f.la_Decimal.Visible =
 
 			_f._preval  = String.Empty;
 			_f._prevalF = false;
@@ -1374,30 +1372,9 @@ namespace generalgff
 						_f.la_Des.Text = "binary data";
 						_f.la_Val.Text = "VOID";
 
-//						EnableRichtextbox();
-//						if (_f.cb_Decimal.Checked = PrintVoidDec)
-//						{
-//							logfile.Log("PrintVoidDec length= " + field.VOID.Length);
-//							if (field.VOID.Length > 8)
-//							{
-//								logfile.Log(". >8");
-//								_f.rt_Val.Text = "Too many bytes to display as an 8-byte unsigned integer.";
-//								// WHY WHY DON'T YOU JUST FUCKING PRINT YOU FUCKING ASSHOLES. sry /sheesh
-//							}
-//							else
-//							{
-//								logfile.Log(". <=8");
-//								ulong u = BitConverter.ToUInt64(field.VOID, 0);
-//								_f.rt_Val.Text = u.ToString();
-//							}
-//						}
-//						else
 						_f.rt_Val.Text = BitConverter.ToString(field.VOID).Replace("-", " ");
 
 						EnableRichtextbox();
-
-//						_f.cb_Decimal.Visible =
-//						_f.la_Decimal.Visible = true;
 
 						_f._preval = _f.rt_Val.Text.ToUpper(CultureInfo.InvariantCulture);
 						break;

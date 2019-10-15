@@ -558,7 +558,7 @@ namespace generalgff
 					// TODO: check that -1 has been converted to 0xFFFFFFFF
 					byte[] bufferStrref = GetBytes((uint)field.CExoLocStrref); // (DWORD)
 
-					// TODO: what if there are no strings ... does StringCount
+					// NOTE: what if there are no strings ... does StringCount
 					// still need to be set "0" or can it be forgotten ... I
 					// think the safe thing to do is to set it regardless.
 					int strings = node.Nodes.Count;

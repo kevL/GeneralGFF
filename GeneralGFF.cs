@@ -1008,23 +1008,6 @@ namespace generalgff
 					baddog("That dog don't hunt.");
 			}
 		}
-
-
-//		/// <summary>
-//		/// Stores the state of the VoidDecimal checkbox and togges the
-//		/// richtextbox between states.
-//		/// </summary>
-//		/// <param name="sender"></param>
-//		/// <param name="e"></param>
-//		void checkchanged_VoidDec(object sender, EventArgs e)
-//		{
-//			if (_tl.PrintVoidDec = cb_Decimal.Checked)
-//			{
-//			}
-//			else
-//			{
-//			}
-//		}
 		#endregion Handlers (panel2)
 
 

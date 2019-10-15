@@ -23,8 +23,6 @@ namespace generalgff
 		Button btn_Apply;
 		Button btn_Revert;
 
-		internal CheckBox cb_Decimal;
-		internal Label la_Decimal;
 		internal RichTextBox2 rt_Val;
 
 
@@ -49,8 +47,6 @@ namespace generalgff
 		private void InitializeComponent()
 		{
 			this.sc_body = new generalgff.SplitContainerCp();
-			this.la_Decimal = new System.Windows.Forms.Label();
-			this.cb_Decimal = new System.Windows.Forms.CheckBox();
 			this.rt_Val = new generalgff.RichTextBox2();
 			this.la_GenderF = new System.Windows.Forms.Label();
 			this.btn_Revert = new System.Windows.Forms.Button();
@@ -75,8 +71,6 @@ namespace generalgff
 			// sc_body.Panel2
 			// 
 			this.sc_body.Panel2.BackColor = System.Drawing.Color.Linen;
-			this.sc_body.Panel2.Controls.Add(this.la_Decimal);
-			this.sc_body.Panel2.Controls.Add(this.cb_Decimal);
 			this.sc_body.Panel2.Controls.Add(this.rt_Val);
 			this.sc_body.Panel2.Controls.Add(this.la_GenderF);
 			this.sc_body.Panel2.Controls.Add(this.btn_Revert);
@@ -90,30 +84,6 @@ namespace generalgff
 			this.sc_body.SplitterDistance = 450;
 			this.sc_body.SplitterWidth = 2;
 			this.sc_body.TabIndex = 0;
-			// 
-			// la_Decimal
-			// 
-			this.la_Decimal.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_Decimal.Location = new System.Drawing.Point(30, 125);
-			this.la_Decimal.Margin = new System.Windows.Forms.Padding(0);
-			this.la_Decimal.Name = "la_Decimal";
-			this.la_Decimal.Size = new System.Drawing.Size(305, 17);
-			this.la_Decimal.TabIndex = 8;
-			this.la_Decimal.Text = "Decimal";
-			this.la_Decimal.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.la_Decimal.Visible = false;
-			// 
-			// cb_Decimal
-			// 
-			this.cb_Decimal.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
-			this.cb_Decimal.Location = new System.Drawing.Point(10, 125);
-			this.cb_Decimal.Margin = new System.Windows.Forms.Padding(0);
-			this.cb_Decimal.Name = "cb_Decimal";
-			this.cb_Decimal.Size = new System.Drawing.Size(15, 16);
-			this.cb_Decimal.TabIndex = 7;
-			this.cb_Decimal.UseVisualStyleBackColor = true;
-			this.cb_Decimal.Visible = false;
 			// 
 			// rt_Val
 			// 
@@ -130,7 +100,7 @@ namespace generalgff
 			this.rt_Val.ReadOnly = true;
 			this.rt_Val.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
 			this.rt_Val.Size = new System.Drawing.Size(338, 427);
-			this.rt_Val.TabIndex = 9;
+			this.rt_Val.TabIndex = 7;
 			this.rt_Val.TabStop = false;
 			this.rt_Val.Text = "";
 			this.rt_Val.TextChanged += new System.EventHandler(this.textchanged_Richtextbox);
