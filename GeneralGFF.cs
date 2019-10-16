@@ -134,7 +134,7 @@ namespace generalgff
 			t1.Start();
 
 
-			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\creature1.UTC");
+			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\f03_malarite_out.UTC");
 		}
 		#endregion cTor
 
@@ -189,7 +189,6 @@ namespace generalgff
 		internal void AddField(GffData.Field field, TreeNode node, GffData.Locale locale = null)
 		{
 			string text = ConstructNodeText(field, locale);
-			//logfile.Log(text);
 
 			var node_ = new Sortable(text, field.label);
 			node_.Tag = field;

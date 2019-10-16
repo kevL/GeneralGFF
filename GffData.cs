@@ -192,7 +192,7 @@ namespace generalgff
 			internal uint CExoLocStrref;
 			internal List<Locale> Locales;
 
-			internal uint localeid;
+			internal uint localeid; // for use by a locale pseudo-field (to find itself within its parent).
 
 			internal byte[] VOID;
 

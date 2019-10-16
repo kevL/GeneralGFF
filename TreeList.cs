@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-//using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
@@ -77,13 +77,13 @@ namespace generalgff
 			// NOTE: ContextMenuStrip fails to invoke on first RMB-click
 			// that's why ContextMenu (because it works as advertised).
 			ContextMenu = new ContextMenu();
-			ContextMenu.Popup += contextopening;
+			ContextMenu.Popup += contextpop;
 		}
 		#endregion cTor
 
 
 		#region Context
-		void contextopening(object sender, EventArgs e)
+		void contextpop(object sender, EventArgs e)
 		{
 			ContextMenu.MenuItems.Clear();
 
@@ -95,20 +95,267 @@ namespace generalgff
 				{
 					SelectedNode = node;
 
+					string toggle = null;
 					if (SelectedNode.Nodes.Count != 0)
 					{
-						string toggle;
 						if (SelectedNode.IsExpanded)
 							toggle = "Collapse";
 						else
 							toggle = "Expand";
 
-						var it = new MenuItem(toggle, contextclick_Toggle);
-						ContextMenu.MenuItems.Add(it);
+						ContextMenu.MenuItems.Add(new MenuItem(toggle, contextclick_Toggle));
+					}
+
+					FieldTypes type;
+
+					if (SelectedNode.Tag == null // is TopLevelStruct's node
+						|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
+					{
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+
+						ContextMenu.MenuItems.Add(new MenuItem("add BYTE (1-byte ubyte)",           contextclick_AddByte));
+						ContextMenu.MenuItems.Add(new MenuItem("add CHAR (1-byte byte)",            contextclick_AddChar));
+						ContextMenu.MenuItems.Add(new MenuItem("add WORD (2-byte ushort)",          contextclick_AddWord));
+						ContextMenu.MenuItems.Add(new MenuItem("add SHORT (2-byte short)",          contextclick_AddShort));
+						ContextMenu.MenuItems.Add(new MenuItem("add DWORD (4-byte uint)",           contextclick_AddDword));
+						ContextMenu.MenuItems.Add(new MenuItem("add INT (4-byte int)",              contextclick_AddInt));
+						ContextMenu.MenuItems.Add(new MenuItem("add DWORD64 (8-byte ulong)",        contextclick_AddDword64));
+						ContextMenu.MenuItems.Add(new MenuItem("add INT64 (8-byte long)",           contextclick_AddInt64));
+						ContextMenu.MenuItems.Add(new MenuItem("add FLOAT (4-byte float)",          contextclick_AddFloat));
+						ContextMenu.MenuItems.Add(new MenuItem("add DOUBLE (8-byte double)",        contextclick_AddDouble));
+						ContextMenu.MenuItems.Add(new MenuItem("add CResRef (32-chars ASCII)",      contextclick_AddCResRef));
+						ContextMenu.MenuItems.Add(new MenuItem("add CExoString (ASCII)",            contextclick_AddCExoString));
+						ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (24-bit strref)", contextclick_AddCExoLocString));
+						ContextMenu.MenuItems.Add(new MenuItem("add VOID (raw byte data)",          contextclick_AddVoid));
+						ContextMenu.MenuItems.Add(new MenuItem("add List (list of structs)",        contextclick_AddList));
+						ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)",       contextclick_AddStruct));
+					}
+					else
+					{
+						switch (type)
+						{
+							case FieldTypes.List:
+								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+								ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)", contextclick_AddStruct));
+								break;
+
+							case FieldTypes.CExoLocString:
+								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+								ContextMenu.MenuItems.Add(new MenuItem("add Locale (localized UTF8)", contextclick_AddLocale));
+								break;
+						}
 					}
 				}
 			}
 		}
+
+		void contextclick_AddByte(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.BYTE;
+			field.label = "label";
+			field.BYTE = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddChar(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.CHAR;
+			field.label = "label";
+			field.CHAR = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddWord(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.WORD;
+			field.label = "label";
+			field.WORD = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddShort(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.SHORT;
+			field.label = "label";
+			field.SHORT = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddDword(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.DWORD;
+			field.label = "label";
+			field.DWORD = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddInt(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.INT;
+			field.label = "label";
+			field.INT = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddDword64(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.DWORD64;
+			field.label = "label";
+			field.DWORD64 = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddInt64(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.INT64;
+			field.label = "label";
+			field.INT64 = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddFloat(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.FLOAT;
+			field.label = "label";
+			field.FLOAT = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddDouble(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.DOUBLE;
+			field.label = "label";
+			field.DOUBLE = 0;
+
+			AddField(field);
+		}
+
+		void contextclick_AddCResRef(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.CResRef;
+			field.label = "label";
+			field.CResRef = String.Empty;
+
+			AddField(field);
+		}
+
+		void contextclick_AddCExoString(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.CExoString;
+			field.label = "label";
+			field.CExoString = String.Empty;
+
+			AddField(field);
+		}
+
+		void contextclick_AddCExoLocString(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.CExoLocString;
+			field.label = "label";
+			field.CExoLocStrref = UInt32.MaxValue;
+			field.Locales = new List<GffData.Locale>();
+
+			AddField(field);
+		}
+
+		void contextclick_AddVoid(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.VOID;
+			field.label = "label";
+			field.VOID = new byte[0];
+
+			AddField(field);
+		}
+
+		void contextclick_AddList(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.List;
+			field.label = "label";
+			field.List = new List<uint>();
+
+			AddField(field);
+		}
+
+		void contextclick_AddStruct(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.Struct;
+
+			if (SelectedNode.Tag != null
+				&& ((GffData.Field)SelectedNode.Tag).type == FieldTypes.List)
+			{
+				field.label = SelectedNode.Nodes.Count.ToString();
+			}
+			else
+				field.label = "label";
+
+			field.Struct = new Struct();
+
+			field.Struct.typeid = 0;
+			field.Struct.fieldids = new List<uint>();
+
+			AddField(field);
+		}
+
+		void contextclick_AddLocale(object sender, EventArgs e)
+		{
+			var locale = new GffData.Locale();
+			locale.langid = Languages.English;
+			locale.local = String.Empty;
+			locale.F = false;
+
+			if (((GffData.Field)SelectedNode.Tag).Locales == null)
+				((GffData.Field)SelectedNode.Tag).Locales = new List<GffData.Locale>();
+
+			((GffData.Field)SelectedNode.Tag).Locales.Add(locale);
+
+			var field = new GffData.Field();
+			field.type = FieldTypes.locale;
+			field.label = "label";
+			field.localeid = (uint)SelectedNode.Nodes.Count;
+
+			AddField(field, locale);
+		}
+
+		/// <summary>
+		/// Adds a field to the TreeList and selects it.
+		/// </summary>
+		/// <param name="field"></param>
+		/// <param name="locale"></param>
+		void AddField(GffData.Field field, GffData.Locale locale = null)
+		{
+			string text = _f.ConstructNodeText(field, locale);
+			var node = new Sortable(text, field.label);
+			node.Tag = field;
+			SelectedNode.Nodes.Add(node);
+
+			_f._tl.SelectedNode = node;
+		}
+
 /*		/// <summary>
 		/// Opens the ContextMenu for a treenode or serves as an RMB-click on a
 		/// treenode (expand/collapse).
@@ -1427,8 +1674,8 @@ namespace generalgff
 
 					case FieldTypes.locale:
 					{
-						var CExoLocString = (GffData.Field)node.Parent.Tag;
-						GffData.Locale locale = CExoLocString.Locales[(int)field.localeid];
+						var parent = (GffData.Field)node.Parent.Tag;
+						GffData.Locale locale = parent.Locales[(int)field.localeid];
 
 						if (locale.langid == Languages.GffToken)
 						{
