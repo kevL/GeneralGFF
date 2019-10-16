@@ -316,7 +316,7 @@ namespace generalgff
 			field.Struct = new Struct();
 
 			field.Struct.typeid = 0;
-			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null if any nodes are added to a Struct.
+			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null regardless of any nodes added to a Struct.
 
 			AddField(field);
 		}
@@ -331,7 +331,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void contextclick_AddLocale(object sender, EventArgs e)
 		{
-			using (var dialog = new Dialog_Locale())
+			using (var dialog = new LocaleDialog())
 			{
 				if (dialog.ShowDialog(this) == DialogResult.OK)
 				{

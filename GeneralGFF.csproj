@@ -36,7 +36,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dialog_Locale.cs" />
+    <Compile Include="LocaleDialog.cs" />
     <Compile Include="FileService.cs" />
     <Compile Include="GffData.cs" />
     <Compile Include="GeneralGFF.cs" />
@@ -52,8 +52,8 @@
     <Compile Include="TreeList.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Dialog_Locale.resx">
-      <DependentUpon>Dialog_Locale.cs</DependentUpon>
+    <EmbeddedResource Include="LocaleDialog.resx">
+      <DependentUpon>LocaleDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeneralGFF.resx">
       <DependentUpon>GeneralGFF.Designer.cs</DependentUpon>

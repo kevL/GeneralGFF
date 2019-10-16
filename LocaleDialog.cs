@@ -8,7 +8,7 @@ namespace generalgff
 	/// <summary>
 	/// A dialog for user to add a Locale to a CExoLocString.
 	/// </summary>
-	sealed class Dialog_Locale
+	sealed class LocaleDialog
 		:
 			Form
 	{
@@ -32,7 +32,7 @@ namespace generalgff
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		internal Dialog_Locale()
+		internal LocaleDialog()
 		{
 			InitializeComponent();
 
@@ -375,7 +375,7 @@ namespace generalgff
 			this.rb_Polish.UseVisualStyleBackColor = true;
 			this.rb_Polish.CheckedChanged += new System.EventHandler(this.checkchanged_radio);
 			// 
-			// Dialog_Locale
+			// LocaleDialog
 			// 
 			this.AcceptButton = this.bt_Accept;
 			this.CancelButton = this.bt_Cancel;
@@ -387,7 +387,7 @@ namespace generalgff
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.Name = "Dialog_Locale";
+			this.Name = "LocaleDialog";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "Add Locale";
