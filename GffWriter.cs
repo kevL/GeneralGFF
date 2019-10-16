@@ -273,66 +273,66 @@ namespace generalgff
 			//logfile.Log("AddStruct" + iSt + " . fieldcount= " + fields);
 
 			var field = (GffData.Field)node.Tag;
-			if (!tls && fields != field.Struct.fieldids.Count) // test.
-			{
-				logfile.Log("AddStruct" + /*iSt +*/ " ErROr: nodes.count vs fieldids.count Not Equal");
-				structid = UInt32.MaxValue;
-			}
+//			if (!tls && fields != field.Struct.fieldids.Count) // test.
+//			{
+//				logfile.Log("AddStruct" + /*iSt +*/ " ErROr: nodes.count vs fieldids.count Not Equal");
+//				structid = UInt32.MaxValue;
+//			}
+//			else
+//			{
+			uint typeid;
+			if (tls)
+				typeid = (uint)0xFFFFFFFF;
 			else
+				typeid = field.Struct.typeid;
+
+			//logfile.Log("AddStruct" + iSt + " . . typeid= " + typeid);
+
+			if (fields == 0)
 			{
-				uint typeid;
-				if (tls)
-					typeid = (uint)0xFFFFFFFF;
-				else
-					typeid = field.Struct.typeid;
+				structid = (uint)(Structs.Count / Globals.Length_STRUCT);
 
-				//logfile.Log("AddStruct" + iSt + " . . typeid= " + typeid);
-
-				if (fields == 0)
-				{
-					structid = (uint)(Structs.Count / Globals.Length_STRUCT);
-
-					Structs.AddRange(GetBytes(typeid));						// -> write typeid
-					Structs.AddRange(GetBytes((uint)0));					// -> write fieldid
-				}
-				else if (fields == 1)										// idoroffset is an id into Fields ->
-				{
-					//logfile.Log("AddStruct" + iSt + ". . . (fields == 1)");
-
-					uint fieldid = AddField(node.Nodes[0]);					// write a Field and get its id
-					//logfile.Log("AddStruct(" + iSt + ") . . fieldid= " + fieldid);
-
-					structid = (uint)(Structs.Count / Globals.Length_STRUCT);
-
-					Structs.AddRange(GetBytes(typeid));						// -> write typeid
-					Structs.AddRange(GetBytes(fieldid));					// -> write fieldid - st.fieldids[0]
-				}
-				else														// idoroffset is an offset into FieldIds ->
-				{
-					//logfile.Log("AddStruct" + iSt + ". . . (fields > 1)");
-
-					var fieldids = new List<byte>();
-					for (int i = 0; i != fields; ++i)						// write the Fields and get their ids
-					{
-						uint fieldid = AddField(node.Nodes[i]);
-						//logfile.Log("AddStruct" + iSt + " . . . [" + i + "] fieldid= " + fieldid);
-						fieldids.AddRange(GetBytes(fieldid));				// -> write fieldid - st.fieldids[i]
-					}
-
-					uint offset = (uint)FieldIds.Count;						// write the fieldids to FieldIds ->
-					//logfile.Log("AddStruct" + iSt + " . . offset= " + offset);
-
-					FieldIds.AddRange(fieldids); // yep that's it. FieldIds is just a list of fieldids (accessed only by Structs).
-
-					structid = (uint)(Structs.Count / Globals.Length_STRUCT);
-
-					Structs.AddRange(GetBytes(typeid));						// -> write typeid
-					Structs.AddRange(GetBytes(offset));						// -> write FieldIds offset
-				}
-
-				//logfile.Log("AddStruct" + iSt + " . . fields= " + fields);
-				Structs.AddRange(GetBytes((uint)fields));					// -> write fieldcount
+				Structs.AddRange(GetBytes(typeid));						// -> write typeid
+				Structs.AddRange(GetBytes((uint)0));					// -> write fieldid
 			}
+			else if (fields == 1)										// idoroffset is an id into Fields ->
+			{
+				//logfile.Log("AddStruct" + iSt + ". . . (fields == 1)");
+
+				uint fieldid = AddField(node.Nodes[0]);					// write a Field and get its id
+				//logfile.Log("AddStruct(" + iSt + ") . . fieldid= " + fieldid);
+
+				structid = (uint)(Structs.Count / Globals.Length_STRUCT);
+
+				Structs.AddRange(GetBytes(typeid));						// -> write typeid
+				Structs.AddRange(GetBytes(fieldid));					// -> write fieldid - st.fieldids[0]
+			}
+			else														// idoroffset is an offset into FieldIds ->
+			{
+				//logfile.Log("AddStruct" + iSt + ". . . (fields > 1)");
+
+				var fieldids = new List<byte>();
+				for (int i = 0; i != fields; ++i)						// write the Fields and get their ids
+				{
+					uint fieldid = AddField(node.Nodes[i]);
+					//logfile.Log("AddStruct" + iSt + " . . . [" + i + "] fieldid= " + fieldid);
+					fieldids.AddRange(GetBytes(fieldid));				// -> write fieldid - st.fieldids[i]
+				}
+
+				uint offset = (uint)FieldIds.Count;						// write the fieldids to FieldIds ->
+				//logfile.Log("AddStruct" + iSt + " . . offset= " + offset);
+
+				FieldIds.AddRange(fieldids); // yep that's it. FieldIds is just a list of fieldids (accessed only by Structs).
+
+				structid = (uint)(Structs.Count / Globals.Length_STRUCT);
+
+				Structs.AddRange(GetBytes(typeid));						// -> write typeid
+				Structs.AddRange(GetBytes(offset));						// -> write FieldIds offset
+			}
+
+			//logfile.Log("AddStruct" + iSt + " . . fields= " + fields);
+			Structs.AddRange(GetBytes((uint)fields));					// -> write fieldcount
+//			}
 
 			//logfile.Log("AddStruct" + iSt + " . structid= " + (tls ? 0 : structid + 1));
 			return ++structid; // +1 to account for the TLS

@@ -316,7 +316,7 @@ namespace generalgff
 			field.Struct = new Struct();
 
 			field.Struct.typeid = 0;
-			field.Struct.fieldids = new List<uint>();
+			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null if any nodes are added to a Struct.
 
 			AddField(field);
 		}

@@ -96,7 +96,7 @@ namespace generalgff
 	struct Struct
 	{
 		internal uint typeid; // is a bit arbitrary - basically a type or 'label' of sorts used by the hardcode.
-		internal List<uint> fieldids;
+		internal List<uint> fieldids; // this is irrelevant after the file loads (Fields will be scanned by nodes not fieldids).
 	}
 
 
