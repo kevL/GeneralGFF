@@ -275,7 +275,7 @@ namespace generalgff
 			field.type = FieldTypes.CExoLocString;
 			field.label = "label";
 			field.CExoLocStrref = UInt32.MaxValue;
-			field.Locales = new List<GffData.Locale>();
+			field.Locales = null;// new List<GffData.Locale>(); // Locales shall be null unless explicitly added.
 
 			AddField(field);
 		}
@@ -321,25 +321,40 @@ namespace generalgff
 			AddField(field);
 		}
 
+
+		internal static Languages _langid;
+
+		/// <summary>
+		/// Adds a Locale to a CExoLocString Field.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void contextclick_AddLocale(object sender, EventArgs e)
 		{
-			var locale = new GffData.Locale();
-			locale.langid = Languages.English;
-			locale.local = String.Empty;
-			locale.F = false;
+			using (var dialog = new Dialog_Locale())
+			{
+				if (dialog.ShowDialog(this) == DialogResult.OK)
+				{
+					var locale = new GffData.Locale();
+					locale.langid = _langid;
+					locale.local = String.Empty;
+					locale.F = false;
 
-			if (((GffData.Field)SelectedNode.Tag).Locales == null)
-				((GffData.Field)SelectedNode.Tag).Locales = new List<GffData.Locale>();
+					if (((GffData.Field)SelectedNode.Tag).Locales == null)
+						((GffData.Field)SelectedNode.Tag).Locales = new List<GffData.Locale>();
 
-			((GffData.Field)SelectedNode.Tag).Locales.Add(locale);
+					((GffData.Field)SelectedNode.Tag).Locales.Add(locale);
 
-			var field = new GffData.Field();
-			field.type = FieldTypes.locale;
-			field.label = "label";
-			field.localeid = (uint)SelectedNode.Nodes.Count;
+					var field = new GffData.Field();
+					field.type = FieldTypes.locale;
+					field.label = GffData.Locale.GetLanguageString(locale.langid);
+					field.localeid = (uint)SelectedNode.Nodes.Count;
 
-			AddField(field, locale);
+					AddField(field, locale);
+				}
+			}
 		}
+
 
 		/// <summary>
 		/// Adds a field to the TreeList and selects it.
@@ -1164,38 +1179,6 @@ namespace generalgff
 			return false;
 		} */
 
-
-		internal Languages _langid;
-
-/*		/// <summary>
-		/// Adds a Locale to a CExoLocString Field.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void contextclick_AddLocale(object sender, EventArgs e)
-		{
-			using (var dialog = new Dialog_Locale())
-			{
-				if (dialog.ShowDialog(this) == DialogResult.OK)
-				{
-					var locale = new GffData.Locale();
-					locale.langid = _langid;		// the dialog defaults to English
-					locale.F      = false;			// default
-					locale.local  = String.Empty;	// default
-
-					((GffData.Field)SelectedNode.Tag).Locales.Add(locale);
-
-					var field = new GffData.Field();
-					field.type     = FieldTypes.locale;
-					field.localeid = (uint)SelectedNode.Nodes.Count;
-					field.label    = GffData.Locale.GetLanguageString(locale.langid);
-					if (locale.F)
-						field.label += GeneralGFF.SUF_F;
-
-					_f.AddField(field, SelectedNode, locale);
-				}
-			}
-		} */
 
 /*		/// <summary>
 		/// Deletes a Locale from a CExoLocString.
