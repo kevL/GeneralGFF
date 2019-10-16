@@ -282,7 +282,7 @@ namespace generalgff
 //			{
 			uint typeid;
 			if (tls)
-				typeid = (uint)0xFFFFFFFF;
+				typeid = UInt32.MaxValue;
 			else
 				typeid = field.Struct.typeid;
 
