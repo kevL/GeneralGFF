@@ -31,23 +31,25 @@ namespace generalgff
 
 		const uint head_ListIndicesOffset  = 48; // 0x30
 		const uint head_ListIndicesLength  = 52; // 0x34
+		#endregion Fields (static)
 
 
+		#region Properties (static)
+		static readonly List<Struct> _structs = new List<Struct>();
 		/// <summary>
 		/// All Structs in sequential order.
 		/// </summary>
-		internal static readonly List<Struct> _structs = new List<Struct>();
+		internal static List<Struct> Structs
+		{ get { return _structs; } }
 
+
+		static readonly List<GffData.Field> _fields = new List<GffData.Field>();
 		/// <summary>
 		/// All Fields in sequential order.
 		/// </summary>
-		internal static readonly List<GffData.Field> _fields = new List<GffData.Field>();
-
-		/// <summary>
-		/// The list of FieldIndices.
-		/// </summary>
-		internal static readonly List<uint> _fieldids = new List<uint>();
-		#endregion Fields (static)
+		internal static List<GffData.Field> Fields
+		{ get { return _fields; } }
+		#endregion Properties (static)
 
 
 		#region Methods (static)
@@ -65,6 +67,9 @@ namespace generalgff
 		/// <param name="pfe">path-file-extension - ensure file exists before call</param>
 		internal static GffData ReadGFFfile(string pfe)
 		{
+			Structs.Clear();
+			Fields .Clear();
+
 			byte[] bytes = FileService.ReadFile(pfe);
 			if (bytes != null)
 			{
@@ -228,6 +233,8 @@ namespace generalgff
 					//logfile.Log("FIELDIDS");
 					//int fid = 0; // log
 
+					var fieldids = new List<uint>();
+
 					pos = FieldIndicesOffset;
 					while (pos != FieldIndicesOffset + FieldIndicesCount)
 					{
@@ -242,7 +249,7 @@ namespace generalgff
 						}
 
 						if (!le) Array.Reverse(buffer);
-						_fieldids.Add(BitConverter.ToUInt32(buffer, 0)); // WARNING: There is no safety on the count below.
+						fieldids.Add(BitConverter.ToUInt32(buffer, 0)); // WARNING: There is no safety on the count below.
 					}
 
 
@@ -298,13 +305,13 @@ namespace generalgff
 								//logfile.Log(". . data._fieldids Length= " + (data._fieldids.Count * 4));
 								//logfile.Log(". . data._fields.Count= " + data._fields.Count);
 
-								fieldid = _fieldids[(int)(idoroffset / Globals.Length_DWORD + j)];	// 4 bytes in each DWORD (ie. convert offset to id id)
+								fieldid = fieldids[(int)(idoroffset / Globals.Length_DWORD + j)];	// 4 bytes in each DWORD (ie. convert offset to id id)
 								//logfile.Log(". . fieldid= " + fieldid);
 								st.fieldids.Add(fieldid);											// isn't the GFF format wonderful ... at least it works
 							}																		// the Bioware documentation could be better.
 						}																			// Ps. it contains inaccurate and unspecific info
 
-						_structs.Add(st);
+						Structs.Add(st);
 					}
 
 
@@ -615,11 +622,11 @@ namespace generalgff
 
 							case FieldTypes.Struct:
 								if (!le) Array.Reverse(buffer);
-								field.Struct = _structs[(int)BitConverter.ToUInt32(buffer, 0)]; // NOTE: That is an id into the Structs not an offset.
+								field.Struct = Structs[(int)BitConverter.ToUInt32(buffer, 0)]; // NOTE: That is an id into the Structs not an offset.
 								break;
 						}
 
-						_fields.Add(field);
+						Fields.Add(field);
 					}
 					return data;
 				}

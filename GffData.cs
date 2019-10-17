@@ -49,7 +49,7 @@ namespace generalgff
 		Japanese           = 131,
 
 		// TlkEdit2 defines another Locale: "GffToken".
-		// It can appear as either the
+		// It can appear (output by the NwN2 executable itself) as either the
 		//   "LocalizedName" (eg. "Battleaxe +2")
 		// or
 		//   "LastName" (eg. "DoneOnce7=1")

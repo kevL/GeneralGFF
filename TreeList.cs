@@ -284,7 +284,6 @@ namespace generalgff
 			field.type = FieldTypes.CExoLocString;
 			field.label = "label";
 			field.CExoLocStrref = UInt32.MaxValue;
-			field.Locales = null;// new List<GffData.Locale>(); // Locales shall be null unless explicitly added.
 
 			AddField(field);
 		}
@@ -324,7 +323,6 @@ namespace generalgff
 
 			field.Struct = new Struct();
 			field.Struct.typeid = 0;
-			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null regardless of any nodes added to a Struct.
 
 			AddField(field);
 		}
@@ -347,7 +345,6 @@ namespace generalgff
 
 			field.Struct = new Struct();
 			field.Struct.typeid = UInt32.MaxValue;
-			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null regardless of any nodes added to a Struct.
 
 			Nodes.Add(field.label);
 
