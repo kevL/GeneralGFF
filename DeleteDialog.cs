@@ -22,6 +22,8 @@ namespace generalgff
 
 			_tl = tl;
 			la_Head.Text = head;
+
+			bt_Accept.Select();
 		}
 
 
