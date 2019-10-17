@@ -288,7 +288,7 @@ namespace generalgff
 		#region Handlers (menu)
 		void filepop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = CurrentData != null;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -320,18 +320,21 @@ namespace generalgff
 		/// <param name="e"></param>
 		void fileclick_Save(object sender, EventArgs e)
 		{
-			using (var sfd = new SaveFileDialog())
+			if (_tl.Nodes.Count != 0)
 			{
-				sfd.Title      = "Save as GFF file";
-//				sfd.Filter     = "GFF files (*.GFF)|*.GFF|All files (*.*)|*.*";
-//				sfd.DefaultExt = "GFF";
-
-				sfd.InitialDirectory = Path.GetDirectoryName(CurrentData._pfe);
-				sfd.FileName         = Path.GetFileName(CurrentData._pfe);
-
-				if (sfd.ShowDialog(this) == DialogResult.OK)
+				using (var sfd = new SaveFileDialog())
 				{
-					GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver);
+					sfd.Title      = "Save as GFF file";
+//					sfd.Filter     = "GFF files (*.GFF)|*.GFF|All files (*.*)|*.*";
+//					sfd.DefaultExt = "GFF";
+
+					sfd.InitialDirectory = Path.GetDirectoryName(CurrentData._pfe);
+					sfd.FileName         = Path.GetFileName(CurrentData._pfe);
+
+					if (sfd.ShowDialog(this) == DialogResult.OK)
+					{
+						GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver);
+					}
 				}
 			}
 		}
