@@ -1260,7 +1260,19 @@ namespace generalgff
 		{
 			DisableEditPanel();
 
-			if (node.Tag != null)
+			if (node.Tag == null) // is TopLevelStruct's node
+			{
+				_f.la_Des.Text = "ASCII";
+				_f.la_Val.Text = "GFF type + version";
+
+				_f.tb_Val.Text = _f.CurrentData.Ver;
+
+				_f.tb_Val.Enabled   = true;
+				_f.tb_Val.BackColor = Color.Violet;
+
+				_f._prevalText = _f.tb_Val.Text;
+			}
+			else
 			{
 				var field = (GffData.Field)node.Tag;
 
@@ -1503,18 +1515,6 @@ namespace generalgff
 						break;
 					}
 				}
-			}
-			else // is TopLevelStruct's node
-			{
-				_f.la_Des.Text = "ASCII";
-				_f.la_Val.Text = "GFF type + version";
-
-				_f.tb_Val.Text = _f.CurrentData.Ver;
-
-				_f.tb_Val.Enabled   = true;
-				_f.tb_Val.BackColor = Color.Honeydew;
-
-				_f._prevalText = _f.tb_Val.Text;
 			}
 		}
 
