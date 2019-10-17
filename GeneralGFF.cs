@@ -511,7 +511,7 @@ namespace generalgff
 
 
 		/// <summary>
-		/// pseudo-Reselects the current treenode causing panel2 to repopulate.
+		/// force-Reselects the current treenode causing panel2 to repopulate.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
