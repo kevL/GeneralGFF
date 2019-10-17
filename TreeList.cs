@@ -476,6 +476,9 @@ namespace generalgff
 				}
 
 				SelectedNode.Remove();
+
+				if (SelectedNode == null)
+					DisableEditPanel();
 			}
 		}
 
@@ -1202,9 +1205,9 @@ namespace generalgff
 		bool _RtbEnabled;
 
 		/// <summary>
-		/// - helper for click_Select()
+		/// Disables the controls of panel2.
 		/// </summary>
-		void ResetValuePanel()
+		void DisableEditPanel()
 		{
 			_f.la_Des.Text =
 			_f.la_Val.Text =
@@ -1255,7 +1258,7 @@ namespace generalgff
 		/// <param name="node"></param>
 		internal void SelectField(TreeNode node)
 		{
-			ResetValuePanel();
+			DisableEditPanel();
 
 			if (node.Tag != null)
 			{

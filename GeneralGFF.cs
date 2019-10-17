@@ -565,31 +565,34 @@ namespace generalgff
 		/// <param name="e"></param>
 		void textchanged_Textbox(object sender, EventArgs e)
 		{
-			object tag = _tl.SelectedNode.Tag;
-
-			if (tag == null) // is TopLevelStruct's node
+			if (_tl.SelectedNode != null)
 			{
-				if (!isPrintableAscii(tb_Val.Text))
+				object tag = _tl.SelectedNode.Tag;
+
+				if (tag == null) // is TopLevelStruct's node
 				{
-					ResetEditor(tb_Val);
+					if (!isPrintableAscii(tb_Val.Text))
+					{
+						ResetEditor(tb_Val);
+					}
+					else
+						_editText = tb_Val.Text;
 				}
 				else
-					_editText = tb_Val.Text;
-			}
-			else
-			{
-				switch (((GffData.Field)tag).type)
 				{
-					case FieldTypes.CResRef:
-						if (!isPrintableAscii(tb_Val.Text))
-						{
-							ResetEditor(tb_Val);
-						}
-						else
-							_editText = tb_Val.Text;
+					switch (((GffData.Field)tag).type)
+					{
+						case FieldTypes.CResRef:
+							if (!isPrintableAscii(tb_Val.Text))
+							{
+								ResetEditor(tb_Val);
+							}
+							else
+								_editText = tb_Val.Text;
 
-						// Regex.Replace(tb_Val.Text, @"[^\u0020-\u007E]", string.Empty)
-						break;
+							// Regex.Replace(tb_Val.Text, @"[^\u0020-\u007E]", string.Empty)
+							break;
+					}
 				}
 			}
 		}
