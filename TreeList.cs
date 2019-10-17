@@ -1260,8 +1260,7 @@ namespace generalgff
 				_f.rt_Val.Enter    += _f.enter_Richtextbox;
 			}
 
-			_f.cb_Checker.Visible =
-			_f.la_Checker.Visible = false;
+			_f.cb_Checker.Visible = false;
 
 			_f._prevalText = String.Empty;
 			_f._prevalCheckboxChecked = false;
@@ -1463,7 +1462,7 @@ namespace generalgff
 
 					case FieldTypes.CExoLocString:
 					{
-						_f.la_Des.Text = "talktable strref" + Environment.NewLine + "-1.." + 0x00FFFFFF;
+						_f.la_Des.Text = "strref" + Environment.NewLine + "-1.." + 0x00FFFFFF;
 						_f.la_Val.Text = "CExoLocString";
 
 						uint strref = field.CExoLocStrref;
@@ -1476,10 +1475,8 @@ namespace generalgff
 									 && (strref & 0x01000000) != 0;
 						_f.cb_Checker.Checked = _f._prevalCheckboxChecked = @checked;
 
-						_f.la_Checker.Text = "Custom talktable";
-
-						_f.cb_Checker.Visible =
-						_f.la_Checker.Visible = true;
+						_f.cb_Checker.Text = "Custom talktable";
+						_f.cb_Checker.Visible = true;
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
@@ -1533,10 +1530,8 @@ namespace generalgff
 							_f.la_Val.Text = "locale";
 
 							_f.cb_Checker.Checked = _f._prevalCheckboxChecked = locale.F;
-							_f.la_Checker.Text = "Feminine";
-
-							_f.cb_Checker.Visible =
-							_f.la_Checker.Visible = true;
+							_f.cb_Checker.Text = "Feminine";
+							_f.cb_Checker.Visible = true;
 						}
 
 						_f.rt_Val.Text = locale.local;

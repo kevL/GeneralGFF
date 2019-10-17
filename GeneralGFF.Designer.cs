@@ -18,7 +18,6 @@ namespace generalgff
 		internal TextBox tb_Val;
 		internal Label la_Val;
 		internal CheckBox cb_Checker;
-		internal Label la_Checker;
 
 		Button btn_Apply;
 		Button btn_Revert;
@@ -48,7 +47,6 @@ namespace generalgff
 		{
 			this.sc_body = new generalgff.SplitContainerCp();
 			this.rt_Val = new generalgff.RichTextBox2();
-			this.la_Checker = new System.Windows.Forms.Label();
 			this.btn_Revert = new System.Windows.Forms.Button();
 			this.btn_Apply = new System.Windows.Forms.Button();
 			this.la_Des = new System.Windows.Forms.Label();
@@ -72,7 +70,6 @@ namespace generalgff
 			// 
 			this.sc_body.Panel2.BackColor = System.Drawing.Color.Linen;
 			this.sc_body.Panel2.Controls.Add(this.rt_Val);
-			this.sc_body.Panel2.Controls.Add(this.la_Checker);
 			this.sc_body.Panel2.Controls.Add(this.btn_Revert);
 			this.sc_body.Panel2.Controls.Add(this.btn_Apply);
 			this.sc_body.Panel2.Controls.Add(this.la_Des);
@@ -100,25 +97,13 @@ namespace generalgff
 			this.rt_Val.ReadOnly = true;
 			this.rt_Val.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
 			this.rt_Val.Size = new System.Drawing.Size(338, 427);
-			this.rt_Val.TabIndex = 7;
+			this.rt_Val.TabIndex = 6;
 			this.rt_Val.TabStop = false;
 			this.rt_Val.Text = "";
 			this.rt_Val.TextChanged += new System.EventHandler(this.textchanged_Richtextbox);
 			this.rt_Val.Enter += new System.EventHandler(this.enter_Richtextbox);
 			this.rt_Val.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyup);
 			this.rt_Val.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mousedown_Richtextbox);
-			// 
-			// la_Checker
-			// 
-			this.la_Checker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
-			this.la_Checker.Location = new System.Drawing.Point(30, 80);
-			this.la_Checker.Margin = new System.Windows.Forms.Padding(0);
-			this.la_Checker.Name = "la_Checker";
-			this.la_Checker.Size = new System.Drawing.Size(305, 17);
-			this.la_Checker.TabIndex = 5;
-			this.la_Checker.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-			this.la_Checker.Visible = false;
 			// 
 			// btn_Revert
 			// 
@@ -142,7 +127,7 @@ namespace generalgff
 			this.btn_Apply.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Apply.Name = "btn_Apply";
 			this.btn_Apply.Size = new System.Drawing.Size(336, 25);
-			this.btn_Apply.TabIndex = 6;
+			this.btn_Apply.TabIndex = 5;
 			this.btn_Apply.Text = "APPLY";
 			this.btn_Apply.UseVisualStyleBackColor = true;
 			this.btn_Apply.Click += new System.EventHandler(this.click_Apply);
@@ -189,11 +174,13 @@ namespace generalgff
 			// 
 			// cb_Checker
 			// 
+			this.cb_Checker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.cb_Checker.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
 			this.cb_Checker.Location = new System.Drawing.Point(10, 80);
 			this.cb_Checker.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_Checker.Name = "cb_Checker";
-			this.cb_Checker.Size = new System.Drawing.Size(15, 16);
+			this.cb_Checker.Size = new System.Drawing.Size(125, 16);
 			this.cb_Checker.TabIndex = 4;
 			this.cb_Checker.UseVisualStyleBackColor = true;
 			this.cb_Checker.Visible = false;
