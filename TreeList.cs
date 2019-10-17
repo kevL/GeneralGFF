@@ -334,13 +334,13 @@ namespace generalgff
 			var field = new GffData.Field();
 			field.type = FieldTypes.Struct;
 
-			if (_f.Data != null)
-				field.label = Path.GetFileNameWithoutExtension(_f.Data._pfe).ToUpper();
+			if (_f.CurrentData != null)
+				field.label = Path.GetFileNameWithoutExtension(_f.CurrentData._pfe).ToUpper();
 			else
 			{
-				_f.Data = new GffData(); // init GffData! ->
-				_f.Data.Ver = "GFF V3.2";
-				_f.Data.Type = GffType.generic;
+				_f.CurrentData = new GffData(); // init GffData! ->
+				_f.CurrentData.Ver = "GFF V3.2";
+				_f.CurrentData.Type = GffType.generic;
 
 				field.label = "TopLevelStruct";
 			}
@@ -396,7 +396,7 @@ namespace generalgff
 		/// <param name="locale"></param>
 		void AddField(GffData.Field field, GffData.Locale locale = null)
 		{
-			string text = _f.ConstructNodeText(field, locale);
+			string text = GeneralGFF.ConstructNodetext(field, locale);
 			var node = new Sortable(text, field.label);
 			node.Tag = field;
 			SelectedNode.Nodes.Add(node);
@@ -1509,7 +1509,7 @@ namespace generalgff
 				_f.la_Des.Text = "ASCII";
 				_f.la_Val.Text = "GFF type + version";
 
-				_f.tb_Val.Text = _f.Data.Ver;
+				_f.tb_Val.Text = _f.CurrentData.Ver;
 
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Honeydew;

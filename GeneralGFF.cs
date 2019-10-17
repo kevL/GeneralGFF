@@ -13,7 +13,7 @@ namespace generalgff
 	/// <summary>
 	/// 
 	/// </summary>
-	partial class GeneralGFF
+	sealed partial class GeneralGFF
 		:
 			Form
 	{
@@ -56,7 +56,7 @@ namespace generalgff
 		/// <summary>
 		/// The currently loaded GFF data.
 		/// </summary>
-		internal GffData Data
+		internal GffData CurrentData
 		{
 			get { return _data; }
 			set
@@ -141,118 +141,12 @@ namespace generalgff
 
 		#region Methods
 		/// <summary>
-		/// Loads a GFF file.
-		/// </summary>
-		/// <param name="pfe"></param>
-		void LoadGFFfile(string pfe)
-		{
-			_tl.BeginUpdate();
-			_tl.Nodes.Clear();
-
-			GffData.allStructs.Clear();
-
-			Data = GffReader.ReadGFFfile(pfe);
-			if (Data != null && GffData.allStructs.Count != 0)
-			{
-				// Load the TopLevelStruct - all else follows ->
-				// NOTE: The TLS has no Field ... thus the rootnode of the tree
-				// has no Tag.
-
-				string label = Path.GetFileNameWithoutExtension(Data._pfe).ToUpper();
-				TreeNode root = _tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
-
-				List<GffData.Field> fields = Data._fields;
-
-				// instantiate the TLS's fieldids as treenodes ->
-				List<uint> fieldids = GffData.allStructs[0].fieldids;
-				for (int i = 0; i != fieldids.Count; ++i)
-				{
-					AddField(fields[(int)fieldids[i]], root);
-				}
-
-				_tl.Nodes[0].Expand();
-				_tl.SelectedNode = _tl.Nodes[0];
-			}
-
-			_tl.EndUpdate();
-		}
-
-		/// <summary>
-		/// Adds a Field to a treenode.
-		/// </summary>
-		/// <param name="field">a Field to add</param>
-		/// <param name="node">a treenode to add it to</param>
-		/// <param name="locale">a locale if applicable</param>
-		internal void AddField(GffData.Field field, TreeNode node, GffData.Locale locale = null)
-		{
-			string text = ConstructNodeText(field, locale);
-
-			var node_ = new Sortable(text, field.label);
-			node_.Tag = field;
-			node.Nodes.Add(node_);
-
-			switch (field.type)
-			{
-				case FieldTypes.Struct: // childs can be of any Type.
-				{
-					List<GffData.Field> fields = Data._fields;
-
-					List<uint> fieldids = field.Struct.fieldids;
-					for (int i = 0; i != fieldids.Count; ++i)
-					{
-						AddField(fields[(int)fieldids[i]], node_);
-					}
-					break;
-				}
-
-				case FieldTypes.List: // childs are Structs.
-				{
-					List<Struct> allStructs = GffData.allStructs;
-
-					List<uint> list = field.List;
-					for (int i = 0; i != list.Count; ++i)
-					{
-						var field_ = new GffData.Field();
-
-						field_.label  = i.ToString();		// NOTE: Structs in Lists do not have a Label inside a GFF-file.
-						field_.type   = FieldTypes.Struct;	// so give Structs in Lists a pseudo-Label for their treenode(s)
-						field_.Struct = allStructs[(int)list[i]];
-
-						AddField(field_, node_, null);
-					}
-					break;
-				}
-
-				case FieldTypes.CExoLocString: // childs are Locales.
-					if (field.Locales != null)
-					{
-						int locales = field.Locales.Count;
-						for (int i = 0; i != locales; ++i)
-						{
-							locale = field.Locales[i];
-
-							var field_ = new GffData.Field();
-							field_.localeid = (uint)i;
-							field_.label = GffData.Locale.GetLanguageString(locale.langid);
-							if (locale.F)
-								field_.label += SUF_F;
-
-							field_.type = FieldTypes.locale;
-
-							AddField(field_, node_, locale);
-						}
-					}
-					break;
-			}
-		}
-
-		/// <summary>
 		/// Constructs a string of text for display on a treenode.
 		/// </summary>
 		/// <param name="field"></param>
 		/// <param name="locale"></param>
 		/// <returns></returns>
-		internal string ConstructNodeText(GffData.Field field, GffData.Locale locale = null)
+		internal static string ConstructNodetext(GffData.Field field, GffData.Locale locale = null)
 		{
 			string label = field.label; // 16 char limit (GFF specification)
 			while (label.Length != LENGTH_LABEL)
@@ -285,7 +179,7 @@ namespace generalgff
 		#region Handlers (menu)
 		void filepop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = Data != null;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = CurrentData != null;
 		}
 
 		/// <summary>
@@ -304,7 +198,8 @@ namespace generalgff
 
 				if (ofd.ShowDialog(this) == DialogResult.OK)
 				{
-					LoadGFFfile(ofd.FileName);
+					var loader = new GffLoader();
+					loader.LoadGFFfile(this, ofd.FileName);
 				}
 			}
 		}
@@ -322,12 +217,12 @@ namespace generalgff
 //				sfd.Filter     = "GFF files (*.GFF)|*.GFF|All files (*.*)|*.*";
 //				sfd.DefaultExt = "GFF";
 
-				sfd.InitialDirectory = Path.GetDirectoryName(Data._pfe);
-				sfd.FileName         = Path.GetFileName(Data._pfe);
+				sfd.InitialDirectory = Path.GetDirectoryName(CurrentData._pfe);
+				sfd.FileName         = Path.GetFileName(CurrentData._pfe);
 
 				if (sfd.ShowDialog(this) == DialogResult.OK)
 				{
-					GffWriter.WriteGFFfile(sfd.FileName, _tl, Data.Ver);
+					GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver);
 				}
 			}
 		}
@@ -689,8 +584,8 @@ namespace generalgff
 					{
 						valid = true;
 
-						Data.Ver = val;
-						Data.Type = GffData.GetGffType(val.Substring(0,3));
+						CurrentData.Ver = val;
+						CurrentData.Type = GffData.GetGffType(val.Substring(0,3));
 
 						tb_Val.Text = val; // freshen the textbox
 
@@ -1076,7 +971,7 @@ namespace generalgff
 				if (valid)
 				{
 					if (field != null)
-						node.Text = ConstructNodeText(field, locale);
+						node.Text = ConstructNodetext(field, locale);
 
 					_prevalText = val;
 				}
