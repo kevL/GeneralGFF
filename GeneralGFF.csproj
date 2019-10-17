@@ -36,6 +36,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeleteDialog.cs" />
     <Compile Include="LocaleDialog.cs" />
     <Compile Include="FileService.cs" />
     <Compile Include="GffData.cs" />
@@ -52,6 +53,9 @@
     <Compile Include="TreeList.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="DeleteDialog.resx">
+      <DependentUpon>DeleteDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LocaleDialog.resx">
       <DependentUpon>LocaleDialog.cs</DependentUpon>
     </EmbeddedResource>

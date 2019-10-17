@@ -153,8 +153,10 @@ namespace generalgff
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		/// <param name="pfe">path-file-extension of the file that loaded</param>
-		internal GffData(string pfe)
+		/// <param name="pfe">path-file-extension of the file that loaded; the
+		/// default is merely a placeholder until user writes to file and it
+		/// TODO needs to be set properly</param>
+		internal GffData(string pfe = "TopLevelStruct")
 		{
 			_pfe = pfe;
 		}
@@ -186,8 +188,8 @@ namespace generalgff
 			internal float  FLOAT;
 			internal double DOUBLE;
 
-			internal string CResRef; // treated as ASCII
-			internal string CExoString; // treated as ASCII
+			internal string CResRef;	// treated as ASCII
+			internal string CExoString;	// treated as ASCII
 
 			internal uint CExoLocStrref;
 			internal List<Locale> Locales;
@@ -370,7 +372,7 @@ namespace generalgff
 				case "UTT": return GffType.UTT; // trigger
 				case "UTW": return GffType.UTW; // waypoint
 			}
-			return GffType.generic;
+			return GffType.generic; // eg. "GFF"
 		}
 		#endregion Methods (static)
 	}

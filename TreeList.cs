@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 
 
@@ -30,11 +31,6 @@ namespace generalgff
 		/// This list's top-level F.
 		/// </summary>
 		readonly GeneralGFF _f;
-
-/*		/// <summary>
-		/// Prevents a treenode from expanding after selected if true.
-		/// </summary>
-		bool _bypassExpand; */
 		#endregion Fields
 
 
@@ -112,6 +108,7 @@ namespace generalgff
 						|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
 					{
 						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
 
 						ContextMenu.MenuItems.Add(new MenuItem("add BYTE (1-byte ubyte)",           contextclick_AddByte));
 						ContextMenu.MenuItems.Add(new MenuItem("add CHAR (1-byte byte)",            contextclick_AddChar));
@@ -136,15 +133,27 @@ namespace generalgff
 						{
 							case FieldTypes.List:
 								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+								else toggle = String.Empty;
+
 								ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)", contextclick_AddStruct));
 								break;
 
 							case FieldTypes.CExoLocString:
 								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+								else toggle = String.Empty;
+
 								ContextMenu.MenuItems.Add(new MenuItem("add Locale (localized UTF8)", contextclick_AddLocale));
 								break;
 						}
 					}
+
+					if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+
+					ContextMenu.MenuItems.Add(new MenuItem("DELETE", contextclick_Delete));
+				}
+				else if (Nodes.Count == 0) // is blank GFF - req'd.
+				{
+					ContextMenu.MenuItems.Add(new MenuItem("add TopLevelStruct", contextclick_AddTopLevelStruct));
 				}
 			}
 		}
@@ -314,11 +323,35 @@ namespace generalgff
 				field.label = "label";
 
 			field.Struct = new Struct();
-
 			field.Struct.typeid = 0;
 			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null regardless of any nodes added to a Struct.
 
 			AddField(field);
+		}
+
+		void contextclick_AddTopLevelStruct(object sender, EventArgs e)
+		{
+			var field = new GffData.Field();
+			field.type = FieldTypes.Struct;
+
+			if (_f.Data != null)
+				field.label = Path.GetFileNameWithoutExtension(_f.Data._pfe).ToUpper();
+			else
+			{
+				_f.Data = new GffData(); // init GffData! ->
+				_f.Data.Ver = "GFF V3.2";
+				_f.Data.Type = GffType.generic;
+
+				field.label = "TopLevelStruct";
+			}
+
+			field.Struct = new Struct();
+			field.Struct.typeid = UInt32.MaxValue;
+			field.Struct.fieldids = null;// new List<uint>(); // fieldids shall be null regardless of any nodes added to a Struct.
+
+			Nodes.Add(field.label);
+
+			SelectedNode = Nodes[0];
 		}
 
 
@@ -368,228 +401,86 @@ namespace generalgff
 			node.Tag = field;
 			SelectedNode.Nodes.Add(node);
 
-			_f._tl.SelectedNode = node;
+			SelectedNode = node;
 		}
 
-/*		/// <summary>
-		/// Opens the ContextMenu for a treenode or serves as an RMB-click on a
-		/// treenode (expand/collapse).
-		/// @note UTC files are defined in such a way that only one type of
-		/// operation will be available on any given treenode and further that a
-		/// type of operation will be specific to a node-level (1..4).
+
+		/// <summary>
+		/// User-option to bypass delete-warnings for the session.
+		/// </summary>
+		static bool _bypassDeleteWarning;
+
+		/// <summary>
+		/// Deletes a field in the TreeList along with any of its subnodes.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void contextopening(object sender, EventArgs e)
+		void contextclick_Delete(object sender, EventArgs e)
 		{
-			ContextMenu.MenuItems.Clear();
+			bool delete;
 
-			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
-			if (info != null)
+			if (SelectedNode.Tag == null) // is TopLevelStruct's node
 			{
-				TreeNode node = info.Node;
-				if (node != null)
+				delete = false;
+				using (var f = new DeleteDialog(this, "Confirm delete TopLevelStruct"))
 				{
-					// TODO: Add "Cloak" Struct to root ...
-
-					// if (node.Tag != null) ...
-					bool autotoggle = true;
-
-					SelectedNode = node;
-
-					MenuItem it = null;
-					switch (node.Level)
-					{
-						case 1:
-						{
-							var field = (GffData.Field)node.Tag;
-							switch (field.type)
-							{
-								case FieldTypes.List:
-									switch (field.label)
-									{
-										case LABEL_CLASSLIST:
-											if (node.Nodes.Count < Max_CLASSES)
-												it = new MenuItem("add Class", contextclick_AddClass);
-											else
-												autotoggle = false;
-											break;
-
-										case LABEL_FEATLIST:
-											it = new MenuItem("add Feat", contextclick_AddFeat);
-											break;
-
-										case LABEL_ITEMLIST:
-											it = new MenuItem("add inventory item", contextclick_AddInventoryItem);
-											break;
-
-										case LABEL_EQUIPITEMLIST:
-											if (node.Nodes.Count < Max_EQUIPPED)
-												it = new MenuItem("add equipped item", contextclick_AddEquippedItem);
-											else
-												autotoggle = false;
-											break;
-
-//										case LABEL_TEMPLATELIST: // I have no clue what this is.
-//											it = new MenuItem("add template", contextclick_AddTemplate);
-//											break;
-
-										case LABEL_VARTABLE:
-											it = new MenuItem("add variable", contextclick_AddVariable);
-											break;
-
-										// TODO: DmgReduction
-									}
-									break;
-
-								case FieldTypes.CExoLocString:
-//									if (node.Nodes.Count < Max_LOCALES) // too complicated wrt/ gender
-									it = new MenuItem("add localized string", contextclick_AddLocale);
-//									else
-//										autotoggle = false;
-									break;
-							}
-							break;
-						}
-
-						case 2:
-						{
-							var field = (GffData.Field)node.Tag;
-							switch (field.type)
-							{
-								case FieldTypes.Struct: // parent shall be a List here ->
-								{
-									field = (GffData.Field)(node.Parent.Tag);
-									if (field.type == FieldTypes.List)
-									{
-										switch (field.label)
-										{
-											case LABEL_CLASSLIST:
-												_isInventoryIt = false;
-												it = new MenuItem("delete Class", contextclick_DeleteStruct);
-												break;
-
-											case LABEL_FEATLIST:
-												_isInventoryIt = false;
-												it = new MenuItem("delete Feat", contextclick_DeleteStruct);
-												break;
-
-											case LABEL_ITEMLIST:
-												_isInventoryIt = true;
-												it = new MenuItem("delete inventory item", contextclick_DeleteStruct);
-												break;
-
-											case LABEL_EQUIPITEMLIST:
-												_isInventoryIt = false;
-												it = new MenuItem("delete equipped item", contextclick_DeleteStruct);
-												break;
-
-//											case LABEL_TEMPLATELIST: // I have no clue what this is.
-//												_isInventoryIt = false;
-//												it = new MenuItem("delete template", contextclick_DeleteStruct);
-//												break;
-
-											case LABEL_VARTABLE:
-												_isInventoryIt = false;
-												it = new MenuItem("delete variable", contextclick_DeleteStruct);
-												break;
-
-											// TODO: DmgReduction
-										}
-									}
-									break;
-								}
-
-								case FieldTypes.locale:
-									it = new MenuItem("delete localized string", contextclick_DeleteLocale);
-									break;
-							}
-							break;
-						}
-
-						case 3:
-						{
-							if (node.Nodes == null || node.Nodes.Count == 0)
-							{
-								var field = (GffData.Field)node.Tag;
-								string label = field.label;
-								if (   (label.Length >  9 && label.Substring(0, 9) == LABEL_PREFIX_KNOWN)
-									|| (label.Length > 13 && label.Substring(0,13) == LABEL_PREFIX_MEMORIZED))
-								{
-									it = new MenuItem("add Spell", contextclick_AddSpell);
-								}
-							}
-							break;
-						}
-
-						case 4:
-						{
-							var field = (GffData.Field)node.Parent.Tag;
-							string label = field.label;
-							if (   (label.Length >  9 && label.Substring(0, 9) == LABEL_PREFIX_KNOWN)
-								|| (label.Length > 13 && label.Substring(0,13) == LABEL_PREFIX_MEMORIZED))
-							{
-								_isInventoryIt = false;
-								it = new MenuItem("delete Spell", contextclick_DeleteStruct);
-							}
-							break;
-						}
-					}
-
-					if (it != null || !autotoggle)
-					{
-						if (it != null)
-							ContextMenu.MenuItems.Add(it);
-
-						if (node.Nodes != null && node.Nodes.Count != 0)
-						{
-							if (it != null)
-								ContextMenu.MenuItems.Add("-");
-
-							if (node.IsExpanded)
-							{
-								ContextMenu.MenuItems.Add("Collapse", contextclick_Toggle);
-
-								bool found1 = false;
-								bool found2 = false;
-								for (int i = 0; i != node.Nodes.Count; ++i)
-								{
-									if (node.Nodes[i].IsExpanded)
-									{
-										if (!found1)
-										{
-											found1 = true;
-
-											if (node.Nodes[i].Nodes != null && node.Nodes[i].Nodes.Count != 0)
-												ContextMenu.MenuItems.Add("Collapse children", contextclick_CollapseChildren);
-											else
-												break;
-
-											if (found2) break;
-										}
-									}
-									else if (!found2)
-									{
-										found2 = true;
-
-										if (node.Nodes[i].Nodes != null && node.Nodes[i].Nodes.Count != 0)
-											ContextMenu.MenuItems.Add("Expand children", contextclick_ExpandChildren);
-										else
-											break;
-
-										if (found1) break;
-									}
-								}
-							}
-							else
-								ContextMenu.MenuItems.Add("Expand", contextclick_Toggle);
-						}
-					}
-					else
-						node.Toggle();
+					f.cb_Bypass.Visible = false;
+					delete = (f.ShowDialog() == DialogResult.Yes);
 				}
 			}
-		} */
+			else if (!_bypassDeleteWarning)
+			{
+				string head = "Confirm delete";
+				if (SelectedNode.Nodes.Count != 0)
+					head += " multiple fields";
+
+				delete = false;
+				using (var f = new DeleteDialog(this, head))
+				{
+					f.cb_Bypass.Visible = true;
+
+					if (f.ShowDialog() == DialogResult.Yes)
+					{
+						delete = true;
+						_bypassDeleteWarning = f.cb_Bypass.Checked;
+					}
+				}
+			}
+			else
+				delete = true;
+
+			if (delete)
+			{
+				if (SelectedNode.Tag != null)
+				{
+					switch (((GffData.Field)SelectedNode.Tag).type)
+					{
+						case FieldTypes.locale:
+						{
+							var parent = SelectedNode.Parent;
+							var CExoLocString = (GffData.Field)parent.Tag;
+
+							int localeid = (int)((GffData.Field)SelectedNode.Tag).localeid;
+							GffData.Locale locale = CExoLocString.Locales[localeid];
+
+							GffData.Field field;
+
+							var locales = parent.Nodes;
+							for (++localeid; localeid != locales.Count; ++localeid)
+							{
+								field = (GffData.Field)locales[localeid].Tag;
+								--field.localeid;
+							}
+
+							CExoLocString.Locales.Remove(locale);
+							break;
+						}
+					}
+				}
+
+				SelectedNode.Remove();
+			}
+		}
 
 
 		/// <summary>
@@ -601,28 +492,6 @@ namespace generalgff
 		{
 			SelectedNode.Toggle();
 		}
-
-/*		/// <summary>
-		/// Handles clicking CollapseChildren on the context.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void contextclick_CollapseChildren(object sender, EventArgs e)
-		{
-			foreach (TreeNode node in SelectedNode.Nodes)
-				node.Collapse();
-		} */
-
-/*		/// <summary>
-		/// Handles clicking ExpandChildren on the context.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void contextclick_ExpandChildren(object sender, EventArgs e)
-		{
-			foreach (TreeNode node in SelectedNode.Nodes)
-				node.Expand();
-		} */
 
 
 /*		/// <summary>
@@ -648,7 +517,6 @@ namespace generalgff
 				node.Text = _f.ConstructNodeText(field, null);
 			}
 
-			_bypassExpand = true;
 			SelectedNode.Remove();	// that will select the next node (not the parent
 									// node) so _bypassExpand for that as well as for
 									// selecting the parent node ->
@@ -661,7 +529,6 @@ namespace generalgff
 
 			if (SelectedNode != parent)
 			{
-				_bypassExpand = true;
 				SelectedNode = parent;
 			}
 		} */
@@ -1181,42 +1048,6 @@ namespace generalgff
 
 
 /*		/// <summary>
-		/// Deletes a Locale from a CExoLocString.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void contextclick_DeleteLocale(object sender, EventArgs e)
-		{
-			var parent = SelectedNode.Parent;
-			var CExoLocString = (GffData.Field)parent.Tag;
-
-			uint localeid = ((GffData.Field)SelectedNode.Tag).localeid;
-			GffData.Locale locale = CExoLocString.Locales[(int)localeid];
-
-			GffData.Field field;
-
-			var locales = parent.Nodes;
-			for (++localeid; localeid != locales.Count; ++localeid)
-			{
-				field = (GffData.Field)locales[(int)localeid].Tag;
-				--field.localeid;
-			}
-
-			CExoLocString.Locales.Remove(locale);
-
-			_bypassExpand = true;
-			SelectedNode.Remove();
-
-			if (SelectedNode != parent)
-			{
-				_bypassExpand = true;
-				SelectedNode = parent;
-			}
-		} */
-
-
-
-/*		/// <summary>
 		/// Adds a Struct (a Spell structure) to either a "KnownList*" or a
 		/// "MemorizedList*" List (in the "ClassList").
 		/// </summary>
@@ -1367,20 +1198,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnAfterSelect(TreeViewEventArgs e)
 		{
-			//logfile.Log("OnAfterSelect() _bypassExpand= " + _bypassExpand);
-
 			SelectField(e.Node);
-
-//			if (!_bypassExpand) // prevent key-navigation and/or node-deletion from expanding treenodes ->
-//			{
-//				//logfile.Log(". _bypassExpand is false");
-//				e.Node.Expand();
-//			}
-//			else
-//			{
-//				//logfile.Log(". set _bypassExpand FALSE");
-//				_bypassExpand = false;
-//			}
 		}
 
 
@@ -1707,21 +1525,12 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnKeyDown(KeyEventArgs e)
 		{
-//			_bypassExpand = false;
-
 			switch (e.KeyData)
 			{
 				case Keys.Enter:
 					e.SuppressKeyPress = true;
 					BeginInvoke(DontBeepEvent);
 					break;
-
-//				case Keys.Up:
-//				case Keys.Down:
-//				case Keys.Left:
-//				case Keys.Right:
-//					_bypassExpand = true;
-//					break;
 			}
 		}
 
@@ -1734,6 +1543,249 @@ namespace generalgff
 		}
 		#endregion Events
 	}
+
+/*		/// <summary>
+		/// Opens the ContextMenu for a treenode or serves as an RMB-click on a
+		/// treenode (expand/collapse).
+		/// @note UTC files are defined in such a way that only one type of
+		/// operation will be available on any given treenode and further that a
+		/// type of operation will be specific to a node-level (1..4).
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextopening(object sender, EventArgs e)
+		{
+			ContextMenu.MenuItems.Clear();
+
+			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
+			if (info != null)
+			{
+				TreeNode node = info.Node;
+				if (node != null)
+				{
+					// TODO: Add "Cloak" Struct to root ...
+
+					// if (node.Tag != null) ...
+					bool autotoggle = true;
+
+					SelectedNode = node;
+
+					MenuItem it = null;
+					switch (node.Level)
+					{
+						case 1:
+						{
+							var field = (GffData.Field)node.Tag;
+							switch (field.type)
+							{
+								case FieldTypes.List:
+									switch (field.label)
+									{
+										case LABEL_CLASSLIST:
+											if (node.Nodes.Count < Max_CLASSES)
+												it = new MenuItem("add Class", contextclick_AddClass);
+											else
+												autotoggle = false;
+											break;
+
+										case LABEL_FEATLIST:
+											it = new MenuItem("add Feat", contextclick_AddFeat);
+											break;
+
+										case LABEL_ITEMLIST:
+											it = new MenuItem("add inventory item", contextclick_AddInventoryItem);
+											break;
+
+										case LABEL_EQUIPITEMLIST:
+											if (node.Nodes.Count < Max_EQUIPPED)
+												it = new MenuItem("add equipped item", contextclick_AddEquippedItem);
+											else
+												autotoggle = false;
+											break;
+
+//										case LABEL_TEMPLATELIST: // I have no clue what this is.
+//											it = new MenuItem("add template", contextclick_AddTemplate);
+//											break;
+
+										case LABEL_VARTABLE:
+											it = new MenuItem("add variable", contextclick_AddVariable);
+											break;
+
+										// TODO: DmgReduction
+									}
+									break;
+
+								case FieldTypes.CExoLocString:
+//									if (node.Nodes.Count < Max_LOCALES) // too complicated wrt/ gender
+									it = new MenuItem("add localized string", contextclick_AddLocale);
+//									else
+//										autotoggle = false;
+									break;
+							}
+							break;
+						}
+
+						case 2:
+						{
+							var field = (GffData.Field)node.Tag;
+							switch (field.type)
+							{
+								case FieldTypes.Struct: // parent shall be a List here ->
+								{
+									field = (GffData.Field)(node.Parent.Tag);
+									if (field.type == FieldTypes.List)
+									{
+										switch (field.label)
+										{
+											case LABEL_CLASSLIST:
+												_isInventoryIt = false;
+												it = new MenuItem("delete Class", contextclick_DeleteStruct);
+												break;
+
+											case LABEL_FEATLIST:
+												_isInventoryIt = false;
+												it = new MenuItem("delete Feat", contextclick_DeleteStruct);
+												break;
+
+											case LABEL_ITEMLIST:
+												_isInventoryIt = true;
+												it = new MenuItem("delete inventory item", contextclick_DeleteStruct);
+												break;
+
+											case LABEL_EQUIPITEMLIST:
+												_isInventoryIt = false;
+												it = new MenuItem("delete equipped item", contextclick_DeleteStruct);
+												break;
+
+//											case LABEL_TEMPLATELIST: // I have no clue what this is.
+//												_isInventoryIt = false;
+//												it = new MenuItem("delete template", contextclick_DeleteStruct);
+//												break;
+
+											case LABEL_VARTABLE:
+												_isInventoryIt = false;
+												it = new MenuItem("delete variable", contextclick_DeleteStruct);
+												break;
+
+											// TODO: DmgReduction
+										}
+									}
+									break;
+								}
+
+								case FieldTypes.locale:
+									it = new MenuItem("delete localized string", contextclick_DeleteLocale);
+									break;
+							}
+							break;
+						}
+
+						case 3:
+						{
+							if (node.Nodes == null || node.Nodes.Count == 0)
+							{
+								var field = (GffData.Field)node.Tag;
+								string label = field.label;
+								if (   (label.Length >  9 && label.Substring(0, 9) == LABEL_PREFIX_KNOWN)
+									|| (label.Length > 13 && label.Substring(0,13) == LABEL_PREFIX_MEMORIZED))
+								{
+									it = new MenuItem("add Spell", contextclick_AddSpell);
+								}
+							}
+							break;
+						}
+
+						case 4:
+						{
+							var field = (GffData.Field)node.Parent.Tag;
+							string label = field.label;
+							if (   (label.Length >  9 && label.Substring(0, 9) == LABEL_PREFIX_KNOWN)
+								|| (label.Length > 13 && label.Substring(0,13) == LABEL_PREFIX_MEMORIZED))
+							{
+								_isInventoryIt = false;
+								it = new MenuItem("delete Spell", contextclick_DeleteStruct);
+							}
+							break;
+						}
+					}
+
+					if (it != null || !autotoggle)
+					{
+						if (it != null)
+							ContextMenu.MenuItems.Add(it);
+
+						if (node.Nodes != null && node.Nodes.Count != 0)
+						{
+							if (it != null)
+								ContextMenu.MenuItems.Add("-");
+
+							if (node.IsExpanded)
+							{
+								ContextMenu.MenuItems.Add("Collapse", contextclick_Toggle);
+
+								bool found1 = false;
+								bool found2 = false;
+								for (int i = 0; i != node.Nodes.Count; ++i)
+								{
+									if (node.Nodes[i].IsExpanded)
+									{
+										if (!found1)
+										{
+											found1 = true;
+
+											if (node.Nodes[i].Nodes != null && node.Nodes[i].Nodes.Count != 0)
+												ContextMenu.MenuItems.Add("Collapse children", contextclick_CollapseChildren);
+											else
+												break;
+
+											if (found2) break;
+										}
+									}
+									else if (!found2)
+									{
+										found2 = true;
+
+										if (node.Nodes[i].Nodes != null && node.Nodes[i].Nodes.Count != 0)
+											ContextMenu.MenuItems.Add("Expand children", contextclick_ExpandChildren);
+										else
+											break;
+
+										if (found1) break;
+									}
+								}
+							}
+							else
+								ContextMenu.MenuItems.Add("Expand", contextclick_Toggle);
+						}
+					}
+					else
+						node.Toggle();
+				}
+			}
+		} */
+
+
+/*		/// <summary>
+		/// Handles clicking CollapseChildren on the context.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_CollapseChildren(object sender, EventArgs e)
+		{
+			foreach (TreeNode node in SelectedNode.Nodes)
+				node.Collapse();
+		} */
+
+/*		/// <summary>
+		/// Handles clicking ExpandChildren on the context.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_ExpandChildren(object sender, EventArgs e)
+		{
+			foreach (TreeNode node in SelectedNode.Nodes)
+				node.Expand();
+		} */
 
 
 

@@ -59,7 +59,7 @@ namespace generalgff
 		internal GffData Data
 		{
 			get { return _data; }
-			private set
+			set
 			{
 				if ((_data = value) != null)
 					Text = TITLE + " - " + _data._pfe;
@@ -160,9 +160,6 @@ namespace generalgff
 
 				string label = Path.GetFileNameWithoutExtension(Data._pfe).ToUpper();
 				TreeNode root = _tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
-
-				//logfile.Log("");
-				//logfile.Log(label);
 
 				List<GffData.Field> fields = Data._fields;
 
