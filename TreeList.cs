@@ -103,8 +103,6 @@ namespace generalgff
 					}
 
 					FieldTypes type;
-//					if (SelectedNode.Tag != null)
-//						type = ((GffData.Field)SelectedNode.Tag).type;
 
 					if (SelectedNode.Tag == null // is TopLevelStruct's node
 						|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
