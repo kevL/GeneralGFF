@@ -671,24 +671,25 @@ namespace generalgff
 					val = tb_Val.Text.Trim().ToUpper(CultureInfo.InvariantCulture);
 
 					bool bork = false;
-					for (int i = 0; i != val.Length && !bork; ++i)
+					if (val.Length == Globals.Length_VER)
 					{
-						switch (i)
+						for (int i = 0; i != val.Length && !bork; ++i)
 						{
-							case 0:
-							case 1:
-							case 2: bork = (val[i]  < 65 || val[i] > 90); break; // alpha
-							case 3: bork = (val[i] != 32);                break; // space
-							case 4: bork = (val[i] != 86);                break; // V
-							case 5:
-							case 7: bork = (val[i]  < 48 || val[i] > 57); break; // numeric
-							case 6: bork = (val[i] != 46);                break; // dot
-
-							default:
-								bork = true;
-								break;
+							switch (i)
+							{
+								case 0:
+								case 1:
+								case 2: bork = (val[i]  < 65 || val[i] > 90); break; // alpha
+								case 3: bork = (val[i] != 32);                break; // space
+								case 4: bork = (val[i] != 86);                break; // V
+								case 5:
+								case 7: bork = (val[i]  < 48 || val[i] > 57); break; // numeric
+								case 6: bork = (val[i] != 46);                break; // dot
+							}
 						}
 					}
+					else
+						bork = true;
 
 					if (!bork)
 					{
@@ -697,9 +698,9 @@ namespace generalgff
 						CurrentData.Ver = val;
 						CurrentData.Type = GffData.GetGffType(val.Substring(0,3));
 
-						tb_Val.Text = val; // freshen the textbox
+						tb_Val.Text = val;
 
-						++_posCaret; // not sure why but.
+						++_posCaret;
 						RepositionCaret(tb_Val);
 					}
 				}
@@ -902,6 +903,7 @@ namespace generalgff
 								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
+									++_posCaret;
 									RepositionCaret(tb_Val);
 								}
 							}
@@ -1026,7 +1028,7 @@ namespace generalgff
 
 								val = (rt_Val.Text = new string(val2)); // freshen the richtextbox
 
-								++_posCaret; // not sure why but.
+								++_posCaret;
 								RepositionCaret(rt_Val);
 							}
 							break;

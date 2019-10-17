@@ -9,5 +9,6 @@
 		internal const int Length_LABEL  = 16; // 16-bytes per Label
 
 		internal const int Length_DWORD  =  4;
+		internal const int Length_VER    =  8;
 	}
 }
