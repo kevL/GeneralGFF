@@ -8,11 +8,6 @@ namespace generalgff
 {
 	sealed class GffLoader
 	{
-		#region Fields
-		GeneralGFF _f;
-		#endregion Fields
-
-
 		#region Methods
 		/// <summary>
 		/// Loads a GFF file into a specified TreeList.
@@ -21,37 +16,35 @@ namespace generalgff
 		/// <param name="pfe"></param>
 		internal void LoadGFFfile(GeneralGFF f, string pfe)
 		{
-			_f = f;
+			f._tl.BeginUpdate();
+			f._tl.Nodes.Clear();
 
-			_f._tl.BeginUpdate();
-			_f._tl.Nodes.Clear();
+			GffReader._structs.Clear();
+			GffReader._fields.Clear();
+			GffReader._fieldids.Clear();
 
-			GffData.allStructs.Clear();
-
-			_f.CurrentData = GffReader.ReadGFFfile(pfe);
-			if (_f.CurrentData != null && GffData.allStructs.Count != 0)
+			f.CurrentData = GffReader.ReadGFFfile(pfe);
+			if (f.CurrentData != null && GffReader._structs.Count != 0)
 			{
 				// Load the TopLevelStruct - all else follows ->
-				// NOTE: The TLS has no Field ... thus the rootnode of the _f._tl
-				// has no Tag.
+				// NOTE: The TLS has no Field ... thus the rootnode of the
+				// TreeList has no Tag.
 
-				string label = Path.GetFileNameWithoutExtension(_f.CurrentData._pfe).ToUpper();
-				TreeNode root = _f._tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
-
-				List<GffData.Field> fields = _f.CurrentData._fields;
+				string label = Path.GetFileNameWithoutExtension(f.CurrentData._pfe).ToUpper();
+				TreeNode root = f._tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
 
 				// instantiate the TLS's fieldids as treenodes ->
-				List<uint> fieldids = GffData.allStructs[0].fieldids;
+				List<uint> fieldids = GffReader._structs[0].fieldids;
 				for (int i = 0; i != fieldids.Count; ++i)
 				{
-					AddField(fields[(int)fieldids[i]], root);
+					AddField(GffReader._fields[(int)fieldids[i]], root);
 				}
 
-				_f._tl.Nodes[0].Expand();
-				_f._tl.SelectedNode = _f._tl.Nodes[0];
+				f._tl.Nodes[0].Expand();
+				f._tl.SelectedNode = f._tl.Nodes[0];
 			}
 
-			_f._tl.EndUpdate();
+			f._tl.EndUpdate();
 		}
 
 		/// <summary>
@@ -72,20 +65,16 @@ namespace generalgff
 			{
 				case FieldTypes.Struct: // childs can be of any Type.
 				{
-					List<GffData.Field> fields = _f.CurrentData._fields;
-
 					List<uint> fieldids = field.Struct.fieldids;
 					for (int i = 0; i != fieldids.Count; ++i)
 					{
-						AddField(fields[(int)fieldids[i]], node_);
+						AddField(GffReader._fields[(int)fieldids[i]], node_);
 					}
 					break;
 				}
 
 				case FieldTypes.List: // childs are Structs.
 				{
-					List<Struct> allStructs = GffData.allStructs;
-
 					List<uint> list = field.List;
 					for (int i = 0; i != list.Count; ++i)
 					{
@@ -93,7 +82,7 @@ namespace generalgff
 
 						field_.label  = i.ToString();		// NOTE: Structs in Lists do not have a Label inside a GFF-file.
 						field_.type   = FieldTypes.Struct;	// so give Structs in Lists a pseudo-Label for their treenode(s)
-						field_.Struct = allStructs[(int)list[i]];
+						field_.Struct = GffReader._structs[(int)list[i]];
 
 						AddField(field_, node_, null);
 					}

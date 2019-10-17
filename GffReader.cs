@@ -10,7 +10,9 @@ namespace generalgff
 	/// </summary>
 	static class GffReader
 	{
-		internal const string SupportedVersion = " V3.2";
+		#region Fields (static)
+		const string SupportedVersion = " V3.2";
+
 
 		const uint head_StructOffset       =  8; // 0x08 // offsets (in bytes) of data in the header section ->
 		const uint head_StructCount        = 12; // 0x0C
@@ -31,6 +33,24 @@ namespace generalgff
 		const uint head_ListIndicesLength  = 52; // 0x34
 
 
+		/// <summary>
+		/// All Structs in sequential order.
+		/// </summary>
+		internal static readonly List<Struct> _structs = new List<Struct>();
+
+		/// <summary>
+		/// All Fields in sequential order.
+		/// </summary>
+		internal static readonly List<GffData.Field> _fields = new List<GffData.Field>();
+
+		/// <summary>
+		/// The list of FieldIndices.
+		/// </summary>
+		internal static readonly List<uint> _fieldids = new List<uint>();
+		#endregion Fields (static)
+
+
+		#region Methods (static)
 		/// <summary>
 		/// Reads a GFF-file and parses out its data to a GFFData object.
 		/// @note Sections will be extracted in a non-arbitrary sequence because
@@ -222,7 +242,7 @@ namespace generalgff
 						}
 
 						if (!le) Array.Reverse(buffer);
-						data._fieldids.Add(BitConverter.ToUInt32(buffer, 0)); // WARNING: There is no safety on the count below.
+						_fieldids.Add(BitConverter.ToUInt32(buffer, 0)); // WARNING: There is no safety on the count below.
 					}
 
 
@@ -278,19 +298,20 @@ namespace generalgff
 								//logfile.Log(". . data._fieldids Length= " + (data._fieldids.Count * 4));
 								//logfile.Log(". . data._fields.Count= " + data._fields.Count);
 
-								fieldid = data._fieldids[(int)(idoroffset / Globals.Length_DWORD + j)];	// 4 bytes in each DWORD (ie. convert offset to id id)
+								fieldid = _fieldids[(int)(idoroffset / Globals.Length_DWORD + j)];	// 4 bytes in each DWORD (ie. convert offset to id id)
 								//logfile.Log(". . fieldid= " + fieldid);
-								st.fieldids.Add(fieldid);												// isn't the GFF format wonderful ... at least it works
-							}																			// the Bioware documentation could be better.
-						}																				// Ps. it contains inaccurate and unspecific info
+								st.fieldids.Add(fieldid);											// isn't the GFF format wonderful ... at least it works
+							}																		// the Bioware documentation could be better.
+						}																			// Ps. it contains inaccurate and unspecific info
 
-						GffData.allStructs.Add(st);
+						_structs.Add(st);
 					}
 
 
 // LABEL DATA -> contains Labels for the Fields (is req'd for parsing Fields)
 // - each label shall be unique across the entire GFF data
 // - 16-CHAR
+					var labels = new List<string>();
 					string label;
 
 					pos = LabelOffset;
@@ -301,7 +322,7 @@ namespace generalgff
 							buffer[b] = bytes[pos++];
 
 						label = Encoding.ASCII.GetString(buffer, 0, buffer.Length).TrimEnd('\0');
-						data._labels.Add(label);
+						labels.Add(label);
 					}
 
 
@@ -349,7 +370,7 @@ namespace generalgff
 							buffer[b] = bytes[pos++];
 
 						if (!le) Array.Reverse(buffer);
-						field.label = data._labels[(int)BitConverter.ToUInt32(buffer, 0)];
+						field.label = labels[(int)BitConverter.ToUInt32(buffer, 0)];
 						//logfile.Log("label= " + field.label);
 
 
@@ -594,11 +615,11 @@ namespace generalgff
 
 							case FieldTypes.Struct:
 								if (!le) Array.Reverse(buffer);
-								field.Struct = GffData.allStructs[(int)BitConverter.ToUInt32(buffer, 0)]; // NOTE: That is an id into the Structs not an offset.
+								field.Struct = _structs[(int)BitConverter.ToUInt32(buffer, 0)]; // NOTE: That is an id into the Structs not an offset.
 								break;
 						}
 
-						data._fields.Add(field);
+						_fields.Add(field);
 					}
 					return data;
 				}
@@ -607,41 +628,7 @@ namespace generalgff
 			}
 			return null;
 		}
-
-
-		/// <summary>
-		/// Converts a FieldTypes into a readable string.
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="token"></param>
-		/// <returns></returns>
-		internal static string GetTypeString(FieldTypes type, bool token)
-		{
-			switch (type)
-			{
-				case FieldTypes.BYTE:          return "BYTE";
-				case FieldTypes.CHAR:          return "CHAR";
-				case FieldTypes.WORD:          return "WORD";
-				case FieldTypes.SHORT:         return "SHORT";
-				case FieldTypes.DWORD:         return "DWORD";
-				case FieldTypes.INT:           return "INT";
-				case FieldTypes.DWORD64:       return "DWORD64";
-				case FieldTypes.INT64:         return "INT64";
-				case FieldTypes.FLOAT:         return "FLOAT";
-				case FieldTypes.DOUBLE:        return "DOUBLE";
-				case FieldTypes.CResRef:       return "CResRef";
-				case FieldTypes.CExoString:    return "CExoString";
-				case FieldTypes.CExoLocString: return "CExoLocString";
-				case FieldTypes.VOID:          return "VOID";
-				case FieldTypes.List:          return "List";
-				case FieldTypes.Struct:        return "Struct";
-
-				case FieldTypes.locale:
-					if (token) return "token";
-					return "locale";
-			}
-			return "ErROr: field-type unknown";
-		}
+		#endregion Methods (static)
 	}
 }
 

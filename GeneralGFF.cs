@@ -155,7 +155,7 @@ namespace generalgff
 			bool token = locale != null
 					  && locale.langid == Languages.GffToken;
 
-			string label2 = " [" + GffReader.GetTypeString(field.type, token) + "]";
+			string label2 = " [" + GetTypeString(field.type, token) + "]";
 			while (label2.Length != LENGTH_TYPE)
 				label2 += " ";
 
@@ -164,7 +164,7 @@ namespace generalgff
 			switch (field.type)
 			{
 				default:
-					return label + "= " + GffData.GetValueString(field);
+					return label + "= " + GetValueString(field);
 
 				case FieldTypes.locale:
 					return label + "= " + locale.local;
@@ -172,6 +172,116 @@ namespace generalgff
 				case FieldTypes.List:
 					return label;
 			}
+		}
+
+		/// <summary>
+		/// Converts a FieldTypes into a readable string.
+		/// @note helper for ConstructNodetext()
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="token"></param>
+		/// <returns></returns>
+		static string GetTypeString(FieldTypes type, bool token)
+		{
+			switch (type)
+			{
+				case FieldTypes.BYTE:          return "BYTE";
+				case FieldTypes.CHAR:          return "CHAR";
+				case FieldTypes.WORD:          return "WORD";
+				case FieldTypes.SHORT:         return "SHORT";
+				case FieldTypes.DWORD:         return "DWORD";
+				case FieldTypes.INT:           return "INT";
+				case FieldTypes.DWORD64:       return "DWORD64";
+				case FieldTypes.INT64:         return "INT64";
+				case FieldTypes.FLOAT:         return "FLOAT";
+				case FieldTypes.DOUBLE:        return "DOUBLE";
+				case FieldTypes.CResRef:       return "CResRef";
+				case FieldTypes.CExoString:    return "CExoString";
+				case FieldTypes.CExoLocString: return "CExoLocString";
+				case FieldTypes.VOID:          return "VOID";
+				case FieldTypes.List:          return "List";
+				case FieldTypes.Struct:        return "Struct";
+
+				case FieldTypes.locale:
+					if (token) return "token";
+					return "locale";
+			}
+			return "ErROr: field-type unknown";
+		}
+
+		/// <summary>
+		/// Gets the value of a Field by its type.
+		/// @note helper for ConstructNodetext()
+		/// </summary>
+		/// <param name="field"></param>
+		/// <returns>the value as a string</returns>
+		static string GetValueString(GffData.Field field)
+		{
+			switch (field.type)
+			{
+				case FieldTypes.BYTE:
+					return field.BYTE.ToString();
+
+				case FieldTypes.CHAR:
+					return field.CHAR.ToString();
+
+				case FieldTypes.WORD:
+					return field.WORD.ToString();
+
+				case FieldTypes.SHORT:
+					return field.SHORT.ToString();
+
+				case FieldTypes.DWORD:
+					return field.DWORD.ToString();
+
+				case FieldTypes.INT:
+					return field.INT.ToString();
+
+				case FieldTypes.DWORD64:
+					return field.DWORD64.ToString();
+
+				case FieldTypes.INT64:
+					return field.INT64.ToString();
+
+				case FieldTypes.FLOAT:
+				{
+					string f = field.FLOAT.ToString();
+					if (!f.Contains(".")) f += ".0";
+					return f;
+				}
+
+				case FieldTypes.DOUBLE:
+				{
+					string d = field.DOUBLE.ToString();
+					if (!d.Contains(".")) d += ".0";
+					return d;
+				}
+
+				case FieldTypes.CResRef:
+					return field.CResRef;
+
+				case FieldTypes.CExoString:
+					return field.CExoString;
+
+				case FieldTypes.CExoLocString:
+				{
+					uint strref = field.CExoLocStrref;
+					if (strref != UInt32.MaxValue)
+						return strref.ToString();
+
+					return "-1";
+				}
+
+				case FieldTypes.VOID:
+					return "bindata";
+
+				case FieldTypes.List:
+					return String.Empty;
+
+				case FieldTypes.Struct:
+					return "[" + field.Struct.typeid + "]";
+			}
+			return "ErROr: field type unknown";
 		}
 		#endregion Methods
 

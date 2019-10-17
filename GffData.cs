@@ -106,34 +106,11 @@ namespace generalgff
 	/// </summary>
 	sealed class GffData
 	{
-		#region Fields (static)
-		/// <summary>
-		/// All Structs in sequential order.
-		/// </summary>
-		internal static readonly List<Struct> allStructs = new List<Struct>();
-		#endregion Fields (static)
-
-
 		#region Fields
 		/// <summary>
 		/// Path-file-extension of the currently loaded GFF.
 		/// </summary>
 		internal readonly string _pfe;
-
-		/// <summary>
-		/// All Labels in sequential order.
-		/// </summary>
-		internal readonly List<string> _labels = new List<string>();
-
-		/// <summary>
-		/// All Fields in sequential order.
-		/// </summary>
-		internal readonly List<Field> _fields = new List<Field>();
-
-		/// <summary>
-		/// The list of FieldIndices.
-		/// </summary>
-		internal readonly List<uint> _fieldids = new List<uint>();
 		#endregion Fields
 
 
@@ -167,7 +144,8 @@ namespace generalgff
 		/// Data-structure of a single Field.
 		/// @note Is declared as a class instead of a struct because I don't
 		/// want the added hassles of dealing with a struct in C#.
-		/// @note Or the hassle of dealing with ~15 different field-classes.
+		/// @note Or the hassle of dealing with 15+ different types of
+		/// field-objects.
 		/// </summary>
 		internal class Field
 		{
@@ -268,81 +246,6 @@ namespace generalgff
 
 
 		#region Methods (static)
-		/// <summary>
-		/// Gets the value of a Field by its type.
-		/// @note Is called by GeneralGFF.ConstructNodeText().
-		/// </summary>
-		/// <param name="field"></param>
-		/// <returns>the value as a string</returns>
-		internal static string GetValueString(Field field)
-		{
-			switch (field.type)
-			{
-				case FieldTypes.BYTE:
-					return field.BYTE.ToString();
-
-				case FieldTypes.CHAR:
-					return field.CHAR.ToString();
-
-				case FieldTypes.WORD:
-					return field.WORD.ToString();
-
-				case FieldTypes.SHORT:
-					return field.SHORT.ToString();
-
-				case FieldTypes.DWORD:
-					return field.DWORD.ToString();
-
-				case FieldTypes.INT:
-					return field.INT.ToString();
-
-				case FieldTypes.DWORD64:
-					return field.DWORD64.ToString();
-
-				case FieldTypes.INT64:
-					return field.INT64.ToString();
-
-				case FieldTypes.FLOAT:
-				{
-					string f = field.FLOAT.ToString();
-					if (!f.Contains(".")) f += ".0";
-					return f;
-				}
-
-				case FieldTypes.DOUBLE:
-				{
-					string d = field.DOUBLE.ToString();
-					if (!d.Contains(".")) d += ".0";
-					return d;
-				}
-
-				case FieldTypes.CResRef:
-					return field.CResRef;
-
-				case FieldTypes.CExoString:
-					return field.CExoString;
-
-				case FieldTypes.CExoLocString:
-				{
-					uint strref = field.CExoLocStrref;
-					if (strref != UInt32.MaxValue)
-						return strref.ToString();
-
-					return "-1";
-				}
-
-				case FieldTypes.VOID:
-					return "bindata";
-
-				case FieldTypes.List:
-					return String.Empty;
-
-				case FieldTypes.Struct:
-					return "[" + field.Struct.typeid + "]";
-			}
-			return "ErROr: field type unknown";
-		}
-
 		/// <summary>
 		/// Gets the loaded file's GffType.
 		/// </summary>
