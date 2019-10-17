@@ -1263,7 +1263,7 @@ namespace generalgff
 			_f.cb_Checker.Visible = false;
 
 			_f._prevalText = String.Empty;
-			_f._prevalCheckboxChecked = false;
+			_f._prevalChecker = false;
 		}
 
 		/// <summary>
@@ -1473,7 +1473,7 @@ namespace generalgff
 
 						bool @checked =  strref != UInt32.MaxValue
 									 && (strref & 0x01000000) != 0;
-						_f.cb_Checker.Checked = _f._prevalCheckboxChecked = @checked;
+						_f.cb_Checker.Checked = _f._prevalChecker = @checked;
 
 						_f.cb_Checker.Text = "Custom talktable";
 						_f.cb_Checker.Visible = true;
@@ -1529,7 +1529,7 @@ namespace generalgff
 							_f.la_Des.Text = "UTF8 localized";
 							_f.la_Val.Text = "locale";
 
-							_f.cb_Checker.Checked = _f._prevalCheckboxChecked = locale.F;
+							_f.cb_Checker.Checked = _f._prevalChecker = locale.F;
 							_f.cb_Checker.Text = "Feminine";
 							_f.cb_Checker.Visible = true;
 						}

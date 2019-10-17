@@ -43,7 +43,7 @@ namespace generalgff
 		internal TreeList _tl;
 
 		internal string _prevalText = String.Empty;
-		internal bool _prevalCheckboxChecked;
+		internal bool _prevalChecker;
 
 		string _editText = String.Empty;
 		int _posCaret = 0;
@@ -497,7 +497,7 @@ namespace generalgff
 
 				btn_Revert.Enabled =
 				btn_Apply .Enabled = text != _prevalText
-								  || (cb_Checker.Visible && cb_Checker.Checked != _prevalCheckboxChecked);
+								  || (cb_Checker.Visible && cb_Checker.Checked != _prevalChecker);
 
 				return;
 			}
@@ -954,11 +954,11 @@ namespace generalgff
 									val = result.ToString();
 									length = -1;
 
-									if (_prevalCheckboxChecked = isCust)
+									if (_prevalChecker = isCust)
 										result |= 0x01000000;
 								}
 								else
-									_prevalCheckboxChecked = cb_Checker.Checked = false;
+									_prevalChecker = cb_Checker.Checked = false;
 
 								field.CExoLocStrref = result;
 
@@ -1064,10 +1064,12 @@ namespace generalgff
 							var CExoLocString = (GffData.Field)node.Parent.Tag;
 							locale = CExoLocString.Locales[(int)field.localeid];
 
-							locale.local = (val = rt_Val.Text);
+							locale.local = val = rt_Val.Text;
+
+							cb_Checker.Checked &= !String.IsNullOrEmpty(val);
 
 							field.label = GffData.Locale.GetLanguageString(locale.langid);
-							if (locale.F = _prevalCheckboxChecked = cb_Checker.Checked)
+							if (locale.F = _prevalChecker = cb_Checker.Checked)
 								field.label += SUF_F;
 
 							break;
