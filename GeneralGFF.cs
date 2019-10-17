@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -139,7 +138,7 @@ namespace generalgff
 		#endregion cTor
 
 
-		#region Methods
+		#region Methods (static)
 		/// <summary>
 		/// Constructs a string of text for display on a treenode.
 		/// </summary>
@@ -283,7 +282,7 @@ namespace generalgff
 			}
 			return "ErROr: field type unknown";
 		}
-		#endregion Methods
+		#endregion Methods (static)
 
 
 		#region Handlers (menu)
@@ -541,9 +540,18 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Tracks the position of the caret in the textbox. Also applies
-		/// changed data to a field if the textbox is focused and [Enter] is
-		/// keydown'd.
+		/// Tracks the position of the caret in the textbox.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void keyup(object sender, KeyEventArgs e)
+		{
+			_posCaret = tb_Val.SelectionStart;
+		}
+
+		/// <summary>
+		/// Applies changed data to a field if the textbox is focused and
+		/// [Enter] is keydown'd.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -554,8 +562,6 @@ namespace generalgff
 				e.SuppressKeyPress = true;
 				btn_Apply.PerformClick();
 			}
-			else
-				_posCaret = tb_Val.SelectionStart;
 		}
 
 		/// <summary>
@@ -604,16 +610,6 @@ namespace generalgff
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		void mousedown_Richtextbox(object sender, MouseEventArgs e)
-		{
-			_posCaret = rt_Val.SelectionStart;
-		}
-
-		/// <summary>
-		/// Tracks the position of the caret in the richtextbox.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void keydown_Richtextbox(object sender, KeyEventArgs e)
 		{
 			_posCaret = rt_Val.SelectionStart;
 		}
@@ -702,8 +698,6 @@ namespace generalgff
 						CurrentData.Type = GffData.GetGffType(val.Substring(0,3));
 
 						tb_Val.Text = val;
-
-						++_posCaret;
 						RepositionCaret(tb_Val);
 					}
 				}
@@ -717,7 +711,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							byte result;
-							if (valid = Byte.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = Byte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.BYTE = result;
 
@@ -735,7 +729,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							sbyte result;
-							if (valid = sbyte.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = sbyte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.CHAR = result;
 
@@ -753,7 +747,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							ushort result;
-							if (valid = UInt16.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = UInt16.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.WORD = result;
 
@@ -771,7 +765,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							short result;
-							if (valid = Int16.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = Int16.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.SHORT = result;
 
@@ -789,7 +783,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							uint result;
-							if (valid = UInt32.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = UInt32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.DWORD = result;
 
@@ -807,7 +801,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							int result;
-							if (valid = Int32.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = Int32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.INT = result;
 
@@ -825,7 +819,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							ulong result;
-							if (valid = UInt64.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = UInt64.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.DWORD64 = result;
 
@@ -843,7 +837,7 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							long result;
-							if (valid = Int64.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = Int64.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.INT64 = result;
 
@@ -861,11 +855,11 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							float result;
-							if (valid = float.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = float.TryParse((val = TrimFloat(tb_Val.Text)), out result))
 							{
 								field.FLOAT = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
@@ -879,11 +873,11 @@ namespace generalgff
 							int length = tb_Val.Text.Length;
 
 							double result;
-							if (valid = Double.TryParse((val = tb_Val.Text.Trim()), out result))
+							if (valid = Double.TryParse((val = TrimFloat(tb_Val.Text)), out result))
 							{
 								field.DOUBLE = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
@@ -906,7 +900,6 @@ namespace generalgff
 								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
-									++_posCaret;
 									RepositionCaret(tb_Val);
 								}
 							}
@@ -1029,9 +1022,8 @@ namespace generalgff
 								valid = true;
 								field.VOID = ParseHecate(val3);
 
-								val = (rt_Val.Text = new string(val2)); // freshen the richtextbox
+								rt_Val.Text = (val = new string(val2)); // freshen the richtextbox
 
-								++_posCaret;
 								RepositionCaret(rt_Val);
 							}
 							break;
@@ -1099,72 +1091,6 @@ namespace generalgff
 
 		#region Methods
 		/// <summary>
-		/// Roll yer own keyboard-navigation keys checker.
-		/// @note 'keycode' shall include modifers - ie, pass in KeyCode not
-		/// KeyData.
-		/// </summary>
-		/// <param name="keycode"></param>
-		/// <returns></returns>
-		bool isNavigation(Keys keycode)
-		{
-			switch (keycode)
-			{
-				case Keys.Up:
-				case Keys.Down:
-				case Keys.Left:
-				case Keys.Right:
-				case Keys.Home:
-				case Keys.End:
-				case Keys.PageUp:
-				case Keys.PageDown:
-				case Keys.Back:
-				case Keys.Delete:
-					return true;
-			}
-			return false;
-		}
-
-		/// <summary>
-		/// Checks if a string is printable ascii.
-		/// </summary>
-		/// <param name="text"></param>
-		/// <returns></returns>
-		bool isPrintableAscii(string text)
-		{
-			int c;
-			for (int i = 0; i != text.Length; ++i)
-			{
-				c = (int)text[i];
-				if (c < 32 || c > 126)
-					return false;
-			}
-			return true;
-		}
-
-		/// <summary>
-		/// Checks if a string is hexadecimal.
-		/// @note Spaces are also valid.
-		/// </summary>
-		/// <param name="text"></param>
-		/// <returns></returns>
-		bool isHexadecimal(string text)
-		{
-			int c;
-			for (int i = 0; i != text.Length; ++i)
-			{
-				if ((c = (int)text[i]) != 32
-					&& (    c <  48
-						|| (c >  57 && c < 65)
-						|| (c >  70 && c < 97)
-						||  c > 102))
-				{
-					return false;
-				}
-			}
-			return true;
-		}
-
-		/// <summary>
 		/// Resets the textbox/richtextbox to a (hopefully) valid state.
 		/// </summary>
 		void ResetEditor(TextBoxBase tbb)
@@ -1205,6 +1131,114 @@ namespace generalgff
 
 
 		#region Methods (static)
+		/// <summary>
+		/// Roll yer own keyboard-navigation keys checker.
+		/// @note 'keycode' shall include modifers - ie, pass in KeyCode not
+		/// KeyData.
+		/// </summary>
+		/// <param name="keycode"></param>
+		/// <returns></returns>
+		static bool isNavigation(Keys keycode)
+		{
+			switch (keycode)
+			{
+				case Keys.Up:
+				case Keys.Down:
+				case Keys.Left:
+				case Keys.Right:
+				case Keys.Home:
+				case Keys.End:
+				case Keys.PageUp:
+				case Keys.PageDown:
+				case Keys.Back:
+				case Keys.Delete:
+					return true;
+			}
+			return false;
+		}
+
+		/// <summary>
+		/// Checks if a string is printable ascii.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		static bool isPrintableAscii(string text)
+		{
+			int c;
+			for (int i = 0; i != text.Length; ++i)
+			{
+				c = (int)text[i];
+				if (c < 32 || c > 126)
+					return false;
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Checks if a string is hexadecimal.
+		/// @note Spaces are also valid.
+		/// </summary>
+		/// <param name="text"></param>
+		/// <returns></returns>
+		static bool isHexadecimal(string text)
+		{
+			int c;
+			for (int i = 0; i != text.Length; ++i)
+			{
+				if ((c = (int)text[i]) != 32
+					&& (    c <  48
+						|| (c >  57 && c < 65)
+						|| (c >  70 && c < 97)
+						||  c > 102))
+				{
+					return false;
+				}
+			}
+			return true;
+		}
+
+		/// <summary>
+		/// Trims an integer-string.
+		/// </summary>
+		/// <param name="val"></param>
+		/// <returns></returns>
+		static string TrimInteger(string val)
+		{
+			val = val.Trim();
+			val = val.TrimStart('0');
+
+			if (String.IsNullOrEmpty(val))
+				return "0";
+
+			return val;
+		}
+
+		/// <summary>
+		/// Trims and formats a float-string.
+		/// </summary>
+		/// <param name="val"></param>
+		/// <returns></returns>
+		static string TrimFloat(string val)
+		{
+			val = val.Trim();
+			val = val.TrimStart('0');
+
+			if (String.IsNullOrEmpty(val))
+				return "0.0";
+
+			if (!val.Contains("."))
+				return val + ".0";
+
+			if (val.StartsWith(".", StringComparison.Ordinal))
+				val = "0" + val;
+
+			if (val.EndsWith(".", StringComparison.Ordinal))
+				val += "0";
+
+			return val;
+		}
+
+
 		// https://stackoverflow.com/questions/14332496/most-light-weight-conversion-from-hex-to-byte-in-c/14332574#14332574
 		/// <summary>
 		/// Parses a hexadecimal string into a byte-array.
