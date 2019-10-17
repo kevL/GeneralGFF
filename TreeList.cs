@@ -462,6 +462,28 @@ namespace generalgff
 				{
 					switch (((GffData.Field)SelectedNode.Tag).type)
 					{
+						case FieldTypes.Struct:	// Structs in Lists do not have a Label so
+						{						// keep the pseudo-labels' sequential order ->
+							var parent = SelectedNode.Parent;
+							if (((GffData.Field)parent.Tag).type == FieldTypes.List)
+							{
+								Sortable node;
+
+								var field = (GffData.Field)SelectedNode.Tag;
+								int id = Int32.Parse(field.label);
+								while (++id != parent.Nodes.Count)
+								{
+									node = parent.Nodes[id] as Sortable;
+									field = (GffData.Field)node.Tag;
+									node._label =
+									field.label = (id - 1).ToString();
+
+									node.Text = GeneralGFF.ConstructNodetext(field);
+								}
+							}
+							break;
+						}
+
 						case FieldTypes.locale:
 						{
 							var parent = SelectedNode.Parent;
@@ -525,46 +547,6 @@ namespace generalgff
 			SelectedNode.Toggle();
 		}
 		#endregion Context
-
-
-/*		/// <summary>
-		/// Deletes a deletable Struct.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void contextclick_DeleteStruct(object sender, EventArgs e)
-		{
-			var parent = SelectedNode.Parent;
-
-			Sortable node;
-
-			var field = (GffData.Field)SelectedNode.Tag;
-			int id = Int32.Parse(field.label) + 1; // NOTE: Structs in Lists do not have a Label.
-			for (; id != parent.Nodes.Count; ++id)
-			{
-				node = parent.Nodes[id] as Sortable;
-				field = (GffData.Field)node.Tag;
-				node._label =
-				field.label = (id - 1).ToString();
-
-				node.Text = _f.ConstructNodeText(field, null);
-			}
-
-			SelectedNode.Remove();	// that will select the next node (not the parent
-									// node) so _bypassExpand for that as well as for
-									// selecting the parent node ->
-
-									// But only if there are other child nodes
-									// else the parent node gets selected auto ...
-
-									// I hope I don't end up writing my own TreeView class
-									// like I had to do for the so-called DataGridView
-
-			if (SelectedNode != parent)
-			{
-				SelectedNode = parent;
-			}
-		} */
 
 
 		#region Handlers (override)
