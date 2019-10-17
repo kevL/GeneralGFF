@@ -103,6 +103,8 @@ namespace generalgff
 					}
 
 					FieldTypes type;
+//					if (SelectedNode.Tag != null)
+//						type = ((GffData.Field)SelectedNode.Tag).type;
 
 					if (SelectedNode.Tag == null // is TopLevelStruct's node
 						|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
@@ -147,8 +149,18 @@ namespace generalgff
 						}
 					}
 
-					if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+					if (SelectedNode.Tag != null
+						&& (SelectedNode.Parent.Tag == null
+							|| ((type = ((GffData.Field)SelectedNode.Parent.Tag).type) != FieldTypes.List
+								&& type != FieldTypes.CExoLocString)))
+					{
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
 
+						ContextMenu.MenuItems.Add(new MenuItem("edit Label", contextclick_EditLabel));
+					}
+
+					if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 					ContextMenu.MenuItems.Add(new MenuItem("DELETE", contextclick_Delete));
 				}
 				else if (Nodes.Count == 0) // is blank GFF - req'd.
@@ -422,7 +434,7 @@ namespace generalgff
 				using (var f = new DeleteDialog(this, "Confirm delete TopLevelStruct"))
 				{
 					f.cb_Bypass.Visible = false;
-					delete = (f.ShowDialog() == DialogResult.Yes);
+					delete = (f.ShowDialog(this) == DialogResult.Yes);
 				}
 			}
 			else if (!_bypassDeleteWarning)
@@ -436,7 +448,7 @@ namespace generalgff
 				{
 					f.cb_Bypass.Visible = true;
 
-					if (f.ShowDialog() == DialogResult.Yes)
+					if (f.ShowDialog(this) == DialogResult.Yes)
 					{
 						delete = true;
 						_bypassDeleteWarning = f.cb_Bypass.Checked;
@@ -479,6 +491,28 @@ namespace generalgff
 
 				if (SelectedNode == null)
 					DisableEditPanel();
+			}
+		}
+
+
+		/// <summary>
+		/// Opens a dialog to edit a Field's Label.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_EditLabel(object sender, EventArgs e)
+		{
+			using (var f = new LabelDialog(((GffData.Field)SelectedNode.Tag).label))
+			{
+				if (f.ShowDialog(this) == DialogResult.OK)
+				{
+					var field = (GffData.Field)SelectedNode.Tag;
+					if (field.label != f.tb_Label.Text)
+					{
+						field.label = f.tb_Label.Text;
+						SelectedNode.Text = GeneralGFF.ConstructNodetext(field);
+					}
+				}
 			}
 		}
 

@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="DeleteDialog.cs" />
     <Compile Include="GffLoader.cs" />
+    <Compile Include="LabelDialog.cs" />
     <Compile Include="LocaleDialog.cs" />
     <Compile Include="FileService.cs" />
     <Compile Include="GffData.cs" />
@@ -56,6 +57,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DeleteDialog.resx">
       <DependentUpon>DeleteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LabelDialog.resx">
+      <DependentUpon>LabelDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LocaleDialog.resx">
       <DependentUpon>LocaleDialog.cs</DependentUpon>
