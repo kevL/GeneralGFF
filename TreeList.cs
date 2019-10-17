@@ -608,6 +608,7 @@ namespace generalgff
 		#endregion Handlers (override)
 
 
+		#region Methods
 		bool _RtbEnabled;
 
 		/// <summary>
@@ -918,6 +919,7 @@ namespace generalgff
 				}
 			}
 		}
+		#endregion Methods
 	}
 
 
