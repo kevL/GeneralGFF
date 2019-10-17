@@ -921,7 +921,7 @@ namespace generalgff
 							// NOTE: The GFF-specification stores strrefs as Uint32.
 							int length = tb_Val.Text.Length;
 
-							val = tb_Val.Text.Trim();
+							val = TrimInteger(tb_Val.Text);
 
 							bool isCust = cb_Checker.Checked;
 
