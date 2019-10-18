@@ -520,8 +520,8 @@ namespace generalgff
 					buffer = BitConverter.GetBytes(field.INT64); // do not convert to uint
 					goto case FieldTypes.locale;
 
-				case FieldTypes.FLOAT:
-					buffer = BitConverter.GetBytes(field.FLOAT); // do not convert to uint
+				case FieldTypes.DOUBLE:
+					buffer = BitConverter.GetBytes(field.DOUBLE); // do not convert to uint
 					goto case FieldTypes.locale;
 
 				case FieldTypes.locale: // Is not a locale. Is just a goto-label.
