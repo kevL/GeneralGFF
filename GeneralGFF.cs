@@ -1219,11 +1219,25 @@ namespace generalgff
 		/// <returns></returns>
 		static string TrimInteger(string val)
 		{
-			val = val.Trim();
+			val = Regex.Replace(val, @"\s+", String.Empty);
+			val = val.TrimStart('0');
+
+			bool negative;
+			if (val.StartsWith("-", StringComparison.Ordinal))
+			{
+				negative = true;
+				val = val.Substring(1);
+			}
+			else
+				negative = false;
+
 			val = val.TrimStart('0');
 
 			if (String.IsNullOrEmpty(val))
 				return "0";
+
+			if (negative)
+				val = "-" + val;
 
 			return val;
 		}
@@ -1235,7 +1249,7 @@ namespace generalgff
 		/// <returns></returns>
 		static string TrimFloat(string val)
 		{
-			val = val.Trim();
+			val = Regex.Replace(val, @"\s+", String.Empty);
 			val = val.TrimStart('0');
 
 			if (String.IsNullOrEmpty(val))
@@ -1243,6 +1257,8 @@ namespace generalgff
 
 			if (!val.Contains("."))
 				return val + ".0";
+
+			val = val.TrimEnd('0');
 
 			if (val.StartsWith(".", StringComparison.Ordinal))
 				val = "0" + val;
