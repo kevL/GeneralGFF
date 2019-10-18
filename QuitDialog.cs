@@ -67,10 +67,10 @@ namespace generalgff
 			// bt_Save
 			// 
 			this.bt_Save.DialogResult = System.Windows.Forms.DialogResult.Retry;
-			this.bt_Save.Location = new System.Drawing.Point(85, 25);
+			this.bt_Save.Location = new System.Drawing.Point(80, 25);
 			this.bt_Save.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Save.Name = "bt_Save";
-			this.bt_Save.Size = new System.Drawing.Size(70, 25);
+			this.bt_Save.Size = new System.Drawing.Size(80, 25);
 			this.bt_Save.TabIndex = 2;
 			this.bt_Save.Text = "Save";
 			this.bt_Save.UseVisualStyleBackColor = true;
@@ -113,7 +113,7 @@ namespace generalgff
 			// 
 			this.AcceptButton = this.bt_Save;
 			this.CancelButton = this.bt_Cancel;
-			this.ClientSize = new System.Drawing.Size(239, 51);
+			this.ClientSize = new System.Drawing.Size(239, 56);
 			this.Controls.Add(this.la_Head);
 			this.Controls.Add(this.bt_Quit);
 			this.Controls.Add(this.bt_Save);
