@@ -409,6 +409,9 @@ namespace generalgff
 			SelectedNode.Nodes.Add(node);
 
 			SelectedNode = node;
+
+			_f.CurrentData.Changed = true;
+			_f.CurrentData = _f.CurrentData;
 		}
 
 
@@ -511,6 +514,9 @@ namespace generalgff
 
 				if (SelectedNode == null)
 					DisableEditPanel();
+
+				_f.CurrentData.Changed = true;
+				_f.CurrentData = _f.CurrentData;
 			}
 		}
 
@@ -531,6 +537,9 @@ namespace generalgff
 					{
 						field.label = f.tb_Label.Text;
 						SelectedNode.Text = GeneralGFF.ConstructNodetext(field);
+
+						_f.CurrentData.Changed = true;
+						_f.CurrentData = _f.CurrentData;
 					}
 				}
 			}

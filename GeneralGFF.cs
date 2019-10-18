@@ -61,7 +61,12 @@ namespace generalgff
 			set
 			{
 				if ((_data = value) != null)
+				{
 					Text = TITLE + " - " + _data.Pfe;
+
+					if (_data.Changed)
+						Text += " *";
+				}
 				else
 					Text = TITLE;
 			}
@@ -343,6 +348,7 @@ namespace generalgff
 						_tl.Nodes[0].Text = label; // update TLS-label
 
 						CurrentData.Pfe = sfd.FileName;
+						CurrentData.Changed = false;
 						CurrentData = CurrentData; // update titlebar text
 					}
 				}
@@ -1096,6 +1102,9 @@ namespace generalgff
 						node.Text = ConstructNodetext(field, locale);
 
 					_prevalText = val;
+
+					CurrentData.Changed = true;
+					CurrentData = CurrentData;
 				}
 				else
 					baddog("That dog don't hunt.");

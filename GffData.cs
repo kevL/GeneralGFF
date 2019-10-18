@@ -124,6 +124,12 @@ namespace generalgff
 		/// </summary>
 		internal GffType Type
 		{ get; set; }
+
+		/// <summary>
+		/// Tracks if the data has been saved to file.
+		/// </summary>
+		internal bool Changed
+		{ get; set; }
 		#endregion Properties
 
 
@@ -136,7 +142,7 @@ namespace generalgff
 		/// gets written to disk</param>
 		internal GffData(string pfe = Globals.TopLevelStruct)
 		{
-			Pfe = pfe;
+			Changed = (Pfe = pfe) == Globals.TopLevelStruct;
 		}
 		#endregion cTor
 
