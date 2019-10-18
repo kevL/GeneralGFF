@@ -147,15 +147,47 @@ namespace generalgff
 						}
 					}
 
-					if (SelectedNode.Tag != null
-						&& (SelectedNode.Parent.Tag == null
-							|| ((type = ((GffData.Field)SelectedNode.Parent.Tag).type) != FieldTypes.List
-								&& type != FieldTypes.CExoLocString)))
-					{
-						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-						else toggle = String.Empty;
 
-						ContextMenu.MenuItems.Add(new MenuItem("edit Label", contextclick_EditLabel));
+					if (SelectedNode.Tag != null) // is not TopLevelStruct
+					{
+						switch (((GffData.Field)SelectedNode.Tag).type)
+						{
+							case FieldTypes.Struct:
+								if (SelectedNode.Parent.Tag != null
+									&& ((GffData.Field)SelectedNode.Parent.Tag).type == FieldTypes.List)
+								{
+									break;
+								}
+								goto case FieldTypes.BYTE;
+
+							case FieldTypes.BYTE:
+							case FieldTypes.CHAR:
+							case FieldTypes.WORD:
+							case FieldTypes.SHORT:
+							case FieldTypes.DWORD:
+							case FieldTypes.INT:
+							case FieldTypes.DWORD64:
+							case FieldTypes.INT64:
+							case FieldTypes.FLOAT:
+							case FieldTypes.DOUBLE:
+							case FieldTypes.CResRef:
+							case FieldTypes.CExoString:
+							case FieldTypes.CExoLocString:
+							case FieldTypes.VOID:
+							case FieldTypes.List:
+								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+								else toggle = String.Empty;
+
+								ContextMenu.MenuItems.Add(new MenuItem("edit Label", contextclick_EditLabel));
+								break;
+
+							case FieldTypes.locale:
+								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+								else toggle = String.Empty;
+
+								ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLanguageId));
+								break;
+						}
 					}
 
 					if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
@@ -371,9 +403,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		void contextclick_AddLocale(object sender, EventArgs e)
 		{
-			using (var dialog = new LocaleDialog())
+			using (var f = new LocaleDialog())
 			{
-				if (dialog.ShowDialog(this) == DialogResult.OK)
+				if (f.ShowDialog(this) == DialogResult.OK)
 				{
 					var locale = new GffData.Locale();
 					locale.langid = _langid;
@@ -541,6 +573,33 @@ namespace generalgff
 						_f.GffData.Changed = true;
 						_f.GffData = _f.GffData;
 					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Opens a dialog to edit a Locale's languageid.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_EditLanguageId(object sender, EventArgs e)
+		{
+			using (var f = new LocaleDialog())
+			{
+				var parent = (GffData.Field)SelectedNode.Parent.Tag;
+				var field = ((GffData.Field)SelectedNode.Tag);
+
+				var locale = parent.Locales[(int)field.localeid];
+				_langid = locale.langid;
+
+				if (f.ShowDialog(this) == DialogResult.OK)
+				{
+					locale.langid = _langid;
+					field.label = GffData.Locale.GetLanguageString(locale.langid);
+					if (locale.F)
+						field.label += GeneralGFF.SUF_F;
+
+					SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
 				}
 			}
 		}
