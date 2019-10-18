@@ -284,27 +284,27 @@ namespace generalgff
 		/// @note Maintain its congruity with GffTypes.
 		/// </summary>
 		internal const string FileDialogFilter =
-				  "All files (*.*)|*.*"
-				+ "|generic file (*.GFF)|*.GFF"
-				+ "|area object (*.ARE)|*.ARE"
-				+ "|player character (*.BIC)|*.BIC"
-				+ "|faction table (*.FAC)|*.FAC"
-				+ "|area object lists(*.GIC)|*.GIC"
-				+ "|area properties and objects(*.GIT)|*.GIT"
-				+ "|module info or player list info (*.IFO)|*.IFO"
-				+ "|journal (*.JRL)|*.JRL"
-				+ "|roster character (*.ROS)|*.ROS"
-				+ "|light effect (*.ULT)|*.ULT"
-				+ "|placeable effect (*.UPE)|*.UPE"
-				+ "|creature object (*.UTC)|*.UTC"
-				+ "|door object (*.UTD)|*.UTD"
-				+ "|encounter object (*.UTE)|*.UTE"
-				+ "|item object (*.UTI)|*.UTI"
-				+ "|merchant store (*.UTM)|*.UTM"
-				+ "|placeable object (*.UTP)|*.UTP"
-				+ "|sound object (*.UTS)|*.UTS"
-				+ "|trigger object (*.UTT)|*.UTT"
-				+ "|waypoint object (*.UTW)|*.UTW";
+				  "All files|*.*"
+				+ "|generic file|*.GFF"
+				+ "|area object|*.ARE"
+				+ "|player character|*.BIC"
+				+ "|faction table|*.FAC"
+				+ "|area object lists|*.GIC"
+				+ "|area properties and objects|*.GIT"
+				+ "|module info or player list info|*.IFO"
+				+ "|journal|*.JRL"
+				+ "|roster character|*.ROS"
+				+ "|light effect|*.ULT"
+				+ "|placeable effect|*.UPE"
+				+ "|creature object|*.UTC"
+				+ "|door object|*.UTD"
+				+ "|encounter object|*.UTE"
+				+ "|item object|*.UTI"
+				+ "|merchant store|*.UTM"
+				+ "|placeable object|*.UTP"
+				+ "|sound object|*.UTS"
+				+ "|trigger object|*.UTT"
+				+ "|waypoint object|*.UTW";
 
 		#endregion Methods (static)
 	}
