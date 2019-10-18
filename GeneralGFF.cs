@@ -290,6 +290,33 @@ namespace generalgff
 		#endregion Methods (static)
 
 
+		#region Handlers (override)
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			if (CurrentData != null && CurrentData.Changed && _tl.Nodes.Count != 0)
+			{
+				using (var f = new QuitDialog(CurrentData.Pfe != Globals.TopLevelStruct))
+				{
+					switch (f.ShowDialog(this))
+					{
+						case DialogResult.Abort:	// "Cancel" - don't quit
+							e.Cancel = true;
+							break;
+
+						case DialogResult.Ignore:	// "Quit" - quit don't save
+							break;
+
+						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
+							e.Cancel = !GffWriter.WriteGFFfile(CurrentData.Pfe, _tl, CurrentData.Ver);
+							break;
+					}
+				}
+			}
+//			base.OnFormClosing(e);
+		}
+		#endregion Handlers (override)
+
+
 		#region Handlers (menu)
 		void filepop(object sender, EventArgs e)
 		{
