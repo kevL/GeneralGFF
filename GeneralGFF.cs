@@ -104,13 +104,13 @@ namespace generalgff
 
 			Menu.MenuItems.Add("&View"); // #1
 
-			Menu.MenuItems[MI_VIEW].Popup += editpop;
+			Menu.MenuItems[MI_VIEW].Popup += viewpop;
 
 			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Expand all in selected");	// #0
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Click += editclick_ExpandSelected;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
 
 			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Collapse all in selected");	// #1
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Click += editclick_CollapseSelected;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Click += viewclick_CollapseSelected;
 
 
 			Menu.MenuItems.Add("&Help"); // #2
@@ -398,7 +398,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void editpop(object sender, EventArgs e)
+		void viewpop(object sender, EventArgs e)
 		{
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Enabled =
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null;
@@ -409,7 +409,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void editclick_ExpandSelected(object sender, EventArgs e)
+		void viewclick_ExpandSelected(object sender, EventArgs e)
 		{
 			if (_tl.SelectedNode != null)
 			{
@@ -439,7 +439,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void editclick_CollapseSelected(object sender, EventArgs e)
+		void viewclick_CollapseSelected(object sender, EventArgs e)
 		{
 			if (_tl.SelectedNode != null)
 			{
