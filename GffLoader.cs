@@ -74,10 +74,11 @@ namespace generalgff
 					List<uint> list = field.List;
 					for (int i = 0; i != list.Count; ++i)
 					{
+						// NOTE: Structs in Lists do not have a Label inside a GFF-file.
+						// so give Structs in Lists a pseudo-label for their treenode(s)
 						field = new GffData.Field();
-
-						field.label  = i.ToString();		// NOTE: Structs in Lists do not have a Label inside a GFF-file.
-						field.type   = FieldTypes.Struct;	// so give Structs in Lists a pseudo-Label for their treenode(s)
+						field.type   = FieldTypes.Struct;
+						field.label  = i.ToString();
 						field.Struct = GffReader.Structs[(int)list[i]];
 
 						AddField(field, node, null);
@@ -94,12 +95,11 @@ namespace generalgff
 							locale = field.Locales[i];
 
 							field = new GffData.Field();
+							field.type = FieldTypes.locale;
 							field.localeid = (uint)i;
 							field.label = GffData.Locale.GetLanguageString(locale.langid);
 							if (locale.F)
 								field.label += GeneralGFF.SUF_F;
-
-							field.type = FieldTypes.locale;
 
 							AddField(field, node, locale);
 						}
