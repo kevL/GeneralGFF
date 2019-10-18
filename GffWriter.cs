@@ -34,11 +34,14 @@ namespace generalgff
 		/// <param name="pfe">path-file-extension to write to</param>
 		/// <param name="tl">the TreeList</param>
 		/// <param name="ver">GffReader.Ver</param>
-		internal static void WriteGFFfile(string pfe, TreeView tl, string ver)
+		/// <returns>true if successful</returns>
+		internal static bool WriteGFFfile(string pfe, TreeView tl, string ver)
 		{
 			//logfile.Log("");
 			//logfile.Log("");
 			//logfile.Log("WriteGFFfile()");
+
+			bool success = false;
 
 			string pfeT;
 			if (File.Exists(pfe))
@@ -202,10 +205,14 @@ namespace generalgff
 				buffer = ListIds.ToArray();
 				//logfile.Log("ListIds length= " + buffer.Length);
 				fs.Write(buffer, 0, buffer.Length);
+
+				success = true;
 			}
 
-			if (pfeT != pfe)
+			if (success && pfeT != pfe)
 				FileService.ReplaceFile(pfe);
+
+			return success;
 		}
 
 
@@ -539,7 +546,7 @@ namespace generalgff
 					//
 					// NOTE: CResRef is stored in lowercase characters w/out extension.
 
-					string str = field.CResRef.ToLower(CultureInfo.InvariantCulture);
+					string str = field.CResRef.ToLower(CultureInfo.InvariantCulture); // NOTE: That should already be lc.
 					DataBlock.Add((byte)str.Length);
 					DataBlock.AddRange(Encoding.ASCII.GetBytes(str));
 					break;

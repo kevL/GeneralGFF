@@ -277,6 +277,34 @@ namespace generalgff
 			}
 			return GffType.generic; // eg. "GFF"
 		}
+
+		/// <summary>
+		/// The file-filter string for an OpenFile or SaveFile dialog.
+		/// @note Maintain its congruity with GffTypes.
+		/// </summary>
+		internal const string FileDialogFilter =
+				  "All files (*.*)|*.*"
+				+ "|generic file (*.GFF)|*.GFF"
+				+ "|area object (*.ARE)|*.ARE"
+				+ "|player character (*.BIC)|*.BIC"
+				+ "|faction table (*.FAC)|*.FAC"
+				+ "|area object lists(*.GIC)|*.GIC"
+				+ "|area properties and objects(*.GIT)|*.GIT"
+				+ "|module info or player list info (*.IFO)|*.IFO"
+				+ "|journal (*.JRL)|*.JRL"
+				+ "|roster character (*.ROS)|*.ROS"
+				+ "|light effect (*.ULT)|*.ULT"
+				+ "|placeable effect (*.UPE)|*.UPE"
+				+ "|creature object (*.UTC)|*.UTC"
+				+ "|door object (*.UTD)|*.UTD"
+				+ "|encounter object (*.UTE)|*.UTE"
+				+ "|item object (*.UTI)|*.UTI"
+				+ "|merchant store (*.UTM)|*.UTM"
+				+ "|placeable object (*.UTP)|*.UTP"
+				+ "|sound object (*.UTS)|*.UTS"
+				+ "|trigger object (*.UTT)|*.UTT"
+				+ "|waypoint object (*.UTW)|*.UTW";
+
 		#endregion Methods (static)
 	}
 }

@@ -303,7 +303,7 @@ namespace generalgff
 //				ofd.InitialDirectory = ;
 
 				ofd.Title  = "Select a GFF file";
-//				ofd.Filter = "GFF files (*.GFF)|*.GFF|All files (*.*)|*.*";
+				ofd.Filter = GffData.FileDialogFilter;
 
 				if (ofd.ShowDialog(this) == DialogResult.OK)
 				{
@@ -315,6 +315,7 @@ namespace generalgff
 
 		/// <summary>
 		/// Saves the currently loaded file.
+		/// @note This function is actually a SaveAs routine.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -324,8 +325,9 @@ namespace generalgff
 			{
 				using (var sfd = new SaveFileDialog())
 				{
-					sfd.Title      = "Save as GFF file";
-//					sfd.Filter     = "GFF files (*.GFF)|*.GFF|All files (*.*)|*.*";
+					sfd.Title  = "Save as GFF file";
+					sfd.Filter = GffData.FileDialogFilter;
+
 //					sfd.DefaultExt = "GFF";
 
 					if (CurrentData._pfe != Globals.TopLevelStruct)
@@ -334,9 +336,10 @@ namespace generalgff
 						sfd.FileName         = Path.GetFileName(CurrentData._pfe);
 					}
 
-					if (sfd.ShowDialog(this) == DialogResult.OK)
+					if (sfd.ShowDialog(this) == DialogResult.OK
+						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver))
 					{
-						GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver);
+						
 					}
 				}
 			}
