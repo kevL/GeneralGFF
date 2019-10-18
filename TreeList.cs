@@ -83,6 +83,8 @@ namespace generalgff
 		{
 			ContextMenu.MenuItems.Clear();
 
+			SelectField(SelectedNode); // revert the editpanel
+
 			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
 			if (info != null)
 			{
@@ -596,7 +598,13 @@ namespace generalgff
 				{
 					locale.langid = _langid;
 					field.label = GffData.Locale.GetLanguageString(locale.langid);
-					if (locale.F)
+
+					if (_langid == Languages.GffToken)
+					{
+						locale.F = false;
+						SelectField(SelectedNode); // freshen the editpanel (hide Feminine checkbox etc.)
+					}
+					else if (locale.F)
 						field.label += GeneralGFF.SUF_F;
 
 					SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
