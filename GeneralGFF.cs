@@ -401,7 +401,8 @@ namespace generalgff
 		void viewpop(object sender, EventArgs e)
 		{
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Enabled =
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null
+																	 && _tl.SelectedNode.Nodes.Count != 0;
 		}
 
 		/// <summary>
