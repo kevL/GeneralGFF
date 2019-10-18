@@ -106,21 +106,22 @@ namespace generalgff
 	/// </summary>
 	sealed class GffData
 	{
-		#region Fields
+		#region Properties
 		/// <summary>
 		/// Path-file-extension of the currently loaded GFF.
 		/// </summary>
-		internal readonly string _pfe;
-		#endregion Fields
+		internal string Pfe
+		{ get; set; }
 
-
-		#region Properties
 		/// <summary>
-		/// The version-string as found in the header - eg, "UTC V3.2"
+		/// The type+version string as found in the header - eg, "UTC V3.2"
 		/// </summary>
 		internal string Ver
 		{ get; set; }
 
+		/// <summary>
+		/// The loaded data's GFF-type.
+		/// </summary>
 		internal GffType Type
 		{ get; set; }
 		#endregion Properties
@@ -131,11 +132,11 @@ namespace generalgff
 		/// cTor.
 		/// </summary>
 		/// <param name="pfe">path-file-extension of the file that loaded; the
-		/// default is merely a placeholder until user writes to file and it
-		/// TODO needs to be set properly</param>
-		internal GffData(string pfe = "TopLevelStruct")
+		/// default is merely a placeholder for user-created data until the file
+		/// gets written to disk</param>
+		internal GffData(string pfe = Globals.TopLevelStruct)
 		{
-			_pfe = pfe;
+			Pfe = pfe;
 		}
 		#endregion cTor
 

@@ -61,7 +61,7 @@ namespace generalgff
 			set
 			{
 				if ((_data = value) != null)
-					Text = TITLE + " - " + _data._pfe;
+					Text = TITLE + " - " + _data.Pfe;
 				else
 					Text = TITLE;
 			}
@@ -330,16 +330,20 @@ namespace generalgff
 
 //					sfd.DefaultExt = "GFF";
 
-					if (CurrentData._pfe != Globals.TopLevelStruct)
+					if (CurrentData.Pfe != Globals.TopLevelStruct)
 					{
-						sfd.InitialDirectory = Path.GetDirectoryName(CurrentData._pfe);
-						sfd.FileName         = Path.GetFileName(CurrentData._pfe);
+						sfd.InitialDirectory = Path.GetDirectoryName(CurrentData.Pfe);
+						sfd.FileName         = Path.GetFileName(CurrentData.Pfe);
 					}
 
 					if (sfd.ShowDialog(this) == DialogResult.OK
 						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver))
 					{
-						
+						string label = Path.GetFileNameWithoutExtension(sfd.FileName).ToUpper();
+						_tl.Nodes[0].Text = label; // update TLS-label
+
+						CurrentData.Pfe = sfd.FileName;
+						CurrentData = CurrentData; // update titlebar text
 					}
 				}
 			}

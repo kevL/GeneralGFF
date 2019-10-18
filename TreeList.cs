@@ -343,7 +343,7 @@ namespace generalgff
 			field.type = FieldTypes.Struct;
 
 			if (_f.CurrentData != null)
-				field.label = Path.GetFileNameWithoutExtension(_f.CurrentData._pfe).ToUpper();
+				field.label = Path.GetFileNameWithoutExtension(_f.CurrentData.Pfe).ToUpper();
 			else
 			{
 				_f.CurrentData = new GffData(); // init GffData! ->

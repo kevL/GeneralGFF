@@ -26,7 +26,7 @@ namespace generalgff
 				// NOTE: The TLS has no Field ... thus the rootnode of the
 				// TreeList has no Tag.
 
-				string label = Path.GetFileNameWithoutExtension(f.CurrentData._pfe).ToUpper();
+				string label = Path.GetFileNameWithoutExtension(f.CurrentData.Pfe).ToUpper();
 				TreeNode root = f._tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
 
 				// instantiate the TLS's fieldids as treenodes ->
