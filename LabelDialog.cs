@@ -18,7 +18,7 @@ namespace generalgff
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		/// <param>label</param>
+		/// <param name="label"></param>
 		internal LabelDialog(string label)
 		{
 			InitializeComponent();

@@ -82,7 +82,7 @@ namespace generalgff
 			this.bt_Cancel.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Cancel.Name = "bt_Cancel";
 			this.bt_Cancel.Size = new System.Drawing.Size(70, 25);
-			this.bt_Cancel.TabIndex = 1;
+			this.bt_Cancel.TabIndex = 3;
 			this.bt_Cancel.Text = "Cancel";
 			this.bt_Cancel.UseVisualStyleBackColor = true;
 			// 
@@ -93,7 +93,7 @@ namespace generalgff
 			this.bt_Quit.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Quit.Name = "bt_Quit";
 			this.bt_Quit.Size = new System.Drawing.Size(70, 25);
-			this.bt_Quit.TabIndex = 3;
+			this.bt_Quit.TabIndex = 1;
 			this.bt_Quit.Text = "Quit";
 			this.bt_Quit.UseVisualStyleBackColor = true;
 			// 
@@ -105,7 +105,7 @@ namespace generalgff
 			this.la_Head.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Head.Name = "la_Head";
 			this.la_Head.Size = new System.Drawing.Size(239, 20);
-			this.la_Head.TabIndex = 4;
+			this.la_Head.TabIndex = 0;
 			this.la_Head.Text = "Data has changed ...";
 			this.la_Head.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
