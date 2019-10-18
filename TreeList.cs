@@ -605,7 +605,7 @@ namespace generalgff
 						SelectField(SelectedNode); // freshen the editpanel (hide Feminine checkbox etc.)
 					}
 					else if (locale.F)
-						field.label += GeneralGFF.SUF_F;
+						field.label += Globals.SUF_F;
 
 					SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
 				}

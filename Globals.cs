@@ -13,5 +13,7 @@
 
 
 		internal const string TopLevelStruct = "TopLevelStruct";
+
+		internal const string SUF_F = "[F]";
 	}
 }

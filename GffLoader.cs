@@ -99,7 +99,7 @@ namespace generalgff
 							field.localeid = (uint)i;
 							field.label = GffData.Locale.GetLanguageString(locale.langid);
 							if (locale.F)
-								field.label += GeneralGFF.SUF_F;
+								field.label += Globals.SUF_F;
 
 							AddField(field, node, locale);
 						}

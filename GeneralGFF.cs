@@ -22,8 +22,6 @@ namespace generalgff
 		const int LENGTH_LABEL = 17;
 		const int LENGTH_TYPE  = 17;
 
-		internal const string SUF_F = "[F]";
-
 		const int MI_FILE = 0;
 		const int MI_VIEW = 1;
 		const int MI_HELP = 2;
@@ -1117,7 +1115,7 @@ namespace generalgff
 
 							field.label = GffData.Locale.GetLanguageString(locale.langid);
 							if (locale.F = _prevalChecker = cb_Checker.Checked)
-								field.label += SUF_F;
+								field.label += Globals.SUF_F;
 
 							break;
 						}
