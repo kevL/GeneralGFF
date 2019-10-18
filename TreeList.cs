@@ -342,13 +342,13 @@ namespace generalgff
 			var field = new GffData.Field();
 			field.type = FieldTypes.Struct;
 
-			if (_f.CurrentData != null)
-				field.label = Path.GetFileNameWithoutExtension(_f.CurrentData.Pfe).ToUpper();
+			if (_f.GffData != null)
+				field.label = Path.GetFileNameWithoutExtension(_f.GffData.Pfe).ToUpper();
 			else
 			{
-				_f.CurrentData = new GffData(); // init GffData! ->
-				_f.CurrentData.Ver = "GFF V3.2";
-				_f.CurrentData.Type = GffType.generic;
+				_f.GffData = new GffData(); // init GffData! ->
+				_f.GffData.Ver = "GFF V3.2";
+				_f.GffData.Type = GffType.generic;
 
 				field.label = Globals.TopLevelStruct;
 			}
@@ -410,8 +410,8 @@ namespace generalgff
 
 			SelectedNode = node;
 
-			_f.CurrentData.Changed = true;
-			_f.CurrentData = _f.CurrentData;
+			_f.GffData.Changed = true;
+			_f.GffData = _f.GffData;
 		}
 
 
@@ -515,8 +515,8 @@ namespace generalgff
 				if (SelectedNode == null)
 					DisableEditPanel();
 
-				_f.CurrentData.Changed = true;
-				_f.CurrentData = _f.CurrentData;
+				_f.GffData.Changed = true;
+				_f.GffData = _f.GffData;
 			}
 		}
 
@@ -538,8 +538,8 @@ namespace generalgff
 						field.label = f.tb_Label.Text;
 						SelectedNode.Text = GeneralGFF.ConstructNodetext(field);
 
-						_f.CurrentData.Changed = true;
-						_f.CurrentData = _f.CurrentData;
+						_f.GffData.Changed = true;
+						_f.GffData = _f.GffData;
 					}
 				}
 			}
@@ -662,7 +662,7 @@ namespace generalgff
 				_f.la_Des.Text = "ASCII";
 				_f.la_Val.Text = "GFF type + version";
 
-				_f.tb_Val.Text = _f.CurrentData.Ver;
+				_f.tb_Val.Text = _f.GffData.Ver;
 
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Violet;

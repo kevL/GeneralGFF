@@ -19,14 +19,14 @@ namespace generalgff
 			f._tl.BeginUpdate();
 			f._tl.Nodes.Clear();
 
-			f.CurrentData = GffReader.ReadGFFfile(pfe);
-			if (f.CurrentData != null && GffReader.Structs.Count != 0)
+			f.GffData = GffReader.ReadGFFfile(pfe);
+			if (f.GffData != null && GffReader.Structs.Count != 0)
 			{
 				// Load the TopLevelStruct - all else follows ->
 				// NOTE: The TLS has no Field ... thus the rootnode of the
 				// TreeList has no Tag.
 
-				string label = Path.GetFileNameWithoutExtension(f.CurrentData.Pfe).ToUpper();
+				string label = Path.GetFileNameWithoutExtension(f.GffData.Pfe).ToUpper();
 				TreeNode root = f._tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
 
 				// instantiate the TLS's fieldids as treenodes ->

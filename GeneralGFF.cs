@@ -55,7 +55,7 @@ namespace generalgff
 		/// <summary>
 		/// The currently loaded GFF data.
 		/// </summary>
-		internal GffData CurrentData
+		internal GffData GffData
 		{
 			get { return _data; }
 			set
@@ -293,9 +293,9 @@ namespace generalgff
 		#region Handlers (override)
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			if (CurrentData != null && CurrentData.Changed && _tl.Nodes.Count != 0)
+			if (GffData != null && GffData.Changed && _tl.Nodes.Count != 0)
 			{
-				using (var f = new QuitDialog(CurrentData.Pfe != Globals.TopLevelStruct))
+				using (var f = new QuitDialog(GffData.Pfe != Globals.TopLevelStruct))
 				{
 					switch (f.ShowDialog(this))
 					{
@@ -307,7 +307,7 @@ namespace generalgff
 							break;
 
 						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
-							e.Cancel = !GffWriter.WriteGFFfile(CurrentData.Pfe, _tl, CurrentData.Ver);
+							e.Cancel = !GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver);
 							break;
 					}
 				}
@@ -362,21 +362,21 @@ namespace generalgff
 
 //					sfd.DefaultExt = "GFF";
 
-					if (CurrentData.Pfe != Globals.TopLevelStruct)
+					if (GffData.Pfe != Globals.TopLevelStruct)
 					{
-						sfd.InitialDirectory = Path.GetDirectoryName(CurrentData.Pfe);
-						sfd.FileName         = Path.GetFileName(CurrentData.Pfe);
+						sfd.InitialDirectory = Path.GetDirectoryName(GffData.Pfe);
+						sfd.FileName         = Path.GetFileName(GffData.Pfe);
 					}
 
 					if (sfd.ShowDialog(this) == DialogResult.OK
-						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, CurrentData.Ver))
+						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.Ver))
 					{
 						string label = Path.GetFileNameWithoutExtension(sfd.FileName).ToUpper();
 						_tl.Nodes[0].Text = label; // update TLS-label
 
-						CurrentData.Pfe = sfd.FileName;
-						CurrentData.Changed = false;
-						CurrentData = CurrentData; // update titlebar text
+						GffData.Pfe = sfd.FileName;
+						GffData.Changed = false;
+						GffData = GffData; // update titlebar text
 					}
 				}
 			}
@@ -740,8 +740,8 @@ namespace generalgff
 					{
 						valid = true;
 
-						CurrentData.Ver = val;
-						CurrentData.Type = GffData.GetGffType(val.Substring(0,3));
+						GffData.Ver = val;
+						GffData.Type = GffData.GetGffType(val.Substring(0,3));
 
 						tb_Val.Text = val;
 						RepositionCaret(tb_Val);
@@ -1130,8 +1130,8 @@ namespace generalgff
 
 					_prevalText = val;
 
-					CurrentData.Changed = true;
-					CurrentData = CurrentData;
+					GffData.Changed = true;
+					GffData = GffData;
 				}
 				else
 					baddog("That dog don't hunt.");
