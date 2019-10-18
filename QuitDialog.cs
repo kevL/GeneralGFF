@@ -113,7 +113,7 @@ namespace generalgff
 			// 
 			this.AcceptButton = this.bt_Save;
 			this.CancelButton = this.bt_Cancel;
-			this.ClientSize = new System.Drawing.Size(239, 56);
+			this.ClientSize = new System.Drawing.Size(239, 54);
 			this.Controls.Add(this.la_Head);
 			this.Controls.Add(this.bt_Quit);
 			this.Controls.Add(this.bt_Save);
