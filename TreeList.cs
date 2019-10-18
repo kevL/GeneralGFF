@@ -350,7 +350,7 @@ namespace generalgff
 				_f.CurrentData.Ver = "GFF V3.2";
 				_f.CurrentData.Type = GffType.generic;
 
-				field.label = "TopLevelStruct";
+				field.label = Globals.TopLevelStruct;
 			}
 
 			field.Struct = new Struct();

@@ -328,8 +328,11 @@ namespace generalgff
 //					sfd.Filter     = "GFF files (*.GFF)|*.GFF|All files (*.*)|*.*";
 //					sfd.DefaultExt = "GFF";
 
-					sfd.InitialDirectory = Path.GetDirectoryName(CurrentData._pfe);
-					sfd.FileName         = Path.GetFileName(CurrentData._pfe);
+					if (CurrentData._pfe != Globals.TopLevelStruct)
+					{
+						sfd.InitialDirectory = Path.GetDirectoryName(CurrentData._pfe);
+						sfd.FileName         = Path.GetFileName(CurrentData._pfe);
+					}
 
 					if (sfd.ShowDialog(this) == DialogResult.OK)
 					{

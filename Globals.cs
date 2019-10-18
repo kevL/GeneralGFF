@@ -10,5 +10,8 @@
 
 		internal const int Length_DWORD  =  4;
 		internal const int Length_VER    =  8;
+
+
+		internal const string TopLevelStruct = "TopLevelStruct";
 	}
 }
