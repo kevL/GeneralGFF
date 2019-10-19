@@ -12,7 +12,7 @@ namespace generalgff
 	{
 		#region Fields (static)
 		internal const string EXT_T = ".t";
-		const string EXT_B = ".ggf";
+		const string EXT_B = ".ggb";
 		#endregion Fields (static)
 
 
