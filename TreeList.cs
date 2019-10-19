@@ -655,13 +655,18 @@ namespace generalgff
 			SelectedNode.Toggle();
 		}
 
+
+		internal bool BypassChanged;
+
 		/// <summary>
 		/// 
 		/// </summary>
 		/// <param name="e"></param>
 		protected override void OnAfterSelect(TreeViewEventArgs e)
 		{
+			BypassChanged = true;
 			SelectField(e.Node);
+			BypassChanged = false;
 		}
 		#endregion Handlers (override)
 
@@ -674,6 +679,8 @@ namespace generalgff
 		/// </summary>
 		void DisableEditPanel()
 		{
+			_f.EnableApply = GeneralGFF.DIRTY_non;
+
 			_f.la_Des.Text =
 			_f.la_Val.Text =
 			_f.tb_Val.Text =

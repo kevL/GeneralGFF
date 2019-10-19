@@ -184,6 +184,7 @@ namespace generalgff
 			this.cb_Checker.TabIndex = 4;
 			this.cb_Checker.UseVisualStyleBackColor = true;
 			this.cb_Checker.Visible = false;
+			this.cb_Checker.CheckedChanged += new System.EventHandler(this.checkchanged_Checker);
 			// 
 			// GeneralGFF
 			// 

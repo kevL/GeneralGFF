@@ -130,12 +130,6 @@ namespace generalgff
 			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
 
 
-			var t1 = new Timer(); // workaround that bypasses TextChanged ...
-			t1.Tick += OnTick;
-			t1.Interval = 100;
-			t1.Start();
-
-
 			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\f03_malarite_out.UTC");
 		}
 		#endregion cTor
@@ -491,67 +485,22 @@ namespace generalgff
 
 
 		#region Handlers (panel2)
-/*		/// <summary>
-		/// GLITCH: This funct produces a bad flicker on both the textbox and
-		/// the apply-button. But not when the text changes ... when items are
-		/// selected in the TreeList. Literally. The text can stay the same (ie,
-		/// this funct does not fire) but when clicking on the TreeList, if
-		/// this function has a body the textbox and apply-button flicker; but
-		/// if the body of this function is commented out, the flicker goes away
-		/// completely - that is, merely having the event hooked up with a
-		/// handler produces flicker.
+		internal const int DIRTY_non   = 0x0;
+				 const int DIRTY_TEXTS = 0x1;
+				 const int DIRTY_CZECH = 0x2;
+
+		int _enableapply;
+		/// <summary>
+		/// Enables or disables the apply and revert buttons in the editor-panel.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void textchanged_Textbox(object sender, EventArgs e)
+		internal int EnableApply
 		{
-			//tb_Val
-			if (!_tl._bypassTextChanged)
-			{
-				if ((sender as TextBox).Text != _preval)
-					btn_Apply.Enabled = true;
-				else
-					btn_Apply.Enabled = false;
-			}
-			else
-				_tl._bypassTextChanged = false;
-		} */
-		void OnTick(object sender, EventArgs e)
-		{
-			if (_tl.SelectedNode != null)
-			{
-				string text;
-				if (_tl.SelectedNode.Tag == null)
-				{
-					text = tb_Val.Text;
-				}
-				else // is TopLevelStruct
-				{
-					switch (((GffData.Field)_tl.SelectedNode.Tag).type)
-					{
-						default:
-							text = tb_Val.Text;
-							break;
-
-						case FieldTypes.CExoString:
-						case FieldTypes.VOID:
-						case FieldTypes.locale:
-							text = rt_Val.Text;
-							break;
-					}
-				}
-
-				btn_Revert.Enabled =
-				btn_Apply .Enabled = text != _prevalText
-								  || (cb_Checker.Visible && cb_Checker.Checked != _prevalChecker);
-			}
-			else
+			set
 			{
 				btn_Revert.Enabled =
-				btn_Apply .Enabled = false;
+				btn_Apply .Enabled = (_enableapply = value) != DIRTY_non;
 			}
 		}
-
 
 		/// <summary>
 		/// force-Reselects the current treenode causing panel2 to repopulate.
@@ -561,6 +510,7 @@ namespace generalgff
 		void click_Revert(object sender, EventArgs e)
 		{
 			_tl.SelectField(_tl.SelectedNode);
+			EnableApply = DIRTY_non;
 		}
 
 
@@ -611,7 +561,8 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Prevents non-ASCII characters in CResRefs.
+		/// Prevents non-ASCII characters in CResRefs and/or the
+		/// TopLevelStruct's type+version info.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -641,11 +592,19 @@ namespace generalgff
 							}
 							else
 								_editText = tb_Val.Text;
-
-							// Regex.Replace(tb_Val.Text, @"[^\u0020-\u007E]", string.Empty)
 							break;
 					}
 				}
+			}
+
+			if (!_tl.BypassChanged) // TODO: this could possibly go inside (_tl.SelectedNode != null) but not sure if/when that can be false.
+			{
+				if (tb_Val.Text != _prevalText)
+				{
+					EnableApply |= DIRTY_TEXTS;
+				}
+				else
+					EnableApply &= ~DIRTY_TEXTS;
 			}
 		}
 
@@ -677,8 +636,6 @@ namespace generalgff
 					}
 					else
 						_editText = rt_Val.Text;
-
-					// Regex.Replace(rt_Val.Text, @"[^\u0020-\u007E]", String.Empty);
 					break;
 
 				case FieldTypes.VOID:
@@ -689,6 +646,16 @@ namespace generalgff
 					else
 						_editText = rt_Val.Text;
 					break;
+			}
+
+			if (!_tl.BypassChanged)
+			{
+				if (rt_Val.Text != _prevalText)
+				{
+					EnableApply |= DIRTY_TEXTS;
+				}
+				else
+					EnableApply &= ~DIRTY_TEXTS;
 			}
 		}
 
@@ -1132,9 +1099,30 @@ namespace generalgff
 
 					GffData.Changed = true;
 					GffData = GffData;
+
+					EnableApply = DIRTY_non;
 				}
 				else
 					baddog("That dog don't hunt.");
+			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void checkchanged_Checker(object sender, EventArgs e)
+		{
+			if (!_tl.BypassChanged)
+			{
+				if (cb_Checker.Checked != _prevalChecker)
+				{
+					EnableApply |= DIRTY_CZECH;
+				}
+				else
+					EnableApply &= ~DIRTY_CZECH;
 			}
 		}
 		#endregion Handlers (panel2)
