@@ -495,6 +495,7 @@ namespace generalgff
 		/// </summary>
 		internal int EnableApply
 		{
+			get { return _enableapply; }
 			set
 			{
 				btn_Revert.Enabled =
