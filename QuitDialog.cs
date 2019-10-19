@@ -107,7 +107,7 @@ namespace generalgff
 			this.la_Head.Size = new System.Drawing.Size(239, 20);
 			this.la_Head.TabIndex = 0;
 			this.la_Head.Text = "Data has changed ...";
-			this.la_Head.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.la_Head.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
 			// QuitDialog
 			// 
