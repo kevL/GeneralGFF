@@ -521,7 +521,11 @@ namespace generalgff
 			if (_tl.SelectedNode != null)
 			{
 				string text;
-				if (_tl.SelectedNode.Tag != null)
+				if (_tl.SelectedNode.Tag == null)
+				{
+					text = tb_Val.Text;
+				}
+				else // is TopLevelStruct
 				{
 					switch (((GffData.Field)_tl.SelectedNode.Tag).type)
 					{
@@ -535,10 +539,6 @@ namespace generalgff
 							text = rt_Val.Text;
 							break;
 					}
-				}
-				else // is TopLevelStruct
-				{
-					text = tb_Val.Text;
 				}
 
 				btn_Revert.Enabled =
