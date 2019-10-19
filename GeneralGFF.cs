@@ -498,7 +498,8 @@ namespace generalgff
 		/// this funct does not fire) but when clicking on the TreeList, if
 		/// this function has a body the textbox and apply-button flicker; but
 		/// if the body of this function is commented out, the flicker goes away
-		/// completely - that is, the function call itself produces flicker.
+		/// completely - that is, merely having the event hooked up with a
+		/// handler produces flicker.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -543,12 +544,12 @@ namespace generalgff
 				btn_Revert.Enabled =
 				btn_Apply .Enabled = text != _prevalText
 								  || (cb_Checker.Visible && cb_Checker.Checked != _prevalChecker);
-
-				return;
 			}
-
-			btn_Revert.Enabled =
-			btn_Apply .Enabled = false;
+			else
+			{
+				btn_Revert.Enabled =
+				btn_Apply .Enabled = false;
+			}
 		}
 
 
