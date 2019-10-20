@@ -53,6 +53,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuitDialog.cs" />
+    <Compile Include="SearchDialog.cs" />
     <Compile Include="TreeList.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -70,6 +71,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="QuitDialog.resx">
       <DependentUpon>QuitDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SearchDialog.resx">
+      <DependentUpon>SearchDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
