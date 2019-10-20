@@ -564,7 +564,10 @@ namespace generalgff
 		/// <param name="e"></param>
 		void keyup(object sender, KeyEventArgs e)
 		{
-			_posCaret = tb_Val.SelectionStart;
+			if ((TextBoxBase)sender == tb_Val)
+				_posCaret = tb_Val.SelectionStart;
+			else
+				_posCaret = rt_Val.SelectionStart;
 		}
 
 		/// <summary>
