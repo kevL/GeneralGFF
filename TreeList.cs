@@ -83,7 +83,8 @@ namespace generalgff
 		{
 			ContextMenu.MenuItems.Clear();
 
-			SelectField(SelectedNode); // revert the editpanel
+			if (SelectedNode != null)
+				SelectField(SelectedNode); // revert the editpanel
 
 			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
 			if (info != null)
