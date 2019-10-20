@@ -179,45 +179,46 @@ namespace generalgff
 		/// </summary>
 		void Search()
 		{
-			if (_tl.Nodes.Count != 0 && !String.IsNullOrEmpty(tb_Search.Text))
+			_text = tb_Search.Text.ToLower(CultureInfo.CurrentCulture);
+
+			if (_tl.Nodes.Count != 0 && !String.IsNullOrEmpty(_text))
 			{
 				if (_tl.SelectedNode != null)
 					_start0 = _tl.SelectedNode;
 				else
 					_start0 = _tl.Nodes[0];
 
-				TreeNode next = GetNextNode(_start0); // find a node after (or before) the SelectedNode to start search at
-
-				if (next != _start0
-					&& (next = Search(tb_Search.Text.ToLower(CultureInfo.CurrentCulture), next)) != null)
+				TreeNode next = _start0; // find a node after (or before) the SelectedNode to start search at
+				while ((next = GetNextNode(next)) != _start0)
 				{
-					_tl.SelectedNode = next;
+					if (Match(next) != null)
+					{
+						_tl.SelectedNode = next;
+						break;
+					}
 				}
 			}
 		}
 
 		/// <summary>
-		/// Iterates over treenodes looking for the search-text.
+		/// Checks if the text of a treenode matches the search-text.
 		/// </summary>
-		/// <param name="text"></param>
-		/// <param name="next"></param>
+		/// <param name="node"></param>
 		/// <returns></returns>
-		TreeNode Search(string text, TreeNode next)
+		TreeNode Match(TreeNode node)
 		{
-			if ((rb_Substring.Checked && next.Text.ToLower(CultureInfo.CurrentCulture).Contains(text))
-				|| Regex.IsMatch(next.Text.ToLower(CultureInfo.CurrentCulture), @"\b" + text + @"\b"))
+			string text = node.Text.ToLower(CultureInfo.CurrentCulture);
+			
+			if ((rb_Substring.Checked && text.Contains(_text))
+				|| Regex.IsMatch(text, @"\b" + _text + @"\b"))
 			{
-				return next; // found
+				return node; // found
 			}
-
-			if ((next = GetNextNode(next)) != _start0)
-				return Search(text, next);
-
 			return null; // NOT found
 		}
 
 		/// <summary>
-		/// Gets the next node to check in an appropriate direction.
+		/// Gets the next node to check (in the appropriate direction).
 		/// </summary>
 		/// <param name="start"></param>
 		/// <returns></returns>
@@ -263,7 +264,7 @@ namespace generalgff
 						start = start.LastNode;
 				}
 			}
-			return start;
+			return start; // shall never return null
 		}
 		#endregion Methods
 
