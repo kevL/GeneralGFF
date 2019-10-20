@@ -170,6 +170,17 @@ namespace generalgff
 			}
 			Search();
 		}
+
+
+		/// <summary>
+		/// Resets the textcolor.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void textchanged_Search(object sender, EventArgs e)
+		{
+			tb_Search.ForeColor = SystemColors.ControlText;
+		}
 		#endregion Handlers
 
 
@@ -179,6 +190,8 @@ namespace generalgff
 		/// </summary>
 		void Search()
 		{
+			tb_Search.ForeColor = SystemColors.ControlText;
+
 			_text = tb_Search.Text.ToLower(CultureInfo.CurrentCulture);
 
 			if (_tl.Nodes.Count != 0 && !String.IsNullOrEmpty(_text))
@@ -194,9 +207,11 @@ namespace generalgff
 					if (Match(next) != null)
 					{
 						_tl.SelectedNode = next;
-						break;
+						return;
 					}
 				}
+
+				tb_Search.ForeColor = Color.Crimson;
 			}
 		}
 
@@ -322,6 +337,7 @@ namespace generalgff
 			this.tb_Search.Size = new System.Drawing.Size(179, 20);
 			this.tb_Search.TabIndex = 0;
 			this.tb_Search.WordWrap = false;
+			this.tb_Search.TextChanged += new System.EventHandler(this.textchanged_Search);
 			// 
 			// bt_Down
 			// 
