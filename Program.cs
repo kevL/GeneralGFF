@@ -14,7 +14,14 @@ namespace generalgff
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new GeneralGFF());
+
+			string filearg;
+			if (args.Length != 0)
+				filearg = args[0];
+			else
+				filearg = null;
+
+			Application.Run(new GeneralGFF(filearg));
 		}
 	}
 }

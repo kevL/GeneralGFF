@@ -79,7 +79,8 @@ namespace generalgff
 		/// <summary>
 		/// Instantiates the GeneralGFF f.
 		/// </summary>
-		internal GeneralGFF()
+		/// <param name="filearg"></param>
+		internal GeneralGFF(string filearg)
 		{
 			logfile.CreateLog(); // works in debug-build only.
 			InitializeComponent();
@@ -139,7 +140,11 @@ namespace generalgff
 			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
 
 
-			//LoadGFFfile(@"C:\Users\User\Documents\Neverwinter Nights 2\override\f03_malarite_out.UTC");
+			if (File.Exists(filearg))
+			{
+				var loader = new GffLoader();
+				loader.LoadGFFfile(this, filearg);
+			}
 		}
 		#endregion cTor
 
