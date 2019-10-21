@@ -560,17 +560,27 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Applies changed data to a field if the textbox is focused and
-		/// [Enter] is keydown'd.
+		/// Handles keydowns in the textbox.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		void keydown_Textbox(object sender, KeyEventArgs e)
 		{
-			if (e.KeyData == Keys.Enter)
+			switch (e.KeyData)
 			{
-				e.SuppressKeyPress = true;
-				btn_Apply.PerformClick();
+				case Keys.Enter:
+					e.SuppressKeyPress = true;
+					btn_Apply.PerformClick();
+
+					_tl.Select();
+					break;
+
+				case Keys.Escape:
+					e.SuppressKeyPress = true;
+					btn_Revert.PerformClick();
+
+					_tl.Select();
+					break;
 			}
 		}
 
@@ -634,6 +644,24 @@ namespace generalgff
 		}
 
 		/// <summary>
+		/// Handles keydowns in the richtextbox.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void keydown_Richtextbox(object sender, KeyEventArgs e)
+		{
+			switch (e.KeyData)
+			{
+				case Keys.Escape:
+					e.SuppressKeyPress = true;
+					btn_Revert.PerformClick();
+
+					_tl.Select();
+					break;
+			}
+		}
+
+		/// <summary>
 		/// Prevents non-ASCII characters in CExoString and non-hexadecimal
 		/// characters in VOID.
 		/// </summary>
@@ -684,11 +712,11 @@ namespace generalgff
 			TreeNode node = _tl.SelectedNode;
 			if (node != null) // safety.
 			{
-				string val = null; // the string to test ->
+				string val = null; // the string to test
 
 				GffData.Field field = null;
-				bool valid = false;
 				GffData.Locale locale = null;
+				bool valid = false;
 
 				if (node.Tag == null) // is TopLevelStruct
 				{
