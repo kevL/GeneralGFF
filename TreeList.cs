@@ -64,11 +64,11 @@ namespace generalgff
 			HideSelection = false;
 			BorderStyle   = BorderStyle.None;
 			Indent        = 12;
+			AllowDrop     = true;
 
 			TreeViewNodeSorter = new NodeSorter();
 
 			DontBeepEvent += Toggle;
-
 
 			// NOTE: ContextMenuStrip fails to invoke on first RMB-click
 			// that's why ContextMenu (because it works as advertised).
@@ -668,6 +668,35 @@ namespace generalgff
 			BypassChanged = true;
 			SelectField(e.Node);
 			BypassChanged = false;
+		}
+
+
+		/// <summary>
+		/// Changes the icon when a file is dragged over this TreeList.
+		/// </summary>
+		/// <param name="drgevent"></param>
+		protected override void OnDragEnter(DragEventArgs drgevent)
+		{
+			if (drgevent.Data.GetDataPresent(DataFormats.FileDrop))
+				drgevent.Effect = DragDropEffects.Copy;
+			else
+				drgevent.Effect = DragDropEffects.None;
+		}
+
+		/// <summary>
+		/// Drops a file into this TreeList.
+		/// </summary>
+		/// <param name="drgevent"></param>
+		protected override void OnDragDrop(DragEventArgs drgevent)
+		{
+			var files = (string[])drgevent.Data.GetData(DataFormats.FileDrop);
+			string file = files[0];
+
+			if (File.Exists(file)) // ie. not a directory
+			{
+				var loader = new GffLoader();
+				loader.LoadGFFfile(_f, file);
+			}
 		}
 		#endregion Handlers (override)
 
