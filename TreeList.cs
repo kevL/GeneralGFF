@@ -684,7 +684,7 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Drops a file into this TreeList.
+		/// Drops a file onto this TreeList.
 		/// </summary>
 		/// <param name="drgevent"></param>
 		protected override void OnDragDrop(DragEventArgs drgevent)
@@ -694,8 +694,14 @@ namespace generalgff
 
 			if (File.Exists(file)) // ie. not a directory
 			{
-				var loader = new GffLoader();
-				loader.LoadGFFfile(_f, file);
+				_f.TopMost = true;
+				_f.TopMost = false;
+
+				if (_f.CheckCloseData())
+				{
+					var loader = new GffLoader();
+					loader.LoadGFFfile(_f, file);
+				}
 			}
 		}
 		#endregion Handlers (override)

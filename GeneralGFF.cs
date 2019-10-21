@@ -299,26 +299,7 @@ namespace generalgff
 		#region Handlers (override)
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			if (GffData != null && GffData.Changed && _tl.Nodes.Count != 0)
-			{
-				using (var f = new QuitDialog(GffData.Pfe != Globals.TopLevelStruct))
-				{
-					switch (f.ShowDialog(this))
-					{
-						case DialogResult.Abort:	// "Cancel" - don't quit
-							e.Cancel = true;
-							break;
-
-						case DialogResult.Ignore:	// "Quit" - quit don't save
-							break;
-
-						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
-							e.Cancel = !GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver);
-							break;
-					}
-				}
-			}
-//			base.OnFormClosing(e);
+			e.Cancel = !CheckCloseData();
 		}
 		#endregion Handlers (override)
 
@@ -336,17 +317,20 @@ namespace generalgff
 		/// <param name="e"></param>
 		void fileclick_Open(object sender, EventArgs e)
 		{
-			using (var ofd = new OpenFileDialog())
+			if (CheckCloseData())
 			{
-//				ofd.InitialDirectory = ;
-
-				ofd.Title  = "Select a GFF file";
-				ofd.Filter = GffData.FileDialogFilter;
-
-				if (ofd.ShowDialog(this) == DialogResult.OK)
+				using (var ofd = new OpenFileDialog())
 				{
-					var loader = new GffLoader();
-					loader.LoadGFFfile(this, ofd.FileName);
+//					ofd.InitialDirectory = ;
+
+					ofd.Title  = "Select a GFF file";
+					ofd.Filter = GffData.FileDialogFilter;
+
+					if (ofd.ShowDialog(this) == DialogResult.OK)
+					{
+						var loader = new GffLoader();
+						loader.LoadGFFfile(this, ofd.FileName);
+					}
 				}
 			}
 		}
@@ -1195,6 +1179,32 @@ namespace generalgff
 						MessageBoxIcon.Error,
 						MessageBoxDefaultButton.Button1,
 						0);
+		}
+
+
+		/// <summary>
+		/// Checks if the current data can be closed.
+		/// </summary>
+		/// <returns>true if okay to close</returns>
+		internal bool CheckCloseData()
+		{
+			if (GffData != null && GffData.Changed && _tl.Nodes.Count != 0)
+			{
+				using (var f = new QuitDialog(GffData.Pfe != Globals.TopLevelStruct))
+				{
+					switch (f.ShowDialog(this))
+					{
+						case DialogResult.Abort:	// "Cancel" - don't quit
+							return false;
+
+//						case DialogResult.Ignore:	// "Quit" - quit don't save
+
+						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
+							return GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver);
+					}
+				}
+			}
+			return true;
 		}
 		#endregion Methods
 
