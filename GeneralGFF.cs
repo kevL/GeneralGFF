@@ -522,6 +522,8 @@ namespace generalgff
 		{
 			_tl.SelectField(_tl.SelectedNode);
 			EnableApply = DIRTY_non;
+
+			_tl.Select();
 		}
 
 
@@ -571,15 +573,11 @@ namespace generalgff
 				case Keys.Enter:
 					e.SuppressKeyPress = true;
 					btn_Apply.PerformClick();
-
-					_tl.Select();
 					break;
 
 				case Keys.Escape:
 					e.SuppressKeyPress = true;
 					btn_Revert.PerformClick();
-
-					_tl.Select();
 					break;
 			}
 		}
@@ -655,8 +653,6 @@ namespace generalgff
 				case Keys.Escape:
 					e.SuppressKeyPress = true;
 					btn_Revert.PerformClick();
-
-					_tl.Select();
 					break;
 			}
 		}
@@ -1147,6 +1143,8 @@ namespace generalgff
 				else
 					baddog("That dog don't hunt.");
 			}
+
+			_tl.Select();
 		}
 
 
