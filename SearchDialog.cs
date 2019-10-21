@@ -390,6 +390,7 @@ namespace generalgff
 			this.Controls.Add(this.bt_Down);
 			this.Controls.Add(this.tb_Search);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
 			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;

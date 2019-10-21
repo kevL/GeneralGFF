@@ -100,7 +100,7 @@ namespace generalgff
 			// la_Head
 			// 
 			this.la_Head.Dock = System.Windows.Forms.DockStyle.Top;
-			this.la_Head.ForeColor = System.Drawing.Color.Firebrick;
+			this.la_Head.ForeColor = System.Drawing.Color.IndianRed;
 			this.la_Head.Location = new System.Drawing.Point(0, 0);
 			this.la_Head.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Head.Name = "la_Head";
@@ -120,6 +120,7 @@ namespace generalgff
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "QuitDialog";

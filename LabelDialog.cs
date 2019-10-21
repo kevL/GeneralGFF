@@ -207,6 +207,7 @@ namespace generalgff
 			this.Controls.Add(this.bt_Cancel);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "LabelDialog";
