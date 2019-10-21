@@ -194,6 +194,7 @@ namespace generalgff
 			this.ClientSize = new System.Drawing.Size(792, 574);
 			this.Controls.Add(this.sc_body);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
 			this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.Name = "GeneralGFF";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
