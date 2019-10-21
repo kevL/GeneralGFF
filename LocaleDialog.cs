@@ -32,9 +32,21 @@ namespace generalgff
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		internal LocaleDialog()
+		/// <param name="edit">true if editing, false if adding</param>
+		internal LocaleDialog(bool edit = false)
 		{
 			InitializeComponent();
+
+			if (edit)
+			{
+				Text         = "Edit Locale";
+				la_head.Text = "Edit Language type";
+			}
+			else
+			{
+				Text         = "Add Locale";
+				la_head.Text = "Add Language type";
+			}
 
 			rb_English .Tag = Languages.English;
 			rb_French  .Tag = Languages.French;
@@ -171,7 +183,6 @@ namespace generalgff
 			this.la_head.Name = "la_head";
 			this.la_head.Size = new System.Drawing.Size(164, 20);
 			this.la_head.TabIndex = 0;
-			this.la_head.Text = "Add Language type";
 			this.la_head.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
 			// 
 			// bt_Accept
@@ -390,7 +401,6 @@ namespace generalgff
 			this.Name = "LocaleDialog";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Add Locale";
 			this.pl_bot.ResumeLayout(false);
 			this.gb_locale.ResumeLayout(false);
 			this.ResumeLayout(false);

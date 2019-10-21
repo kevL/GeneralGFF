@@ -587,7 +587,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void contextclick_EditLanguageId(object sender, EventArgs e)
 		{
-			using (var f = new LocaleDialog())
+			using (var f = new LocaleDialog(true))
 			{
 				var parent = (GffData.Field)SelectedNode.Parent.Tag;
 				var field = ((GffData.Field)SelectedNode.Tag);
