@@ -111,7 +111,6 @@ namespace generalgff
 			// 
 			// QuitDialog
 			// 
-			this.AcceptButton = this.bt_Save;
 			this.CancelButton = this.bt_Cancel;
 			this.ClientSize = new System.Drawing.Size(239, 54);
 			this.Controls.Add(this.la_Head);
