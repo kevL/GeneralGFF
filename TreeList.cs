@@ -657,7 +657,7 @@ namespace generalgff
 		}
 
 
-		internal bool BypassChanged;
+		internal bool BypassDirty;
 
 		/// <summary>
 		/// 
@@ -665,9 +665,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnAfterSelect(TreeViewEventArgs e)
 		{
-			BypassChanged = true;
+			BypassDirty = true;
 			SelectField(e.Node);
-			BypassChanged = false;
+			BypassDirty = false;
 		}
 
 
@@ -777,7 +777,8 @@ namespace generalgff
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Violet;
 
-				_f._prevalText = _f.tb_Val.Text;
+				_f._prevalText =
+				_f._editText = _f.tb_Val.Text;
 			}
 			else
 			{
@@ -794,7 +795,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.CHAR:
@@ -806,7 +808,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.WORD:
@@ -818,7 +821,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.SHORT:
@@ -830,7 +834,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD:
@@ -842,7 +847,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT:
@@ -854,7 +860,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD64:
@@ -866,7 +873,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT64:
@@ -878,7 +886,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.FLOAT:
@@ -893,7 +902,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 					}
 
@@ -909,7 +919,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 					}
 
@@ -922,7 +933,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.CExoString:
@@ -933,7 +945,8 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._prevalText = _f.rt_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.rt_Val.Text;
 						break;
 
 					case FieldTypes.CExoLocString:
@@ -957,7 +970,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 					}
 
@@ -966,16 +980,20 @@ namespace generalgff
 						_f.la_Des.Text = "binary data";
 						_f.la_Val.Text = "VOID";
 
-						_f.rt_Val.Text = BitConverter.ToString(field.VOID).Replace("-", " ");
+						_f.rt_Val.Text = BitConverter.ToString(field.VOID)
+													 .Replace("-", " ")
+													 .ToUpper(CultureInfo.InvariantCulture);
 
 						EnableRichtextbox();
 
-						_f._prevalText = _f.rt_Val.Text.ToUpper(CultureInfo.InvariantCulture);
+						_f._prevalText =
+						_f._editText = _f.rt_Val.Text;
 						break;
 					}
 
 					case FieldTypes.List:
 						_f.la_Val.Text = "List";
+						_f._editText = String.Empty;
 						break;
 
 					case FieldTypes.Struct:
@@ -987,7 +1005,8 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText = _f.tb_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.locale:
@@ -1014,7 +1033,8 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._prevalText = _f.rt_Val.Text;
+						_f._prevalText =
+						_f._editText = _f.rt_Val.Text;
 						break;
 					}
 				}

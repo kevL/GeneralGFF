@@ -46,7 +46,7 @@ namespace generalgff
 		internal string _prevalText = String.Empty;
 		internal bool _prevalChecker;
 
-		string _editText = String.Empty;
+		internal string _editText = String.Empty;
 		int _posCaret = 0;
 		#endregion Fields
 
@@ -617,16 +617,16 @@ namespace generalgff
 							break;
 					}
 				}
-			}
 
-			if (!_tl.BypassChanged) // TODO: this could possibly go inside (_tl.SelectedNode != null) but not sure if/when that can be false.
-			{
-				if (tb_Val.Text != _prevalText)
+				if (!_tl.BypassDirty)
 				{
-					EnableApply |= DIRTY_TEXTS;
+					if (tb_Val.Text != _prevalText)
+					{
+						EnableApply |= DIRTY_TEXTS;
+					}
+					else
+						EnableApply &= ~DIRTY_TEXTS;
 				}
-				else
-					EnableApply &= ~DIRTY_TEXTS;
 			}
 		}
 
@@ -665,35 +665,43 @@ namespace generalgff
 		/// <param name="e"></param>
 		void textchanged_Richtextbox(object sender, EventArgs e)
 		{
-			switch (((GffData.Field)_tl.SelectedNode.Tag).type)
+			if (_tl.SelectedNode != null)
 			{
-				case FieldTypes.CExoString:
-					if (!isPrintableAscii(rt_Val.Text))
-					{
-						ResetEditor(rt_Val);
-					}
-					else
-						_editText = rt_Val.Text;
-					break;
+				object tag = _tl.SelectedNode.Tag;
 
-				case FieldTypes.VOID:
-					if (!isHexadecimal(rt_Val.Text))
-					{
-						ResetEditor(rt_Val);
-					}
-					else
-						_editText = rt_Val.Text;
-					break;
-			}
-
-			if (!_tl.BypassChanged)
-			{
-				if (rt_Val.Text != _prevalText)
+				if (tag != null) // is NOT TopLevelStruct's node
 				{
-					EnableApply |= DIRTY_TEXTS;
+					switch (((GffData.Field)tag).type)
+					{
+						case FieldTypes.CExoString:
+							if (!isPrintableAscii(rt_Val.Text))
+							{
+								ResetEditor(rt_Val);
+							}
+							else
+								_editText = rt_Val.Text;
+							break;
+
+						case FieldTypes.VOID:
+							if (!isHexadecimal(rt_Val.Text))
+							{
+								ResetEditor(rt_Val);
+							}
+							else
+								_editText = rt_Val.Text;
+							break;
+					}
+
+					if (!_tl.BypassDirty)
+					{
+						if (rt_Val.Text != _prevalText)
+						{
+							EnableApply |= DIRTY_TEXTS;
+						}
+						else
+							EnableApply &= ~DIRTY_TEXTS;
+					}
 				}
-				else
-					EnableApply &= ~DIRTY_TEXTS;
 			}
 		}
 
@@ -1155,7 +1163,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void checkchanged_Checker(object sender, EventArgs e)
 		{
-			if (!_tl.BypassChanged)
+			if (!_tl.BypassDirty)
 			{
 				if (cb_Checker.Checked != _prevalChecker)
 				{
@@ -1273,8 +1281,11 @@ namespace generalgff
 			for (int i = 0; i != text.Length; ++i)
 			{
 				c = (int)text[i];
-				if (c < 32 || c > 126)
+				if (c != 10 && c != 13		// lf cr
+					&& (c < 32 || c > 126))	// printable ascii
+				{
 					return false;
+				}
 			}
 			return true;
 		}
