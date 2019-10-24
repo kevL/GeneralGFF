@@ -174,14 +174,21 @@ namespace generalgff
 			switch (field.type)
 			{
 				default:
-					return label + "= " + GetValueString(field);
+					label += "= " + GetValueString(field);
+					break;
 
 				case FieldTypes.locale:
-					return label + "= " + locale.local;
+					label += "= " + locale.local;
+					break;
 
 				case FieldTypes.List:
-					return label;
+					break;
 			}
+
+			if (label.Length > 68)
+				label = label.Substring(0,66) + "...";
+
+			return label;
 		}
 
 		/// <summary>
