@@ -674,7 +674,7 @@ namespace generalgff
 					switch (((GffData.Field)tag).type)
 					{
 						case FieldTypes.CExoString:
-							if (!isPrintableAscii(rt_Val.Text))
+							if (!isPrintableAscii(rt_Val.Text, true))
 							{
 								ResetEditor(rt_Val);
 							}
@@ -967,7 +967,7 @@ namespace generalgff
 
 						case FieldTypes.CExoString:
 						{
-							if (isPrintableAscii(rt_Val.Text))
+							if (isPrintableAscii(rt_Val.Text, true))
 							{
 								valid = true;
 								field.CExoString = (val = rt_Val.Text);
@@ -1274,15 +1274,16 @@ namespace generalgff
 		/// Checks if a string is printable ascii.
 		/// </summary>
 		/// <param name="text"></param>
+		/// <param name="allowCrlf"></param>
 		/// <returns></returns>
-		static bool isPrintableAscii(string text)
+		static bool isPrintableAscii(string text, bool allowCrlf = false)
 		{
 			int c;
 			for (int i = 0; i != text.Length; ++i)
 			{
 				c = (int)text[i];
-				if (c != 10 && c != 13		// lf cr
-					&& (c < 32 || c > 126))	// printable ascii
+				if ((!allowCrlf || (c != 10 && c != 13))	// lf cr
+					&& (c < 32 || c > 126))					// printable ascii
 				{
 					return false;
 				}
