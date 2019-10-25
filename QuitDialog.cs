@@ -13,10 +13,13 @@ namespace generalgff
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		/// <param name="allowsave"></param>
-		internal QuitDialog(bool allowsave)
+		/// <param name="quitbuttontext">the text to print on the quit-button</param>
+		/// <param name="allowsave">true to enable the Save button</param>
+		internal QuitDialog(string quitbuttontext, bool allowsave)
 		{
 			InitializeComponent();
+
+			Text = bt_Quit.Text = quitbuttontext;
 
 			bt_Save.Enabled = allowsave;
 			bt_Cancel.Select();

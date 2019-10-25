@@ -697,7 +697,7 @@ namespace generalgff
 				_f.TopMost = true;
 				_f.TopMost = false;
 
-				if (_f.CheckCloseData())
+				if (_f.CheckCloseData(Globals.Close))
 				{
 					var loader = new GffLoader();
 					loader.LoadGFFfile(_f, file);

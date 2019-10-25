@@ -16,6 +16,9 @@
 
 		internal const string SUF_F = "[F]";
 
-		internal const string Error = "Error";
+		internal const string Error  = "Error";
+		internal const string Quit   = "Quit";
+		internal const string Close  = "Close";
+		internal const string Reload = "Reload";
 	}
 }

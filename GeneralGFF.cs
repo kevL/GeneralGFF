@@ -28,10 +28,11 @@ namespace generalgff
 		const int MI_HELP = 3;
 
 		const int MI_FILE_OPEN   = 0;
-		const int MI_FILE_SAVE   = 1;
-		const int MI_FILE_SAVS   = 2;
-		// 3 is Separator
-		const int MI_FILE_QUIT   = 4;
+		const int MI_FILE_RLOD   = 1;
+		const int MI_FILE_SAVE   = 2;
+		const int MI_FILE_SAVS   = 3;
+		// 4 is Separator
+		const int MI_FILE_QUIT   = 5;
 
 		const int MI_EDIT_SEARCH = 0;
 
@@ -98,17 +99,21 @@ namespace generalgff
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Click += fileclick_Open;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Shortcut = Shortcut.CtrlO;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file");		// #1
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Reload GFF file");		// #1
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Click += fileclick_Reload;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Shortcut = Shortcut.CtrlR;
+
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file");		// #2
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Click += fileclick_Save;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Shortcut = Shortcut.CtrlS;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #2
+			Menu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #3
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Click += fileclick_SaveAs;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Shortcut = Shortcut.CtrlE;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #3
+			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #4
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #4
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #5
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Click += fileclick_Quit;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Shortcut = Shortcut.CtrlQ;
 
@@ -319,7 +324,7 @@ namespace generalgff
 		#region Handlers (override)
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			e.Cancel = !CheckCloseData();
+			e.Cancel = !CheckCloseData(Globals.Quit);
 		}
 		#endregion Handlers (override)
 
@@ -327,7 +332,11 @@ namespace generalgff
 		#region Handlers (menu)
 		void filepop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0 && GffData.Changed;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Enabled = GffData != null
+																   && GffData.Pfe != Globals.TopLevelStruct;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
+																   && GffData.Changed
+																   && GffData.Pfe != Globals.TopLevelStruct;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Enabled = _tl.Nodes.Count != 0;
 		}
 
@@ -338,7 +347,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void fileclick_Open(object sender, EventArgs e)
 		{
-			if (CheckCloseData())
+			if (CheckCloseData(Globals.Close))
 			{
 				using (var ofd = new OpenFileDialog())
 				{
@@ -353,6 +362,20 @@ namespace generalgff
 						loader.LoadGFFfile(this, ofd.FileName);
 					}
 				}
+			}
+		}
+
+		/// <summary>
+		/// Reloads the currently loaded file.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void fileclick_Reload(object sender, EventArgs e)
+		{
+			if (CheckCloseData(Globals.Reload))
+			{
+				var loader = new GffLoader();
+				loader.LoadGFFfile(this, GffData.Pfe);
 			}
 		}
 
@@ -1248,19 +1271,23 @@ namespace generalgff
 		/// <summary>
 		/// Checks if the current data can be closed.
 		/// </summary>
+		/// <param name="quitbuttontext">the text to print on the quit-button</param>
 		/// <returns>true if okay to close</returns>
-		internal bool CheckCloseData()
+		internal bool CheckCloseData(string quitbuttontext)
 		{
 			if (GffData != null && GffData.Changed && _tl.Nodes.Count != 0)
 			{
-				using (var f = new QuitDialog(GffData.Pfe != Globals.TopLevelStruct))
+				bool allowsave = GffData.Pfe != Globals.TopLevelStruct
+							  && quitbuttontext != Globals.Reload;
+
+				using (var f = new QuitDialog(quitbuttontext, allowsave))
 				{
 					switch (f.ShowDialog(this))
 					{
 						case DialogResult.Abort:	// "Cancel" - don't quit
 							return false;
 
-//						case DialogResult.Ignore:	// "Quit" - quit don't save
+//						case DialogResult.Ignore:	// "Close/Quit/Reload" - close/quit/reload don't save
 
 						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
 							return GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver);
