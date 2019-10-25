@@ -531,15 +531,6 @@ namespace generalgff
 			{
 				f.ShowDialog(this);
 			}
-
-/*			MessageBox.Show(
-						this,
-						text,
-						" about GeneralGFF",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.None,
-						MessageBoxDefaultButton.Button1,
-						0); */
 		}
 		#endregion Handlers (menu)
 
@@ -1199,7 +1190,12 @@ namespace generalgff
 					EnableApply = DIRTY_non;
 				}
 				else
-					baddog("That dog don't hunt.");
+				{
+					using (var f = new InfoDialog("Error", "That dog don't hunt."))
+					{
+						f.ShowDialog(this);
+					}
+				}
 			}
 
 			_tl.Select();
@@ -1246,23 +1242,6 @@ namespace generalgff
 				tbb.SelectionStart = _posCaret;
 			else
 				tbb.SelectionStart = tbb.Text.Length;
-		}
-
-
-		/// <summary>
-		/// Generic error dialog.
-		/// </summary>
-		/// <param name="error"></param>
-		void baddog(string error)
-		{
-			MessageBox.Show(
-						this,
-						error,
-						" Error",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Error,
-						MessageBoxDefaultButton.Button1,
-						0);
 		}
 
 

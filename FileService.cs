@@ -163,13 +163,10 @@ namespace generalgff
 		/// <param name="error"></param>
 		internal static void ShowErrorBox(string error)
 		{
-			MessageBox.Show(
-						error,
-						" Error",
-						MessageBoxButtons.OK,
-						MessageBoxIcon.Error,
-						MessageBoxDefaultButton.Button1,
-						0);
+			using (var f = new InfoDialog("Error", error))
+			{
+				f.ShowDialog();
+			}
 		}
 		#endregion Methods (static)
 	}
