@@ -101,7 +101,7 @@ namespace generalgff
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Click += fileclick_Save;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Shortcut = Shortcut.CtrlS;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file As ...");	// #2
+			Menu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #2
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Click += fileclick_SaveAs;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Shortcut = Shortcut.CtrlE;
 
