@@ -116,6 +116,7 @@ namespace generalgff
 
 			Menu.MenuItems[MI_EDIT].MenuItems.Add("&Search");	// #0
 			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_SEARCH].Click += editclick_Search;
+			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_SEARCH].Shortcut = Shortcut.CtrlF;
 
 
 			Menu.MenuItems.Add("&View"); // #2
@@ -124,9 +125,11 @@ namespace generalgff
 
 			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Expand all under selected");	// #0
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Shortcut = Shortcut.F5;
 
 			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Collapse all under selected");	// #1
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Click += viewclick_CollapseSelected;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Shortcut = Shortcut.F6;
 
 
 			Menu.MenuItems.Add("&Help"); // #3
@@ -136,6 +139,7 @@ namespace generalgff
 
 			Menu.MenuItems[MI_HELP].MenuItems.Add("&About");	// #0
 			Menu.MenuItems[MI_HELP].MenuItems[MI_HELP_ABOUT].Click += helpclick_About;
+			Menu.MenuItems[MI_HELP].MenuItems[MI_HELP_ABOUT].Shortcut = Shortcut.F2;
 
 			_tl = new TreeList(this);
 			sc_body.Panel1.Controls.Add(_tl);
