@@ -30,6 +30,7 @@ namespace generalgff
 		const int MI_FILE_OPEN   = 0;
 		const int MI_FILE_SAVE   = 1;
 		const int MI_FILE_SAVS   = 2;
+		// 3 is Separator
 		const int MI_FILE_QUIT   = 4;
 
 		const int MI_EDIT_SEARCH = 0;
@@ -516,14 +517,20 @@ namespace generalgff
 #else
 			text += " release";
 #endif
-			MessageBox.Show(
+
+			using (var f = new InfoDialog("About GeneralGFF", text))
+			{
+				f.ShowDialog(this);
+			}
+
+/*			MessageBox.Show(
 						this,
 						text,
 						" about GeneralGFF",
 						MessageBoxButtons.OK,
 						MessageBoxIcon.None,
 						MessageBoxDefaultButton.Button1,
-						0);
+						0); */
 		}
 		#endregion Handlers (menu)
 
