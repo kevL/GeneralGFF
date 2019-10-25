@@ -1191,7 +1191,7 @@ namespace generalgff
 				}
 				else
 				{
-					using (var f = new InfoDialog("Error", "That dog don't hunt."))
+					using (var f = new InfoDialog(Globals.Error, "That dog don't hunt."))
 					{
 						f.ShowDialog(this);
 					}

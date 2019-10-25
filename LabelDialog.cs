@@ -112,7 +112,7 @@ namespace generalgff
 			string info = "Labels have a max length of 16 characters, a" + Environment.NewLine
 						+ "min length of 1 character, and may contain"   + Environment.NewLine
 						+ "only alphanumeric or underscore characters.";
-			using (var f = new InfoDialog("Error", info))
+			using (var f = new InfoDialog(Globals.Error, info))
 			{
 				f.ShowDialog(this);
 			}

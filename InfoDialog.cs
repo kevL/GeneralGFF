@@ -26,6 +26,11 @@ namespace generalgff
 			Text = title;
 			la_Info.Text = info;
 
+			if (title == Globals.Error)
+			{
+				System.Media.SystemSounds.Exclamation.Play();
+			}
+
 
 			int vertborder = Height - ClientSize.Height;
 			int hButton = Height - la_Info.Height - vertborder;

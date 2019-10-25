@@ -163,7 +163,7 @@ namespace generalgff
 		/// <param name="error"></param>
 		internal static void ShowErrorBox(string error)
 		{
-			using (var f = new InfoDialog("Error", error))
+			using (var f = new InfoDialog(Globals.Error, error))
 			{
 				f.ShowDialog();
 			}
