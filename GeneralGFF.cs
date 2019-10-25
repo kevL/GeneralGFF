@@ -507,18 +507,27 @@ namespace generalgff
 		/// <param name="e"></param>
 		void helpclick_About(object sender, EventArgs e)
 		{
+			string text = "GeneralGFF editor"
+						+ Environment.NewLine + Environment.NewLine;
+
 			var an = Assembly.GetExecutingAssembly().GetName();
-			string text = an.Version.Major + "."
-						+ an.Version.Minor + "."
-						+ an.Version.Build + "."
-						+ an.Version.Revision;
+			text += an.Version.Major + "."
+				  + an.Version.Minor + "."
+				  + an.Version.Build + "."
+				  + an.Version.Revision;
 #if DEBUG
 			text += " debug";
 #else
 			text += " release";
 #endif
 
-			using (var f = new InfoDialog("About GeneralGFF", text))
+			DateTime dt = Assembly.GetExecutingAssembly().GetLinkerTime();
+			text += Environment.NewLine + Environment.NewLine
+				  + String.Format(CultureInfo.CurrentCulture,
+								  "{0:yyyy MMM d} {0:HH}:{0:mm}:{0:ss} UTC", // {0:zzz}
+								  dt);
+
+			using (var f = new InfoDialog("About", text))
 			{
 				f.ShowDialog(this);
 			}
@@ -1455,5 +1464,38 @@ namespace generalgff
 			return -1;
 		}
 		#endregion Methods (static)
+	}
+
+
+	/// <summary>
+	/// Lifted from StackOverflow.com:
+	/// https://stackoverflow.com/questions/1600962/displaying-the-build-date#answer-1600990
+	/// - what a fucking pain in the ass.
+	/// </summary>
+	static class DateTimeExtension
+	{
+		internal static DateTime GetLinkerTime(this Assembly assembly, TimeZoneInfo target = null)
+		{
+			var filePath = assembly.Location;
+			const int c_PeHeaderOffset = 60;
+			const int c_LinkerTimestampOffset = 8;
+
+			var buffer = new byte[2048];
+
+			using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+				stream.Read(buffer, 0, 2048);
+
+			var offset = BitConverter.ToInt32(buffer, c_PeHeaderOffset);
+			var secondsSince1970 = BitConverter.ToInt32(buffer, offset + c_LinkerTimestampOffset);
+			var epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+			return epoch.AddSeconds(secondsSince1970);
+/*			var linkTimeUtc = epoch.AddSeconds(secondsSince1970);
+
+			var tz = target ?? TimeZoneInfo.Local;
+			var localTime = TimeZoneInfo.ConvertTimeFromUtc(linkTimeUtc, tz);
+
+			return localTime; */
+		}
 	}
 }
