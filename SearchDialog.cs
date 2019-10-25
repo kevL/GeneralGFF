@@ -334,14 +334,14 @@ namespace generalgff
 			this.tb_Search.Location = new System.Drawing.Point(0, 0);
 			this.tb_Search.Margin = new System.Windows.Forms.Padding(0);
 			this.tb_Search.Name = "tb_Search";
-			this.tb_Search.Size = new System.Drawing.Size(179, 20);
+			this.tb_Search.Size = new System.Drawing.Size(172, 20);
 			this.tb_Search.TabIndex = 0;
 			this.tb_Search.WordWrap = false;
 			this.tb_Search.TextChanged += new System.EventHandler(this.textchanged_Search);
 			// 
 			// bt_Down
 			// 
-			this.bt_Down.Location = new System.Drawing.Point(5, 25);
+			this.bt_Down.Location = new System.Drawing.Point(3, 23);
 			this.bt_Down.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Down.Name = "bt_Down";
 			this.bt_Down.Size = new System.Drawing.Size(75, 25);
@@ -352,7 +352,7 @@ namespace generalgff
 			// 
 			// bt_Up
 			// 
-			this.bt_Up.Location = new System.Drawing.Point(5, 50);
+			this.bt_Up.Location = new System.Drawing.Point(3, 49);
 			this.bt_Up.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Up.Name = "bt_Up";
 			this.bt_Up.Size = new System.Drawing.Size(75, 25);
@@ -363,7 +363,7 @@ namespace generalgff
 			// 
 			// rb_Substring
 			// 
-			this.rb_Substring.Location = new System.Drawing.Point(90, 27);
+			this.rb_Substring.Location = new System.Drawing.Point(85, 25);
 			this.rb_Substring.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_Substring.Name = "rb_Substring";
 			this.rb_Substring.Size = new System.Drawing.Size(85, 20);
@@ -373,7 +373,7 @@ namespace generalgff
 			// 
 			// rb_Wholeword
 			// 
-			this.rb_Wholeword.Location = new System.Drawing.Point(90, 52);
+			this.rb_Wholeword.Location = new System.Drawing.Point(85, 51);
 			this.rb_Wholeword.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_Wholeword.Name = "rb_Wholeword";
 			this.rb_Wholeword.Size = new System.Drawing.Size(85, 20);
@@ -383,7 +383,7 @@ namespace generalgff
 			// 
 			// SearchDialog
 			// 
-			this.ClientSize = new System.Drawing.Size(179, 76);
+			this.ClientSize = new System.Drawing.Size(172, 76);
 			this.Controls.Add(this.rb_Wholeword);
 			this.Controls.Add(this.rb_Substring);
 			this.Controls.Add(this.bt_Up);
