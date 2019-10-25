@@ -29,7 +29,8 @@ namespace generalgff
 
 		const int MI_FILE_OPEN   = 0;
 		const int MI_FILE_SAVE   = 1;
-		const int MI_FILE_QUIT   = 3;
+		const int MI_FILE_SAVS   = 2;
+		const int MI_FILE_QUIT   = 4;
 
 		const int MI_EDIT_SEARCH = 0;
 
@@ -94,14 +95,21 @@ namespace generalgff
 
 			Menu.MenuItems[MI_FILE].MenuItems.Add("&Open GFF file ...");	// #0
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Click += fileclick_Open;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Shortcut = Shortcut.CtrlO;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file ...");	// #1
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file");		// #1
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Click += fileclick_Save;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Shortcut = Shortcut.CtrlS;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #2
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file As ...");	// #2
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Click += fileclick_SaveAs;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Shortcut = Shortcut.CtrlE;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #3
+			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #3
+
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #4
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Click += fileclick_Quit;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Shortcut = Shortcut.CtrlQ;
 
 
 			Menu.MenuItems.Add("&Edit"); // #1
@@ -314,7 +322,8 @@ namespace generalgff
 		#region Handlers (menu)
 		void filepop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0 && GffData.Changed;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -344,11 +353,25 @@ namespace generalgff
 
 		/// <summary>
 		/// Saves the currently loaded file.
-		/// @note This function is actually a SaveAs routine.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		void fileclick_Save(object sender, EventArgs e)
+		{
+			if (_tl.Nodes.Count != 0 && GffData.Changed
+				&& GffData.Pfe != Globals.TopLevelStruct
+				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver))
+			{
+				GffData.Changed = false;
+			}
+		}
+
+		/// <summary>
+		/// Saves the currently loaded file as a user-labeled file.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void fileclick_SaveAs(object sender, EventArgs e)
 		{
 			if (_tl.Nodes.Count != 0)
 			{
