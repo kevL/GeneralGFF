@@ -37,16 +37,8 @@ namespace generalgff
 		{
 			InitializeComponent();
 
-			if (edit)
-			{
-				Text         = "Edit Locale";
-				la_head.Text = "Edit Language type";
-			}
-			else
-			{
-				Text         = "Add Locale";
-				la_head.Text = "Add Language type";
-			}
+			if (edit) la_head.Text = "edit Locale";
+			else      la_head.Text = "add Locale";
 
 			rb_English .Tag = Languages.English;
 			rb_French  .Tag = Languages.French;
@@ -402,6 +394,7 @@ namespace generalgff
 			this.Name = "LocaleDialog";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+			this.Text = "Locale";
 			this.pl_bot.ResumeLayout(false);
 			this.gb_locale.ResumeLayout(false);
 			this.ResumeLayout(false);
