@@ -294,6 +294,33 @@ namespace generalgff
 			return GffType.generic; // eg. "GFF"
 		}
 
+		internal static string GetGffString(GffType type)
+		{
+			switch (type)
+			{
+				case GffType.ARE: return "ARE"; // area
+				case GffType.BIC: return "BIC"; // saved player character
+				case GffType.FAC: return "FAC"; // faction table
+				case GffType.GIC: return "GIC"; // area object-lists (counts only)
+				case GffType.GIT: return "GIT"; // area object-lists (incl/ area-properties and object-data)
+				case GffType.IFO: return "IFO"; // (1) module info (2) saved player character list and data
+				case GffType.JRL: return "JRL"; // journal
+				case GffType.ROS: return "ROS"; // roster character
+				case GffType.ULT: return "ULT"; // light effect
+				case GffType.UPE: return "UPE"; // placeable effect
+				case GffType.UTC: return "UTC"; // creature
+				case GffType.UTD: return "UTD"; // door
+				case GffType.UTE: return "UTE"; // encounter
+				case GffType.UTI: return "UTI"; // item
+				case GffType.UTM: return "UTM"; // merchant (store)
+				case GffType.UTP: return "UTP"; // placeable
+				case GffType.UTS: return "UTS"; // sound
+				case GffType.UTT: return "UTT"; // trigger
+				case GffType.UTW: return "UTW"; // waypoint
+			}
+			return "GFF"; // GffType.generic;
+		}
+
 		/// <summary>
 		/// The file-filter string for an OpenFile or SaveFile dialog.
 		/// @note Maintain its congruity with GffTypes.

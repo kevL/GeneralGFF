@@ -151,7 +151,14 @@ namespace generalgff
 					}
 
 
-					if (SelectedNode.Tag != null) // is not TopLevelStruct
+					if (SelectedNode.Tag == null) // is TopLevelStruct
+					{
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
+
+						ContextMenu.MenuItems.Add(new MenuItem("edit GFF Type", contextclick_EditGffType));
+					}
+					else // is NOT TopLevelStruct
 					{
 						switch (((GffData.Field)SelectedNode.Tag).type)
 						{
@@ -188,7 +195,7 @@ namespace generalgff
 								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 								else toggle = String.Empty;
 
-								ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLanguageId));
+								ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLocaleType));
 								break;
 						}
 					}
@@ -557,6 +564,33 @@ namespace generalgff
 		}
 
 
+		internal static GffType _typeid;
+
+		/// <summary>
+		/// Opens a dialog to choose a standard GFF-type.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_EditGffType(object sender, EventArgs e)
+		{
+			_typeid = _f.GffData.Type;
+
+			using (var f = new TypeDialog())
+			{
+				if (f.ShowDialog(this) == DialogResult.OK
+					&& _f.GffData.Type != _typeid)
+				{
+					_f.GffData.Type = _typeid;
+					_f.GffData.Ver = GffData.GetGffString(_typeid) + Globals.SupportedVersion;
+
+					_f.tb_Val.Text = _f.GffData.Ver;
+
+					_f.GffData.Changed = true;
+					_f.GffData = _f.GffData;
+				}
+			}
+		}
+
 		/// <summary>
 		/// Opens a dialog to edit a Field's Label.
 		/// </summary>
@@ -586,17 +620,18 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void contextclick_EditLanguageId(object sender, EventArgs e)
+		void contextclick_EditLocaleType(object sender, EventArgs e)
 		{
+			var parent = (GffData.Field)SelectedNode.Parent.Tag;
+			var field = ((GffData.Field)SelectedNode.Tag);
+
+			var locale = parent.Locales[(int)field.localeid];
+			_langid = locale.langid;
+
 			using (var f = new LocaleDialog(true))
 			{
-				var parent = (GffData.Field)SelectedNode.Parent.Tag;
-				var field = ((GffData.Field)SelectedNode.Tag);
-
-				var locale = parent.Locales[(int)field.localeid];
-				_langid = locale.langid;
-
-				if (f.ShowDialog(this) == DialogResult.OK)
+				if (f.ShowDialog(this) == DialogResult.OK
+					&& locale.langid != _langid)
 				{
 					locale.langid = _langid;
 					field.label = GffData.Locale.GetLanguageString(locale.langid);
@@ -604,12 +639,18 @@ namespace generalgff
 					if (_langid == Languages.GffToken)
 					{
 						locale.F = false;
-						SelectField(SelectedNode); // freshen the editpanel (hide Feminine checkbox etc.)
 					}
 					else if (locale.F)
+					{
 						field.label += Globals.SUF_F;
+					}
 
 					SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
+
+					SelectField(SelectedNode); // freshen the editpanel (un/hide Feminine checkbox etc.)
+
+					_f.GffData.Changed = true;
+					_f.GffData = _f.GffData;
 				}
 			}
 		}

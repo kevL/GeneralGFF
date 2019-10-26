@@ -74,6 +74,7 @@
     <Compile Include="QuitDialog.cs" />
     <Compile Include="SearchDialog.cs" />
     <Compile Include="TreeList.cs" />
+    <Compile Include="TypeDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DeleteDialog.resx">
@@ -100,6 +101,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SearchDialog.resx">
       <DependentUpon>SearchDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TypeDialog.resx">
+      <DependentUpon>TypeDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

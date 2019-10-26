@@ -12,9 +12,9 @@
 		internal const int Length_VER    =  8;
 
 
-		internal const string TopLevelStruct = "TopLevelStruct";
-
-		internal const string SUF_F = "[F]";
+		internal const string SupportedVersion = " V3.2";
+		internal const string TopLevelStruct   = "TopLevelStruct";
+		internal const string SUF_F            = "[F]";
 
 		internal const string Error  = "Error";
 		internal const string Quit   = "Quit";

@@ -247,7 +247,7 @@ namespace generalgff
 			this.rb_GffToken.Location = new System.Drawing.Point(10, 235);
 			this.rb_GffToken.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_GffToken.Name = "rb_GffToken";
-			this.rb_GffToken.Size = new System.Drawing.Size(147, 20);
+			this.rb_GffToken.Size = new System.Drawing.Size(150, 20);
 			this.rb_GffToken.TabIndex = 11;
 			this.rb_GffToken.TabStop = true;
 			this.rb_GffToken.Text = "GffToken";

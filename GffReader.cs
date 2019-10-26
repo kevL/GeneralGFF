@@ -11,9 +11,6 @@ namespace generalgff
 	static class GffReader
 	{
 		#region Fields (static)
-		const string SupportedVersion = " V3.2";
-
-
 		const uint head_StructOffset       =  8; // 0x08 // offsets (in bytes) of data in the header section ->
 		const uint head_StructCount        = 12; // 0x0C
 
@@ -84,7 +81,7 @@ namespace generalgff
 
 					string ver = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 
-					if (ver.Substring(3) != SupportedVersion)
+					if (ver.Substring(3) != Globals.SupportedVersion)
 					{
 						FileService.ShowErrorBox("That is not a version 3.2 GFF file.");
 						return null;
