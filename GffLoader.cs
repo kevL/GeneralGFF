@@ -10,7 +10,7 @@ namespace generalgff
 	{
 		#region Methods
 		/// <summary>
-		/// Loads a GFF file into a specified TreeList.
+		/// Loads a GFF file into a TreeList.
 		/// </summary>
 		/// <param name="f"></param>
 		/// <param name="pfe"></param>
