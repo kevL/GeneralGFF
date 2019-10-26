@@ -27,12 +27,14 @@ namespace generalgff
 		const int MI_VIEW = 2;
 		const int MI_HELP = 3;
 
-		const int MI_FILE_OPEN   = 0;
-		const int MI_FILE_RLOD   = 1;
-		const int MI_FILE_SAVE   = 2;
-		const int MI_FILE_SAVS   = 3;
-		// 4 is Separator
-		const int MI_FILE_QUIT   = 5;
+		const int MI_FILE_CRAT   = 0;
+		// 1 is Separator
+		const int MI_FILE_OPEN   = 2;
+		const int MI_FILE_RLOD   = 3;
+		const int MI_FILE_SAVE   = 4;
+		const int MI_FILE_SAVS   = 5;
+		// 6 is Separator
+		const int MI_FILE_QUIT   = 7;
 
 		const int MI_EDIT_SEARCH = 0;
 
@@ -95,25 +97,31 @@ namespace generalgff
 
 			Menu.MenuItems[MI_FILE].Popup += filepop;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Open GFF file ...");	// #0
+			Menu.MenuItems[MI_FILE].MenuItems.Add("Crea&te GFF file ...");	// #0
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_CRAT].Click += fileclick_Create;
+			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_CRAT].Shortcut = Shortcut.CtrlT;
+
+			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #1
+
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Open GFF file ...");	// #2
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Click += fileclick_Open;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Shortcut = Shortcut.CtrlO;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Reload GFF file");		// #1
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Reload GFF file");		// #3
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Click += fileclick_Reload;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Shortcut = Shortcut.CtrlR;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file");		// #2
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file");		// #4
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Click += fileclick_Save;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Shortcut = Shortcut.CtrlS;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #3
+			Menu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #5
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Click += fileclick_SaveAs;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Shortcut = Shortcut.CtrlE;
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #4
+			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #6
 
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #5
+			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #7
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Click += fileclick_Quit;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Shortcut = Shortcut.CtrlQ;
 
@@ -338,6 +346,37 @@ namespace generalgff
 																   && GffData.Changed
 																   && GffData.Pfe != Globals.TopLevelStruct;
 			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Enabled = _tl.Nodes.Count != 0;
+		}
+
+		/// <summary>
+		/// Creates a blank GFF-file.
+		/// cf. TreeList.contextclick_AddTopLevelStruct()
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void fileclick_Create(object sender, EventArgs e)
+		{
+			if (CheckCloseData(Globals.Close))
+			{
+				_tl.Nodes.Clear();
+
+				GffData = new GffData(); // init GffData! ->
+				GffData.Ver = "GFF V3.2";
+				GffData.Type = GffType.generic;
+
+				GffData = GffData; // update titlebar text
+
+				var field = new GffData.Field();
+				field.type = FieldTypes.Struct;
+				field.label = Globals.TopLevelStruct;
+
+				field.Struct = new Struct();
+				field.Struct.typeid = UInt32.MaxValue;
+
+				_tl.Nodes.Add(field.label);
+
+				_tl.SelectedNode = _tl.Nodes[0];
+			}
 		}
 
 		/// <summary>

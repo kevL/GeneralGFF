@@ -372,6 +372,7 @@ namespace generalgff
 			AddField(field);
 		}
 
+		// cf. GeneralGFF.fileclick_Create()
 		void contextclick_AddTopLevelStruct(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();

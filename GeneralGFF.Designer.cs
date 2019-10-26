@@ -135,8 +135,6 @@ namespace generalgff
 			// 
 			// la_Des
 			// 
-			this.la_Des.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
 			this.la_Des.Location = new System.Drawing.Point(5, 3);
 			this.la_Des.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Des.Name = "la_Des";
@@ -146,8 +144,6 @@ namespace generalgff
 			// 
 			// la_Val
 			// 
-			this.la_Val.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
 			this.la_Val.Location = new System.Drawing.Point(5, 56);
 			this.la_Val.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Val.Name = "la_Val";
@@ -175,13 +171,11 @@ namespace generalgff
 			// 
 			// cb_Checker
 			// 
-			this.cb_Checker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-			| System.Windows.Forms.AnchorStyles.Right)));
 			this.cb_Checker.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
 			this.cb_Checker.Location = new System.Drawing.Point(10, 80);
 			this.cb_Checker.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_Checker.Name = "cb_Checker";
-			this.cb_Checker.Size = new System.Drawing.Size(125, 16);
+			this.cb_Checker.Size = new System.Drawing.Size(130, 16);
 			this.cb_Checker.TabIndex = 4;
 			this.cb_Checker.UseVisualStyleBackColor = true;
 			this.cb_Checker.Visible = false;
