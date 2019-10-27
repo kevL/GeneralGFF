@@ -9,6 +9,11 @@ namespace generalgff
 		:
 			Form
 	{
+		#region Fields
+		bool _abort = true;
+		#endregion Fields
+
+
 		#region cTor
 		/// <summary>
 		/// cTor.
@@ -25,6 +30,22 @@ namespace generalgff
 			bt_Cancel.Select();
 		}
 		#endregion cTor
+
+
+		#region Handlers (override)
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			if (_abort) DialogResult = DialogResult.Abort;
+		}
+		#endregion Handlers (override)
+
+
+		#region Handlers
+		void click_BypassAbort(object sender, EventArgs e)
+		{
+			_abort = false;
+		}
+		#endregion Handlers
 
 
 
@@ -77,6 +98,7 @@ namespace generalgff
 			this.bt_Save.TabIndex = 2;
 			this.bt_Save.Text = "Save";
 			this.bt_Save.UseVisualStyleBackColor = true;
+			this.bt_Save.Click += new System.EventHandler(this.click_BypassAbort);
 			// 
 			// bt_Cancel
 			// 
@@ -97,8 +119,8 @@ namespace generalgff
 			this.bt_Quit.Name = "bt_Quit";
 			this.bt_Quit.Size = new System.Drawing.Size(70, 25);
 			this.bt_Quit.TabIndex = 1;
-			this.bt_Quit.Text = "Quit";
 			this.bt_Quit.UseVisualStyleBackColor = true;
+			this.bt_Quit.Click += new System.EventHandler(this.click_BypassAbort);
 			// 
 			// la_Head
 			// 
@@ -129,7 +151,6 @@ namespace generalgff
 			this.Name = "QuitDialog";
 			this.ShowInTaskbar = false;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Quit";
 			this.ResumeLayout(false);
 
 		}
