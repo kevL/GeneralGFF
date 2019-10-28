@@ -664,11 +664,16 @@ namespace generalgff
 					if (f.ShowDialog(this) == DialogResult.OK
 						&& (locale.langid != _langid || locale.F != _langf))
 					{
-						LocaleDialog.ClearLocaleFlag(ref parent.localeflags, locale.langid, locale.F);
+						LocaleDialog.ClearLocaleFlag(ref parent.localeflags,
+													 locale.langid,
+													 locale.F);
 
-						field.label = GffData.Locale.GetLanguageString(locale.langid = _langid, locale.F = _langf);
+						field.label = GffData.Locale.GetLanguageString(locale.langid = _langid,
+																	   locale.F = _langf);
 
-						LocaleDialog.SetLocaleFlag(ref parent.localeflags, _langid, _langf);
+						LocaleDialog.SetLocaleFlag(ref parent.localeflags,
+												   _langid,
+												   _langf);
 
 						SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
 
@@ -1109,7 +1114,7 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._prevalText_tb =
+						_f._prevalText_rt =
 						_f._editText = _f.rt_Val.Text;
 						break;
 					}
