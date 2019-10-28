@@ -31,6 +31,8 @@ namespace generalgff
 		/// This list's top-level F.
 		/// </summary>
 		readonly GeneralGFF _f;
+
+		internal bool BypassDirty;
 		#endregion Fields
 
 
@@ -84,7 +86,11 @@ namespace generalgff
 			ContextMenu.MenuItems.Clear();
 
 			if (SelectedNode != null)
+			{
+				BypassDirty = true;
 				SelectField(SelectedNode); // revert the editpanel
+				BypassDirty = false;
+			}
 
 			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
 			if (info != null)
@@ -195,7 +201,7 @@ namespace generalgff
 								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 								else toggle = String.Empty;
 
-								ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLocaleType));
+								ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLocale));
 								break;
 						}
 					}
@@ -406,6 +412,7 @@ namespace generalgff
 
 
 		internal static Languages _langid;
+		internal static bool      _langf;
 
 		/// <summary>
 		/// Adds a Locale to a CExoLocString Field.
@@ -414,27 +421,39 @@ namespace generalgff
 		/// <param name="e"></param>
 		void contextclick_AddLocale(object sender, EventArgs e)
 		{
-			using (var f = new LocaleDialog())
+			var field = (GffData.Field)SelectedNode.Tag;
+
+			if (field.localeflags != LocaleDialog.Loc_ALL)
 			{
-				if (f.ShowDialog(this) == DialogResult.OK)
+				using (var f = new LocaleDialog(field.localeflags))
 				{
-					var locale = new GffData.Locale();
-					locale.langid = _langid;
-					locale.local = String.Empty;
-					locale.F = false;
+					if (f.ShowDialog(this) == DialogResult.OK)
+					{
+						var locale = new GffData.Locale();
+						locale.local = String.Empty;
 
-					if (((GffData.Field)SelectedNode.Tag).Locales == null)
-						((GffData.Field)SelectedNode.Tag).Locales = new List<GffData.Locale>();
+						LocaleDialog.SetLocaleFlag(ref field.localeflags,
+												   locale.langid = _langid,
+												   locale.F = _langf);
 
-					((GffData.Field)SelectedNode.Tag).Locales.Add(locale);
+						if (field.Locales == null)
+							field.Locales = new List<GffData.Locale>();
 
-					var field = new GffData.Field();
-					field.type = FieldTypes.locale;
-					field.label = GffData.Locale.GetLanguageString(locale.langid);
-					field.localeid = (uint)SelectedNode.Nodes.Count;
+						field.Locales.Add(locale);
 
-					AddField(field, locale);
+						field = new GffData.Field();
+						field.type = FieldTypes.locale;
+						field.label = GffData.Locale.GetLanguageString(_langid, _langf);
+						field.localeid = (uint)SelectedNode.Nodes.Count;
+
+						AddField(field, locale);
+					}
 				}
+			}
+			else
+			{
+				using (var f = new InfoDialog(Globals.Error, "All locales are taken."))
+					f.ShowDialog(this);
 			}
 		}
 
@@ -478,7 +497,13 @@ namespace generalgff
 				using (var f = new DeleteDialog(this, "Confirm delete TopLevelStruct"))
 				{
 					f.cb_Bypass.Visible = false;
-					delete = (f.ShowDialog(this) == DialogResult.Yes);
+					if (f.ShowDialog(this) == DialogResult.Yes)
+					{
+						delete = true;
+
+						if (_f.GffData.Pfe == Globals.TopLevelStruct)
+							_f.GffData = null;
+					}
 				}
 			}
 			else if (!_bypassDeleteWarning)
@@ -532,22 +557,23 @@ namespace generalgff
 
 						case FieldTypes.locale:
 						{
-							var parent = SelectedNode.Parent;
-							var CExoLocString = (GffData.Field)parent.Tag;
+							var parent = (GffData.Field)SelectedNode.Parent.Tag;
 
 							int localeid = (int)((GffData.Field)SelectedNode.Tag).localeid;
-							GffData.Locale locale = CExoLocString.Locales[localeid];
+							GffData.Locale locale = parent.Locales[localeid];
 
-							GffData.Field field;
+							LocaleDialog.ClearLocaleFlag(ref parent.localeflags,
+														 locale.langid,
+														 locale.F);
 
-							var locales = parent.Nodes;
+							var locales = SelectedNode.Parent.Nodes;
 							for (++localeid; localeid != locales.Count; ++localeid)
 							{
-								field = (GffData.Field)locales[localeid].Tag;
+								var field = (GffData.Field)locales[localeid].Tag;
 								--field.localeid;
 							}
 
-							CExoLocString.Locales.Remove(locale);
+							parent.Locales.Remove(locale);
 							break;
 						}
 					}
@@ -558,7 +584,7 @@ namespace generalgff
 				if (SelectedNode == null)
 					DisableEditPanel();
 
-				_f.GffData.Changed = true;
+				if (_f.GffData != null) _f.GffData.Changed = true;
 				_f.GffData = _f.GffData;
 			}
 		}
@@ -620,38 +646,43 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void contextclick_EditLocaleType(object sender, EventArgs e)
+		void contextclick_EditLocale(object sender, EventArgs e)
 		{
 			var parent = (GffData.Field)SelectedNode.Parent.Tag;
-			var field = ((GffData.Field)SelectedNode.Tag);
-
-			var locale = parent.Locales[(int)field.localeid];
-			_langid = locale.langid;
-
-			using (var f = new LocaleDialog(true))
+			if (parent.localeflags != LocaleDialog.Loc_ALL)
 			{
-				if (f.ShowDialog(this) == DialogResult.OK
-					&& locale.langid != _langid)
+				var field  = (GffData.Field)SelectedNode.Tag;
+
+				GffData.Locale locale;
+
+				locale = parent.Locales[(int)field.localeid];
+				_langid = locale.langid;
+				_langf  = locale.F;
+
+				using (var f = new LocaleDialog(parent.localeflags, true))
 				{
-					locale.langid = _langid;
-					field.label = GffData.Locale.GetLanguageString(locale.langid);
-
-					if (_langid == Languages.GffToken)
+					if (f.ShowDialog(this) == DialogResult.OK
+						&& (locale.langid != _langid || locale.F != _langf))
 					{
-						locale.F = false;
+						LocaleDialog.ClearLocaleFlag(ref parent.localeflags, locale.langid, locale.F);
+
+						field.label = GffData.Locale.GetLanguageString(locale.langid = _langid, locale.F = _langf);
+
+						LocaleDialog.SetLocaleFlag(ref parent.localeflags, _langid, _langf);
+
+						SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
+
+						SelectField(SelectedNode); // freshen the editpanel (un/hide Feminine checkbox etc.)
+
+						_f.GffData.Changed = true;
+						_f.GffData = _f.GffData;
 					}
-					else if (locale.F)
-					{
-						field.label += Globals.SUF_F;
-					}
-
-					SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
-
-					SelectField(SelectedNode); // freshen the editpanel (un/hide Feminine checkbox etc.)
-
-					_f.GffData.Changed = true;
-					_f.GffData = _f.GffData;
 				}
+			}
+			else
+			{
+				using (var f = new InfoDialog(Globals.Error, "All locales are taken."))
+					f.ShowDialog(this);
 			}
 		}
 
@@ -699,10 +730,8 @@ namespace generalgff
 		}
 
 
-		internal bool BypassDirty;
-
 		/// <summary>
-		/// 
+		/// Populates the editpanel after a treenode is selected.
 		/// </summary>
 		/// <param name="e"></param>
 		protected override void OnAfterSelect(TreeViewEventArgs e)
@@ -757,7 +786,7 @@ namespace generalgff
 		/// </summary>
 		void DisableEditPanel()
 		{
-			_f.EnableApply = GeneralGFF.DIRTY_non;
+			_f.DirtyState = GeneralGFF.DIRTY_non;
 
 			_f.la_Des.Text =
 			_f.la_Val.Text =
@@ -778,9 +807,12 @@ namespace generalgff
 				_f.rt_Val.Enter    += _f.enter_Richtextbox;
 			}
 
-			_f.cb_Checker.Visible = false;
+			_f.cb_Checker.Visible =
+			_f.cb_Checker.Checked = false;
 
-			_f._prevalText = String.Empty;
+			_f._editText =
+			_f._prevalText_rt =
+			_f._prevalText_tb = String.Empty;
 			_f._prevalChecker = false;
 		}
 
@@ -802,6 +834,7 @@ namespace generalgff
 		}
 
 		/// <summary>
+		/// Populates (or re-populates) the editpanel.
 		/// @note Ensure that 'node' is valid before call.
 		/// </summary>
 		/// <param name="node"></param>
@@ -819,7 +852,7 @@ namespace generalgff
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Violet;
 
-				_f._prevalText =
+				_f._prevalText_tb =
 				_f._editText = _f.tb_Val.Text;
 			}
 			else
@@ -837,7 +870,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -850,7 +883,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -863,7 +896,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -876,7 +909,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -889,7 +922,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -902,7 +935,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -915,7 +948,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -928,7 +961,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -944,7 +977,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 					}
@@ -961,7 +994,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 					}
@@ -975,7 +1008,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -987,32 +1020,38 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._prevalText =
+						_f._prevalText_rt =
 						_f._editText = _f.rt_Val.Text;
 						break;
 
 					case FieldTypes.CExoLocString:
 					{
-						_f.la_Des.Text = "strref" + Environment.NewLine + "-1.." + 0x00FFFFFF;
+						_f.la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
 						_f.la_Val.Text = "CExoLocString";
 
 						uint strref = field.CExoLocStrref;
-						if (strref != UInt32.MaxValue)
-							_f.tb_Val.Text = (strref & 0x00FFFFFF).ToString();
-						else
+						if (strref == UInt32.MaxValue)
+						{
 							_f.tb_Val.Text = "-1";
 
-						bool @checked =  strref != UInt32.MaxValue
-									 && (strref & 0x01000000) != 0;
-						_f.cb_Checker.Checked = _f._prevalChecker = @checked;
+							_f.cb_Checker.Visible =
+							_f.cb_Checker.Checked = false;
+						}
+						else
+						{
+							_f.tb_Val.Text = (strref & Globals.BITS_STRREF).ToString();
 
+							_f.cb_Checker.Visible = true;
+							_f.cb_Checker.Checked = (strref & Globals.BITS_CUSTOM) != 0;
+						}
 						_f.cb_Checker.Text = "Custom talktable";
-						_f.cb_Checker.Visible = true;
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalChecker = _f.cb_Checker.Checked;
+
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 					}
@@ -1028,14 +1067,13 @@ namespace generalgff
 
 						EnableRichtextbox();
 
-						_f._prevalText =
+						_f._prevalText_rt =
 						_f._editText = _f.rt_Val.Text;
 						break;
 					}
 
 					case FieldTypes.List:
 						_f.la_Val.Text = "List";
-						_f._editText = String.Empty;
 						break;
 
 					case FieldTypes.Struct:
@@ -1047,7 +1085,7 @@ namespace generalgff
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
 						break;
 
@@ -1065,17 +1103,13 @@ namespace generalgff
 						{
 							_f.la_Des.Text = "UTF8 localized";
 							_f.la_Val.Text = "locale";
-
-							_f.cb_Checker.Checked = _f._prevalChecker = locale.F;
-							_f.cb_Checker.Text = "Feminine";
-							_f.cb_Checker.Visible = true;
 						}
 
 						_f.rt_Val.Text = locale.local;
 
 						EnableRichtextbox();
 
-						_f._prevalText =
+						_f._prevalText_tb =
 						_f._editText = _f.rt_Val.Text;
 						break;
 					}

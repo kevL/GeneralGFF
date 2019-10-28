@@ -117,7 +117,8 @@ namespace generalgff
 	{
 		#region Properties
 		/// <summary>
-		/// Path-file-extension of the currently loaded GFF.
+		/// Path-file-extension of the currently loaded GFF. The value shall be
+		/// "TopLevelStruct" if a path has not been set by Open or Save yet.
 		/// </summary>
 		internal string Pfe
 		{ get; set; }
@@ -187,6 +188,7 @@ namespace generalgff
 
 			internal uint CExoLocStrref;
 			internal List<Locale> Locales;
+			internal uint localeflags; // bitflags stored by a CExoLocString that denote what Locales it currently has.
 
 			internal uint localeid; // for use by a locale pseudo-field (to find itself within its parent).
 
@@ -237,26 +239,36 @@ namespace generalgff
 			/// trailing space-char.
 			/// </summary>
 			/// <param name="langid"></param>
+			/// <param name="f">true if feline</param>
 			/// <returns></returns>
-			internal static string GetLanguageString(Languages langid)
+			internal static string GetLanguageString(Languages langid, bool f)
 			{
+				string l;
+
 				switch (langid)
 				{
-					case Languages.English:            return "English";
-					case Languages.French:             return "French";
-					case Languages.German:             return "German";
-					case Languages.Italian:            return "Italian";
-					case Languages.Spanish:            return "Spanish";
-					case Languages.Polish:             return "Polish";
-					case Languages.Russian:            return "Russian";
-					case Languages.Korean:             return "Korean";
-					case Languages.ChineseTraditional: return "Chinese T";
-					case Languages.ChineseSimplified:  return "Chinese S";
-					case Languages.Japanese:           return "Japanese";
+					case Languages.English:            l = "English";   break;
+					case Languages.French:             l = "French";    break;
+					case Languages.German:             l = "German";    break;
+					case Languages.Italian:            l = "Italian";   break;
+					case Languages.Spanish:            l = "Spanish";   break;
+					case Languages.Polish:             l = "Polish";    break;
+					case Languages.Russian:            l = "Russian";   break;
+					case Languages.Korean:             l = "Korean";    break;
+					case Languages.ChineseTraditional: l = "Chinese T"; break;
+					case Languages.ChineseSimplified:  l = "Chinese S"; break;
+					case Languages.Japanese:           l = "Japanese";  break;
 
-					case Languages.GffToken:           return "GffToken";
+					case Languages.GffToken:
+						return "GffToken";
+
+					default:
+						return "ErROr: language type unknown";
 				}
-				return "ErROr: language type unknown";
+
+				if (f) l += "[F]";
+
+				return l;
 			}
 		}
 

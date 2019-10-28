@@ -22,6 +22,7 @@ namespace generalgff
 		const int LENGTH_LABEL = 17;
 		const int LENGTH_TYPE  = 17;
 
+
 		const int MI_FILE = 0;
 		const int MI_EDIT = 1;
 		const int MI_VIEW = 2;
@@ -42,17 +43,23 @@ namespace generalgff
 		const int MI_VIEW_COLLAP = 1;
 
 		const int MI_HELP_ABOUT  = 0;
+
+
+		internal const int DIRTY_non   = 0x0;
+				 const int DIRTY_TEXTS = 0x1;
+				 const int DIRTY_CZECH = 0x2;
 		#endregion Fields (static)
 
 
 		#region Fields
 		internal TreeList _tl;
 
-		internal string _prevalText = String.Empty;
-		internal bool _prevalChecker;
+		internal string _prevalText_rt = String.Empty;
+		internal string _prevalText_tb = String.Empty;
+		internal bool   _prevalChecker;
 
 		internal string _editText = String.Empty;
-		int _posCaret = 0;
+					int _posCaret = 0;
 		#endregion Fields
 
 
@@ -75,6 +82,20 @@ namespace generalgff
 				}
 				else
 					Text = TITLE;
+			}
+		}
+
+		int _dirtystate;
+		/// <summary>
+		/// Enables or disables the apply and revert buttons in the editor-panel.
+		/// </summary>
+		internal int DirtyState
+		{
+			get { return _dirtystate; }
+			set
+			{
+				btn_Revert.Enabled =
+				btn_Apply .Enabled = (_dirtystate = value) != DIRTY_non;
 			}
 		}
 		#endregion Properties
@@ -430,6 +451,7 @@ namespace generalgff
 				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver))
 			{
 				GffData.Changed = false;
+				GffData = GffData; // update titlebar text
 			}
 		}
 
@@ -598,24 +620,6 @@ namespace generalgff
 
 
 		#region Handlers (panel2)
-		internal const int DIRTY_non   = 0x0;
-				 const int DIRTY_TEXTS = 0x1;
-				 const int DIRTY_CZECH = 0x2;
-
-		int _enableapply;
-		/// <summary>
-		/// Enables or disables the apply and revert buttons in the editor-panel.
-		/// </summary>
-		internal int EnableApply
-		{
-			get { return _enableapply; }
-			set
-			{
-				btn_Revert.Enabled =
-				btn_Apply .Enabled = (_enableapply = value) != DIRTY_non;
-			}
-		}
-
 		/// <summary>
 		/// force-Reselects the current treenode causing panel2 to repopulate.
 		/// </summary>
@@ -624,7 +628,7 @@ namespace generalgff
 		void click_Revert(object sender, EventArgs e)
 		{
 			_tl.SelectField(_tl.SelectedNode);
-			EnableApply = DIRTY_non;
+			DirtyState = DIRTY_non;
 
 			_tl.Select();
 		}
@@ -723,12 +727,12 @@ namespace generalgff
 
 				if (!_tl.BypassDirty)
 				{
-					if (tb_Val.Text != _prevalText)
+					if (tb_Val.Text != _prevalText_tb)
 					{
-						EnableApply |= DIRTY_TEXTS;
+						DirtyState |= DIRTY_TEXTS;
 					}
 					else
-						EnableApply &= ~DIRTY_TEXTS;
+						DirtyState &= ~DIRTY_TEXTS;
 				}
 			}
 		}
@@ -797,12 +801,12 @@ namespace generalgff
 
 					if (!_tl.BypassDirty)
 					{
-						if (rt_Val.Text != _prevalText)
+						if (rt_Val.Text != _prevalText_rt)
 						{
-							EnableApply |= DIRTY_TEXTS;
+							DirtyState |= DIRTY_TEXTS;
 						}
 						else
-							EnableApply &= ~DIRTY_TEXTS;
+							DirtyState &= ~DIRTY_TEXTS;
 					}
 				}
 			}
@@ -821,7 +825,7 @@ namespace generalgff
 			{
 				string val = null; // the string to test
 
-				GffData.Field field = null;
+				GffData.Field field   = null;
 				GffData.Locale locale = null;
 				bool valid = false;
 
@@ -859,7 +863,7 @@ namespace generalgff
 						GffData.Ver = val;
 						GffData.Type = GffData.GetGffType(val.Substring(0,3));
 
-						tb_Val.Text = val;
+						tb_Val.Text = (_prevalText_tb = val);
 						RepositionCaret(tb_Val);
 					}
 				}
@@ -870,152 +874,142 @@ namespace generalgff
 					{
 						case FieldTypes.BYTE:
 						{
-							int length = tb_Val.Text.Length;
-
 							byte result;
 							if (valid = Byte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.BYTE = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.CHAR:
 						{
-							int length = tb_Val.Text.Length;
-
 							sbyte result;
 							if (valid = sbyte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.CHAR = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.WORD:
 						{
-							int length = tb_Val.Text.Length;
-
 							ushort result;
 							if (valid = UInt16.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.WORD = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.SHORT:
 						{
-							int length = tb_Val.Text.Length;
-
 							short result;
 							if (valid = Int16.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.SHORT = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.DWORD:
 						{
-							int length = tb_Val.Text.Length;
-
 							uint result;
 							if (valid = UInt32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.DWORD = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.INT:
 						{
-							int length = tb_Val.Text.Length;
-
 							int result;
 							if (valid = Int32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.INT = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.DWORD64:
 						{
-							int length = tb_Val.Text.Length;
-
 							ulong result;
 							if (valid = UInt64.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.DWORD64 = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.INT64:
 						{
-							int length = tb_Val.Text.Length;
-
 							long result;
 							if (valid = Int64.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.INT64 = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.FLOAT:
 						{
-							int length = tb_Val.Text.Length;
-
 							float result;
 							if (valid = float.TryParse((val = TrimFloat(tb_Val.Text)), out result))
 							{
@@ -1026,14 +1020,13 @@ namespace generalgff
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
 
 						case FieldTypes.DOUBLE:
 						{
-							int length = tb_Val.Text.Length;
-
 							double result;
 							if (valid = Double.TryParse((val = TrimFloat(tb_Val.Text)), out result))
 							{
@@ -1044,6 +1037,7 @@ namespace generalgff
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
@@ -1064,6 +1058,7 @@ namespace generalgff
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
@@ -1073,7 +1068,7 @@ namespace generalgff
 							if (isPrintableAscii(rt_Val.Text, true))
 							{
 								valid = true;
-								field.CExoString = (val = rt_Val.Text);
+								field.CExoString = (_prevalText_rt = rt_Val.Text);
 							}
 							break;
 						}
@@ -1081,8 +1076,6 @@ namespace generalgff
 						case FieldTypes.CExoLocString:
 						{
 							// NOTE: The GFF-specification stores strrefs as Uint32.
-							int length = tb_Val.Text.Length;
-
 							val = TrimInteger(tb_Val.Text);
 
 							bool isCust = cb_Checker.Checked;
@@ -1102,33 +1095,39 @@ namespace generalgff
 								}
 								else
 								{
-									isCust |= (result & 0x01000000) != 0;
-									result &= ~(unchecked((uint)0x01000000));
-									valid   = (result & 0xFF000000) == 0;
+									isCust |= (result & Globals.BITS_CUSTOM) != 0;
+									result &= ~Globals.BITS_CUSTOM;
+									valid   = (result & Globals.BITS_UNUSED) == 0;
 								}
 							}
 
 							if (valid)
 							{
-								if (result != UInt32.MaxValue)
+								if (result == UInt32.MaxValue)
 								{
-									result &= 0x00FFFFFF;
-									val = result.ToString();
-									length = -1;
-
-									if (_prevalChecker = isCust)
-										result |= 0x01000000;
+									cb_Checker.Visible =
+									cb_Checker.Checked =
+									_prevalChecker = false;
 								}
 								else
-									_prevalChecker = cb_Checker.Checked = false;
+								{
+									result &= Globals.BITS_STRREF;
+									val = result.ToString();
+
+									cb_Checker.Visible = true;
+
+									if (_prevalChecker = isCust)
+										result |= Globals.BITS_CUSTOM;
+								}
 
 								field.CExoLocStrref = result;
 
-								if (length != val.Length)
+								if (val != tb_Val.Text)
 								{
 									tb_Val.Text = val;
 									RepositionCaret(tb_Val);
 								}
+								_prevalText_tb = val;
 							}
 							break;
 						}
@@ -1184,7 +1183,7 @@ namespace generalgff
 								valid = true;
 								field.VOID = ParseHecate(val3);
 
-								rt_Val.Text = (val = new string(val2)); // freshen the richtextbox
+								rt_Val.Text = (_prevalText_rt = new string(val2));
 
 								RepositionCaret(rt_Val);
 							}
@@ -1195,8 +1194,6 @@ namespace generalgff
 
 						case FieldTypes.Struct:
 						{
-							int length = tb_Val.Text.Length;
-
 							val = tb_Val.Text.Trim();
 							if (   val.StartsWith("[", StringComparison.Ordinal)
 								&& val.EndsWith(  "]", StringComparison.Ordinal))
@@ -1209,11 +1206,12 @@ namespace generalgff
 
 									val = Regex.Replace(val, @"\s+", String.Empty);
 
-									if (length != val.Length)
+									if (val != tb_Val.Text)
 									{
 										tb_Val.Text = val;
 										RepositionCaret(tb_Val);
 									}
+									_prevalText_tb = val;
 								}
 							}
 							break;
@@ -1223,17 +1221,8 @@ namespace generalgff
 						{
 							valid = true;
 
-							var CExoLocString = (GffData.Field)node.Parent.Tag;
-							locale = CExoLocString.Locales[(int)field.localeid];
-
-							locale.local = val = rt_Val.Text;
-
-							cb_Checker.Checked &= !String.IsNullOrEmpty(val);
-
-							field.label = GffData.Locale.GetLanguageString(locale.langid);
-							if (locale.F = _prevalChecker = cb_Checker.Checked)
-								field.label += Globals.SUF_F;
-
+							locale = ((GffData.Field)node.Parent.Tag).Locales[(int)field.localeid];
+							locale.local = (_prevalText_rt = rt_Val.Text);
 							break;
 						}
 					}
@@ -1244,12 +1233,10 @@ namespace generalgff
 					if (field != null)
 						node.Text = ConstructNodetext(field, locale);
 
-					_prevalText = val;
-
 					GffData.Changed = true;
 					GffData = GffData;
 
-					EnableApply = DIRTY_non;
+					DirtyState = DIRTY_non;
 				}
 				else
 				{
@@ -1275,10 +1262,10 @@ namespace generalgff
 			{
 				if (cb_Checker.Checked != _prevalChecker)
 				{
-					EnableApply |= DIRTY_CZECH;
+					DirtyState |= DIRTY_CZECH;
 				}
 				else
-					EnableApply &= ~DIRTY_CZECH;
+					DirtyState &= ~DIRTY_CZECH;
 			}
 		}
 		#endregion Handlers (panel2)
@@ -1323,13 +1310,13 @@ namespace generalgff
 				{
 					switch (f.ShowDialog(this))
 					{
-						case DialogResult.Abort:	// "Cancel" - don't quit
-							return false;
-
 //						case DialogResult.Ignore:	// "Close/Quit/Reload" - close/quit/reload don't save
 
 						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
 							return GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver);
+
+						case DialogResult.Abort:	// "Cancel" - don't quit
+							return false;
 					}
 				}
 			}
