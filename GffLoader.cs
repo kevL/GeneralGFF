@@ -94,14 +94,16 @@ namespace generalgff
 						{
 							locale = field.Locales[i];
 
-							field = new GffData.Field();
-							field.type = FieldTypes.locale;
-							field.localeid = (uint)i;
-							field.label = GffData.Locale.GetLanguageString(locale.langid);
-							if (locale.F)
-								field.label += Globals.SUF_F;
+							var fieldloc = new GffData.Field();
+							fieldloc.type = FieldTypes.locale;
+							fieldloc.localeid = (uint)i;
+							fieldloc.label = GffData.Locale.GetLanguageString(locale.langid, locale.F);
 
-							AddField(field, node, locale);
+							AddField(fieldloc, node, locale);
+
+							LocaleDialog.SetLocaleFlag(ref field.localeflags,
+													   locale.langid,
+													   locale.F);
 						}
 					}
 					break;
