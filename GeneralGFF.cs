@@ -194,8 +194,9 @@ namespace generalgff
 								   150);
 			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
 
-			sc_body.SplitterMoving += splittering;
-			sc_body.SplitterMoved  += splittered;
+			sc_body.MouseDown += splitCont_MouseDown;
+			sc_body.MouseUp   += splitCont_MouseUp;
+			sc_body.MouseMove += splitCont_MouseMove;
 
 
 			if (File.Exists(filearg))
@@ -362,34 +363,94 @@ namespace generalgff
 
 
 		#region Handlers (override)
+		/// <summary>
+		/// Cancels close if appropriate.
+		/// </summary>
+		/// <param name="e"></param>
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
 			e.Cancel = !CheckCloseData(Globals.Quit);
 		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="e"></param>
+		protected override void OnResize(EventArgs e)
+		{
+			if (sc_body.Panel2.Width == 0)
+				sc_body.FixedPanel = FixedPanel.Panel2;
+			else
+				sc_body.FixedPanel = FixedPanel.Panel1;
+
+			if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
+				sc_body.SplitterDistance = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
+
+			base.OnResize(e);
+		}
 		#endregion Handlers (override)
 
 
-		#region Handlers
+		#region Handlers (splitter)
+		// https://stackoverflow.com/questions/6521731/refresh-the-panels-of-a-splitcontainer-as-the-splitter-moves#6522741
+
 		/// <summary>
-		/// Changes the cursor to VSplit as the splitter is dragged.
+		/// Assign this to the SplitContainer's MouseDown event. This disables
+		/// the normal move behavior.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void splittering(object sender, EventArgs e)
+		void splitCont_MouseDown(object sender, MouseEventArgs e)
 		{
-			Cursor = Cursors.VSplit;
+			((SplitContainer)sender).IsSplitterFixed = true;
 		}
 
 		/// <summary>
-		/// Changes the cursor back to Default after the splitter is dragged.
+		/// Assign this to the SplitContainer's MouseUp event. This allows the
+		/// splitter to be moved normally again.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void splittered(object sender, EventArgs e)
+		void splitCont_MouseUp(object sender, MouseEventArgs e)
 		{
-			Cursor = Cursors.Default;
+			((SplitContainer)sender).IsSplitterFixed = false;
+			Cursor = Cursors.Default; // kL_add.
 		}
-		#endregion Handlers
+
+		/// <summary>
+		/// Assign this to the SplitContainer's MouseMove event. Check to make
+		/// sure the splitter won't be updated by the normal move behavior also.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void splitCont_MouseMove(object sender, MouseEventArgs e)
+		{
+			if (((SplitContainer)sender).IsSplitterFixed)
+			{
+				if (e.Button.Equals(MouseButtons.Left))
+				{
+					Cursor = Cursors.VSplit; // kL_add.
+
+//					if (((SplitContainer)sender).Orientation.Equals(Orientation.Vertical))
+//					{
+					if (e.X > 0 && e.X < ((SplitContainer)sender).Width)
+					{
+						((SplitContainer)sender).SplitterDistance = e.X;
+						((SplitContainer)sender).Refresh();
+					}
+//					}
+//					else if (e.Y > 0 && e.Y < ((SplitContainer)sender).Height)
+//					{
+//						((SplitContainer)sender).SplitterDistance = e.Y;
+//						((SplitContainer)sender).Refresh();
+//					}
+				}
+				else
+					((SplitContainer)sender).IsSplitterFixed = false;
+			}
+		}
+		#endregion Handlers (splitter)
 
 
 		#region Handlers (menu)
