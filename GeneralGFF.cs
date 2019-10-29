@@ -194,6 +194,9 @@ namespace generalgff
 								   150);
 			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
 
+			sc_body.SplitterMoving += splittering;
+			sc_body.SplitterMoved  += splittered;
+
 
 			if (File.Exists(filearg))
 			{
@@ -364,6 +367,29 @@ namespace generalgff
 			e.Cancel = !CheckCloseData(Globals.Quit);
 		}
 		#endregion Handlers (override)
+
+
+		#region Handlers
+		/// <summary>
+		/// Changes the cursor to VSplit as the splitter is dragged.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void splittering(object sender, EventArgs e)
+		{
+			Cursor = Cursors.VSplit;
+		}
+
+		/// <summary>
+		/// Changes the cursor back to Default after the splitter is dragged.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void splittered(object sender, EventArgs e)
+		{
+			Cursor = Cursors.Default;
+		}
+		#endregion Handlers
 
 
 		#region Handlers (menu)
