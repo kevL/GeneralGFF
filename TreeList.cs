@@ -396,7 +396,7 @@ namespace generalgff
 			else
 			{
 				_f.GffData = new GffData(); // init GffData! ->
-				_f.GffData.Ver = "GFF V3.2";
+				_f.GffData.TypeVer = "GFF V3.2";
 				_f.GffData.Type = GffType.generic;
 
 				field.label = Globals.TopLevelStruct;
@@ -607,12 +607,14 @@ namespace generalgff
 					&& _f.GffData.Type != _typeid)
 				{
 					_f.GffData.Type = _typeid;
-					_f.GffData.Ver = GffData.GetGffString(_typeid) + Globals.SupportedVersion;
+					_f.GffData.TypeVer = GffData.GetGffString(_typeid) + Globals.SupportedVersion;
 
-					_f.tb_Val.Text = _f.GffData.Ver;
+					_f.tb_Val.Text = _f.GffData.TypeVer;
 
 					_f.GffData.Changed = true;
 					_f.GffData = _f.GffData;
+
+					_f.DirtyState = GeneralGFF.DIRTY_non;
 				}
 			}
 		}
@@ -681,6 +683,8 @@ namespace generalgff
 
 						_f.GffData.Changed = true;
 						_f.GffData = _f.GffData;
+
+						_f.DirtyState = GeneralGFF.DIRTY_non;
 					}
 				}
 			}
@@ -852,7 +856,7 @@ namespace generalgff
 				_f.la_Des.Text = "ASCII";
 				_f.la_Val.Text = "GFF type + version";
 
-				_f.tb_Val.Text = _f.GffData.Ver;
+				_f.tb_Val.Text = _f.GffData.TypeVer;
 
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Violet;

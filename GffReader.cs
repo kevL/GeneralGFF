@@ -92,7 +92,7 @@ namespace generalgff
 
 					var data = new GffData(pfe);
 
-					data.Ver  = ver;
+					data.TypeVer = ver;
 					data.Type = GffData.GetGffType(ver.Substring(0,3));
 
 

@@ -382,7 +382,7 @@ namespace generalgff
 				_tl.Nodes.Clear();
 
 				GffData = new GffData(); // init GffData! ->
-				GffData.Ver = "GFF V3.2";
+				GffData.TypeVer = "GFF V3.2";
 				GffData.Type = GffType.generic;
 
 				GffData = GffData; // update titlebar text
@@ -448,7 +448,7 @@ namespace generalgff
 		{
 			if (_tl.Nodes.Count != 0 && GffData.Changed
 				&& GffData.Pfe != Globals.TopLevelStruct
-				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver))
+				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.TypeVer))
 			{
 				GffData.Changed = false;
 				GffData = GffData; // update titlebar text
@@ -478,7 +478,7 @@ namespace generalgff
 					}
 
 					if (sfd.ShowDialog(this) == DialogResult.OK
-						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.Ver))
+						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.TypeVer))
 					{
 						string label = Path.GetFileNameWithoutExtension(sfd.FileName).ToUpper();
 						_tl.Nodes[0].Text = label; // update TLS-label
@@ -860,7 +860,7 @@ namespace generalgff
 					{
 						valid = true;
 
-						GffData.Ver = val;
+						GffData.TypeVer = val;
 						GffData.Type = GffData.GetGffType(val.Substring(0,3));
 
 						tb_Val.Text = (_prevalText_tb = val);
@@ -1313,7 +1313,7 @@ namespace generalgff
 //						case DialogResult.Ignore:	// "Close/Quit/Reload" - close/quit/reload don't save
 
 						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
-							return GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.Ver);
+							return GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.TypeVer);
 
 						case DialogResult.Abort:	// "Cancel" - don't quit
 							return false;

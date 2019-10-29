@@ -63,29 +63,32 @@ namespace generalgff
 
 	/// <summary>
 	/// The types of gff-files available.
+	/// @note Maintain its congruity with FileDialogFilter etc.
 	/// </summary>
 	enum GffType : byte
 	{
 		generic,	//  0
 		ARE,		//  1
 		BIC,		//  2
-		FAC,		//  3
-		GIC,		//  4
-		GIT,		//  5
-		IFO,		//  6
-		JRL,		//  7
-		ROS,		//  8
-		ULT,		//  9
-		UPE,		// 10
-		UTC,		// 11
-		UTD,		// 12
-		UTE,		// 13
-		UTI,		// 14
-		UTM,		// 15
-		UTP,		// 16
-		UTS,		// 17
-		UTT,		// 18
-		UTW			// 19
+		CAM,		//  3
+		FAC,		//  4
+		GIC,		//  5
+		GIT,		//  6
+		IFO,		//  7
+		JRL,		//  8
+		ROS,		//  9
+		ULT,		// 10
+		UPE,		// 11
+		UTC,		// 12
+		UTD,		// 13
+		UTE,		// 14
+		UTI,		// 15
+		UTM,		// 16
+		UTP,		// 17
+		UTS,		// 18
+		UTT,		// 19
+		UTW,		// 20
+		WMP			// 21
 	}
 	#endregion Enums (global)
 
@@ -126,7 +129,7 @@ namespace generalgff
 		/// <summary>
 		/// The type+version string as found in the header - eg, "UTC V3.2"
 		/// </summary>
-		internal string Ver
+		internal string TypeVer
 		{ get; set; }
 
 		/// <summary>
@@ -275,7 +278,8 @@ namespace generalgff
 
 		#region Methods (static)
 		/// <summary>
-		/// Gets the loaded file's GffType.
+		/// Converts a file's first 3-byte string sequence to a recognized
+		/// GffType.
 		/// </summary>
 		/// <param name="type">the first 3-chars of the file as a string</param>
 		/// <returns></returns>
@@ -285,6 +289,7 @@ namespace generalgff
 			{
 				case "ARE": return GffType.ARE; // area
 				case "BIC": return GffType.BIC; // saved player character
+				case "CAM": return GffType.CAM; // campaign info
 				case "FAC": return GffType.FAC; // faction table
 				case "GIC": return GffType.GIC; // area object-lists (counts only)
 				case "GIT": return GffType.GIT; // area object-lists (incl/ area-properties and object-data)
@@ -302,16 +307,23 @@ namespace generalgff
 				case "UTS": return GffType.UTS; // sound
 				case "UTT": return GffType.UTT; // trigger
 				case "UTW": return GffType.UTW; // waypoint
+				case "WMP": return GffType.WMP; // world map info
 			}
 			return GffType.generic; // eg. "GFF"
 		}
 
+		/// <summary>
+		/// Converts the loaded file's GffType to a string.
+		/// </summary>
+		/// <param name="type"></param>
+		/// <returns></returns>
 		internal static string GetGffString(GffType type)
 		{
 			switch (type)
 			{
 				case GffType.ARE: return "ARE"; // area
 				case GffType.BIC: return "BIC"; // saved player character
+				case GffType.CAM: return "CAM"; // campaign info
 				case GffType.FAC: return "FAC"; // faction table
 				case GffType.GIC: return "GIC"; // area object-lists (counts only)
 				case GffType.GIT: return "GIT"; // area object-lists (incl/ area-properties and object-data)
@@ -329,6 +341,7 @@ namespace generalgff
 				case GffType.UTS: return "UTS"; // sound
 				case GffType.UTT: return "UTT"; // trigger
 				case GffType.UTW: return "UTW"; // waypoint
+				case GffType.WMP: return "WMP"; // world map info
 			}
 			return "GFF"; // GffType.generic;
 		}
@@ -342,6 +355,7 @@ namespace generalgff
 				+ "|generic file|*.GFF"
 				+ "|area object|*.ARE"
 				+ "|player character|*.BIC"
+				+ "|campaign info|*.CAM"
 				+ "|faction table|*.FAC"
 				+ "|area object lists|*.GIC"
 				+ "|area properties and objects|*.GIT"
@@ -358,7 +372,8 @@ namespace generalgff
 				+ "|placeable object|*.UTP"
 				+ "|sound object|*.UTS"
 				+ "|trigger object|*.UTT"
-				+ "|waypoint object|*.UTW";
+				+ "|waypoint object|*.UTW"
+				+ "|world map info|*.WMP";
 
 		#endregion Methods (static)
 	}
