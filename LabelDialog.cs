@@ -25,7 +25,14 @@ namespace generalgff
 
 			tb_Label.Text = label;
 			tb_Label.Select();
-			tb_Label.SelectionStart = tb_Label.Text.Length;
+
+			if (label == "label")
+			{
+				tb_Label.SelectionStart = 0;
+				tb_Label.SelectionLength = label.Length;
+			}
+			else
+				tb_Label.SelectionStart = tb_Label.Text.Length;
 		}
 		#endregion cTor
 
