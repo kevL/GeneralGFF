@@ -487,7 +487,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void contextclick_Delete(object sender, EventArgs e)
+		internal void contextclick_Delete(object sender, EventArgs e)
 		{
 			bool delete;
 
@@ -1132,16 +1132,48 @@ namespace generalgff
 	/// its displayed text).
 	/// </summary>
 	sealed class Sortable
-		:
-			TreeNode
+		: TreeNode
 	{
 		internal string _label;
 
 		internal Sortable(string text, string label)
-			:
-				base(text)
+			: base(text)
 		{
 			_label = label;
+		}
+
+
+		/// <summary>
+		/// Duplicates a specified Sortable since Clone() is effed regardless.
+		/// </summary>
+		/// <param name="src"></param>
+		/// <returns></returns>
+		internal static Sortable Duplicate(Sortable src)
+		{
+			var dst = new Sortable(src.Text, src._label);
+			dst.Tag = GffData.Field.Duplicate((GffData.Field)src.Tag);
+
+			AddSubs(src, dst);
+
+			return dst;
+		}
+
+		/// <summary>
+		/// Recurses subnodes for Duplicate().
+		/// </summary>
+		/// <param name="src"></param>
+		/// <param name="dst"></param>
+		static void AddSubs(TreeNode src, TreeNode dst)
+		{
+			for (int i = 0; i != src.Nodes.Count; ++i)
+			{
+				var node = new Sortable(src.Nodes[i].Text, ((Sortable)src.Nodes[i])._label);
+				node.Tag = GffData.Field.Duplicate((GffData.Field)src.Nodes[i].Tag);
+
+				dst.Nodes.Add(node);
+
+				AddSubs((Sortable)src.Nodes[i], node);
+			}
 		}
 	}
 
@@ -1150,8 +1182,7 @@ namespace generalgff
 	/// A sorter of Sortable treenodes.
 	/// </summary>
 	sealed class NodeSorter
-		:
-			IComparer
+		: IComparer
 	{
 		public int Compare(object a, object b)
 		{

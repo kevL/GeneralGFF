@@ -200,6 +200,71 @@ namespace generalgff
 			internal List<uint> List;
 
 			internal Struct Struct;
+
+
+			/// <summary>
+			/// Duplicates a specified Field since Clone() is effed regardless.
+			/// </summary>
+			/// <param name="field"></param>
+			/// <returns></returns>
+			internal static Field Duplicate(Field field)
+			{
+				var field0 = new Field();
+
+				field0.type          = field.type;
+				field0.label         = field.label;
+				field0.BYTE          = field.BYTE;
+				field0.CHAR          = field.CHAR;
+				field0.WORD          = field.WORD;
+				field0.SHORT         = field.SHORT;
+				field0.DWORD         = field.DWORD;
+				field0.INT           = field.INT;
+				field0.DWORD64       = field.DWORD64;
+				field0.INT64         = field.INT64;
+				field0.FLOAT         = field.FLOAT;
+				field0.DOUBLE        = field.DOUBLE;
+				field0.CResRef       = field.CResRef;
+				field0.CExoString    = field.CExoString;
+				field0.CExoLocStrref = field.CExoLocStrref;
+
+				if (field.Locales != null)
+				{
+					field0.Locales = new List<Locale>();
+					for (int i = 0; i != field.Locales.Count; ++i)
+					{
+						var locale = new Locale();
+						locale.langid = field.Locales[i].langid;
+						locale.F      = field.Locales[i].F;
+						locale.local  = field.Locales[i].local;
+
+						field0.Locales.Add(locale);
+					}
+				}
+				field0.localeflags = field.localeflags;
+
+				if (field.VOID != null)
+				{
+					field0.VOID = new byte[field.VOID.Length];
+					for (int i = 0; i != field.VOID.Length; ++i)
+					{
+						field0.VOID[i] = field.VOID[i];
+					}
+				}
+
+				if (field.List != null)
+				{
+					field0.List = new List<uint>();
+					for (int i = 0; i != field0.List.Count; ++i)
+					{
+						field0.List[i] = field.List[i];
+					}
+				}
+
+				field0.Struct.typeid   = field.Struct.typeid;
+				field0.Struct.fieldids = field.Struct.fieldids;
+
+				return field0;
+			}
 		}
 
 

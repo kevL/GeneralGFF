@@ -12,23 +12,27 @@ namespace generalgff
 		internal const int MI_VIEW = 2;
 		internal const int MI_HELP = 3;
 
-		internal const int MI_FILE_CRAT   = 0;
+		internal const int MI_FILE_CRAT   = 0; // create
 		// 1 is Separator
-		internal const int MI_FILE_OPEN   = 2;
-		internal const int MI_FILE_RLOD   = 3;
-		internal const int MI_FILE_SAVE   = 4;
-		internal const int MI_FILE_SAVS   = 5;
+		internal const int MI_FILE_OPEN   = 2; // open
+		internal const int MI_FILE_RLOD   = 3; // reload
+		internal const int MI_FILE_SAVE   = 4; // save
+		internal const int MI_FILE_SAVS   = 5; // saveas
 		// 6 is Separator
-		internal const int MI_FILE_QUIT   = 7;
+		internal const int MI_FILE_QUIT   = 7; // quit
 
-		internal const int MI_EDIT_SEARCH = 0;
+		internal const int MI_EDIT_SER = 0; // search
+		// 1 is Separator
+		internal const int MI_EDIT_CUT = 2; // cut
+		internal const int MI_EDIT_COP = 3; // copy
+		internal const int MI_EDIT_PAS = 4; // paste
 
-		internal const int MI_VIEW_EXPAND = 0;
-		internal const int MI_VIEW_COLLAP = 1;
+		internal const int MI_VIEW_EXPAND = 0; // expand
+		internal const int MI_VIEW_COLLAP = 1; // collapse
 		// 2 is Separator
-		internal const int MI_VIEW_SORTER = 3;
+		internal const int MI_VIEW_SORTER = 3; // sort
 
-		internal const int MI_HELP_ABOUT  = 0;
+		internal const int MI_HELP_ABOUT  = 0; // about
 		#endregion Fields (static)
 
 
@@ -65,7 +69,18 @@ namespace generalgff
 			Xenu.MenuItems.Add("&Edit"); // #1
 
 			Xenu.MenuItems[MI_EDIT].MenuItems.Add("&Search");	// #0
-			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_SEARCH].Shortcut = Shortcut.CtrlF;
+			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_SER].Shortcut = Shortcut.CtrlF;
+
+			Xenu.MenuItems[MI_EDIT].MenuItems.Add("-");			// #1
+
+			Xenu.MenuItems[MI_EDIT].MenuItems.Add("&Cut");		// #2
+			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_CUT].Shortcut = Shortcut.CtrlX;
+
+			Xenu.MenuItems[MI_EDIT].MenuItems.Add("C&opy");		// #3
+			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_COP].Shortcut = Shortcut.CtrlC;
+
+			Xenu.MenuItems[MI_EDIT].MenuItems.Add("&Paste");	// #4
+			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_PAS].Shortcut = Shortcut.CtrlV;
 
 
 			Xenu.MenuItems.Add("&View"); // #2

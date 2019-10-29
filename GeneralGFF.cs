@@ -37,6 +37,8 @@ namespace generalgff
 
 		internal string _editText = String.Empty;
 					int _posCaret = 0;
+
+		Sortable _copied;
 		#endregion Fields
 
 
@@ -102,7 +104,11 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Click += fileclick_SaveAs;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_QUIT].Click += fileclick_Quit;
 
-			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_SEARCH].Click += editclick_Search;
+			Menu.MenuItems[MenuCreator.MI_EDIT].Popup += editpop;
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_SER].Click += editclick_Search;
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_CUT].Click += editclick_Cut;
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Click += editclick_Copy;
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Click += editclick_Paste;
 
 			Menu.MenuItems[MenuCreator.MI_VIEW].Popup += viewpop;
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
@@ -525,6 +531,19 @@ namespace generalgff
 
 
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void editpop(object sender, EventArgs e)
+		{
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_CUT].Enabled =
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Enabled = _tl.SelectedNode != null
+																						  && _tl.SelectedNode != _tl.Nodes[0];
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Enabled = CanPaste();
+		}
+
+		/// <summary>
 		/// Opens the Search dialog.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -535,6 +554,61 @@ namespace generalgff
 			f.Show(this);
 		}
 
+		/// <summary>
+		/// Cuts the currently selected treenode.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void editclick_Cut(object sender, EventArgs e)
+		{
+			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
+			{
+				// TODO: Account for nodes that have order like Locales. (see Delete)
+				editclick_Copy(null, EventArgs.Empty);
+				_tl.contextclick_Delete(null, EventArgs.Empty);
+			}
+		}
+
+		/// <summary>
+		/// Copies the currently selected treenode.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void editclick_Copy(object sender, EventArgs e)
+		{
+			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
+			{
+				_copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
+			}
+		}
+
+		/// <summary>
+		/// Pastes the currently copied treenode.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void editclick_Paste(object sender, EventArgs e)
+		{
+			if (CanPaste())
+			{
+				_tl.SelectedNode.Nodes.Add(_copied);
+			}
+		}
+
+		/// <summary>
+		/// Checks if a paste-operation can proceed.
+		/// </summary>
+		/// <returns></returns>
+		bool CanPaste()
+		{
+			if (_tl.SelectedNode != null && _copied != null)
+			{
+				// TODO: Check that it makes sense to paste the copied node as
+				// a subnode of the selected node.
+				return true;
+			}
+			return false;
+		}
 
 		/// <summary>
 		/// Enables/disables Edit-menu's items appropriately.
