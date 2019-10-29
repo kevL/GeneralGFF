@@ -74,6 +74,7 @@
     </Compile>
     <Compile Include="QuitDialog.cs" />
     <Compile Include="SearchDialog.cs" />
+    <Compile Include="Sortable.cs" />
     <Compile Include="TreeList.cs" />
     <Compile Include="TypeDialog.cs" />
   </ItemGroup>
