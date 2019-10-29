@@ -633,7 +633,7 @@ namespace generalgff
 					var field = (GffData.Field)SelectedNode.Tag;
 					if (field.label != f.tb_Label.Text)
 					{
-						field.label = f.tb_Label.Text;
+						field.label = (((Sortable)SelectedNode)._label = f.tb_Label.Text);
 						SelectedNode.Text = GeneralGFF.ConstructNodetext(field);
 
 						_f.GffData.Changed = true;
@@ -672,6 +672,7 @@ namespace generalgff
 
 						field.label = GffData.Locale.GetLanguageString(locale.langid = _langid,
 																	   locale.F = _langf);
+						((Sortable)SelectedNode)._label = field.label;
 
 						LocaleDialog.SetLocaleFlag(ref parent.localeflags,
 												   _langid,
@@ -679,12 +680,8 @@ namespace generalgff
 
 						SelectedNode.Text = GeneralGFF.ConstructNodetext(field, locale);
 
-						SelectField(SelectedNode); // freshen the editpanel (un/hide Feminine checkbox etc.)
-
 						_f.GffData.Changed = true;
 						_f.GffData = _f.GffData;
-
-						_f.DirtyState = GeneralGFF.DIRTY_non;
 					}
 				}
 			}

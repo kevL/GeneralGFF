@@ -41,6 +41,8 @@ namespace generalgff
 
 		const int MI_VIEW_EXPAND = 0;
 		const int MI_VIEW_COLLAP = 1;
+		// 2 is Separator
+		const int MI_VIEW_SORT   = 3;
 
 		const int MI_HELP_ABOUT  = 0;
 
@@ -165,6 +167,12 @@ namespace generalgff
 			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Collapse all under selected");	// #1
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Click += viewclick_CollapseSelected;
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Shortcut = Shortcut.F6;
+
+			Menu.MenuItems[MI_VIEW].MenuItems.Add("-");								// #2
+
+			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Sort");							// #3
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Click += viewclick_Sort;
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Shortcut = Shortcut.F7;
 
 
 			Menu.MenuItems.Add("&Help"); // #3
@@ -337,7 +345,7 @@ namespace generalgff
 				}
 
 				case FieldTypes.VOID:
-					return "bindata";
+					return "hexdata";
 
 				case FieldTypes.List:
 					return String.Empty;
@@ -524,6 +532,8 @@ namespace generalgff
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Enabled =
 			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null
 																	 && _tl.SelectedNode.Nodes.Count != 0;
+
+			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -580,6 +590,22 @@ namespace generalgff
 			{
 				child.Collapse();
 				CollapseChildren(child);
+			}
+		}
+
+
+		/// <summary>
+		/// Sorts the tree.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void viewclick_Sort(object sender, EventArgs e)
+		{
+			if (_tl.Nodes.Count != 0)
+			{
+				var node = _tl.SelectedNode;
+				_tl.Sort();
+				_tl.SelectedNode = node;
 			}
 		}
 
