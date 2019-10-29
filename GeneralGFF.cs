@@ -374,18 +374,22 @@ namespace generalgff
 
 
 		/// <summary>
-		/// 
+		/// Tries to keep the split-container panels somewhat predictable when
+		/// resizing the form.
 		/// </summary>
 		/// <param name="e"></param>
 		protected override void OnResize(EventArgs e)
 		{
 			if (sc_body.Panel2.Width == 0)
+			{
 				sc_body.FixedPanel = FixedPanel.Panel2;
+			}
+			else if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
+			{
+				sc_body.SplitterDistance = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
+			}
 			else
 				sc_body.FixedPanel = FixedPanel.Panel1;
-
-			if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
-				sc_body.SplitterDistance = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
 
 			base.OnResize(e);
 		}
