@@ -61,6 +61,7 @@ namespace generalgff
 			// 
 			this.sc_body.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.sc_body.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.sc_body.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
 			this.sc_body.Location = new System.Drawing.Point(0, 0);
 			this.sc_body.Margin = new System.Windows.Forms.Padding(0);
 			this.sc_body.Name = "sc_body";
