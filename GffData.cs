@@ -278,7 +278,7 @@ namespace generalgff
 
 		#region Methods (static)
 		/// <summary>
-		/// Converts a file's first 3-byte string sequence to a recognized
+		/// Converts a file's first 3-byte ASCII-string sequence to a recognized
 		/// GffType.
 		/// </summary>
 		/// <param name="type">the first 3-chars of the file as a string</param>
