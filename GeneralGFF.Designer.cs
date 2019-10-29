@@ -18,11 +18,10 @@ namespace generalgff
 		internal TextBox tb_Val;
 		internal Label la_Val;
 		internal CheckBox cb_Checker;
+		internal RichTextBox2 rt_Val;
 
 		Button btn_Apply;
 		Button btn_Revert;
-
-		internal RichTextBox2 rt_Val;
 
 
 		/// <summary>

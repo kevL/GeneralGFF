@@ -22,31 +22,6 @@ namespace generalgff
 		const int LENGTH_LABEL = 17;
 		const int LENGTH_TYPE  = 17;
 
-
-		const int MI_FILE = 0;
-		const int MI_EDIT = 1;
-		const int MI_VIEW = 2;
-		const int MI_HELP = 3;
-
-		const int MI_FILE_CRAT   = 0;
-		// 1 is Separator
-		const int MI_FILE_OPEN   = 2;
-		const int MI_FILE_RLOD   = 3;
-		const int MI_FILE_SAVE   = 4;
-		const int MI_FILE_SAVS   = 5;
-		// 6 is Separator
-		const int MI_FILE_QUIT   = 7;
-
-		const int MI_EDIT_SEARCH = 0;
-
-		const int MI_VIEW_EXPAND = 0;
-		const int MI_VIEW_COLLAP = 1;
-		// 2 is Separator
-		const int MI_VIEW_SORT   = 3;
-
-		const int MI_HELP_ABOUT  = 0;
-
-
 		internal const int DIRTY_non   = 0x0;
 				 const int DIRTY_TEXTS = 0x1;
 				 const int DIRTY_CZECH = 0x2;
@@ -113,80 +88,28 @@ namespace generalgff
 			logfile.CreateLog(); // works in debug-build only.
 			InitializeComponent();
 
-
-			Menu = new MainMenu();
-
-			Menu.MenuItems.Add("&File"); // #0
-
-			Menu.MenuItems[MI_FILE].Popup += filepop;
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("Crea&te GFF file ...");	// #0
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_CRAT].Click += fileclick_Create;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_CRAT].Shortcut = Shortcut.CtrlT;
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #1
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Open GFF file ...");	// #2
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Click += fileclick_Open;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_OPEN].Shortcut = Shortcut.CtrlO;
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Reload GFF file");		// #3
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Click += fileclick_Reload;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Shortcut = Shortcut.CtrlR;
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Save GFF file");		// #4
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Click += fileclick_Save;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Shortcut = Shortcut.CtrlS;
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #5
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Click += fileclick_SaveAs;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Shortcut = Shortcut.CtrlE;
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("-");						// #6
-
-			Menu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #7
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Click += fileclick_Quit;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Shortcut = Shortcut.CtrlQ;
-
-
-			Menu.MenuItems.Add("&Edit"); // #1
-
-			Menu.MenuItems[MI_EDIT].MenuItems.Add("&Search");	// #0
-			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_SEARCH].Click += editclick_Search;
-			Menu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_SEARCH].Shortcut = Shortcut.CtrlF;
-
-
-			Menu.MenuItems.Add("&View"); // #2
-
-			Menu.MenuItems[MI_VIEW].Popup += viewpop;
-
-			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Expand all under selected");	// #0
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Shortcut = Shortcut.F5;
-
-			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Collapse all under selected");	// #1
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Click += viewclick_CollapseSelected;
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Shortcut = Shortcut.F6;
-
-			Menu.MenuItems[MI_VIEW].MenuItems.Add("-");								// #2
-
-			Menu.MenuItems[MI_VIEW].MenuItems.Add("&Sort");							// #3
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Click += viewclick_Sort;
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Shortcut = Shortcut.F7;
-
-
-			Menu.MenuItems.Add("&Help"); // #3
-
-//			Menu.MenuItems[MI_HELP].MenuItems.Add("&Help");		// #
-//			Menu.MenuItems[MI_HELP].MenuItems[0].Click += ;
-
-			Menu.MenuItems[MI_HELP].MenuItems.Add("&About");	// #0
-			Menu.MenuItems[MI_HELP].MenuItems[MI_HELP_ABOUT].Click += helpclick_About;
-			Menu.MenuItems[MI_HELP].MenuItems[MI_HELP_ABOUT].Shortcut = Shortcut.F2;
-
 			_tl = new TreeList(this);
 			sc_body.Panel1.Controls.Add(_tl);
 			_tl.Select();
+
+
+			Menu = MenuCreator.Create();
+			Menu.MenuItems[MenuCreator.MI_FILE].Popup += filepop;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_CRAT].Click += fileclick_Create;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_OPEN].Click += fileclick_Open;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RLOD].Click += fileclick_Reload;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Click += fileclick_Save;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Click += fileclick_SaveAs;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_QUIT].Click += fileclick_Quit;
+
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_SEARCH].Click += editclick_Search;
+
+			Menu.MenuItems[MenuCreator.MI_VIEW].Popup += viewpop;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLLAP].Click += viewclick_CollapseSelected;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORTER].Click += viewclick_Sort;
+
+			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABOUT].Click += helpclick_About;
 
 
 			MinimumSize = new Size(sc_body.Panel1MinSize + sc_body.SplitterWidth
@@ -460,12 +383,12 @@ namespace generalgff
 		#region Handlers (menu)
 		void filepop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_RLOD].Enabled = GffData != null
-																   && GffData.Pfe != Globals.TopLevelStruct;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
-																   && GffData.Changed
-																   && GffData.Pfe != Globals.TopLevelStruct;
-			Menu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RLOD].Enabled = GffData != null
+																						   && GffData.Pfe != Globals.TopLevelStruct;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
+																						   && GffData.Changed
+																						   && GffData.Pfe != Globals.TopLevelStruct;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -620,11 +543,11 @@ namespace generalgff
 		/// <param name="e"></param>
 		void viewpop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_EXPAND].Enabled =
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null
-																	 && _tl.SelectedNode.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPAND].Enabled =
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null
+																							 && _tl.SelectedNode.Nodes.Count != 0;
 
-			Menu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORTER].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
