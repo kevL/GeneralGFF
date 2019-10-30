@@ -37,8 +37,6 @@ namespace generalgff
 
 		internal string _editText = String.Empty;
 					int _posCaret = 0;
-
-		Sortable _copied;
 		#endregion Fields
 
 
@@ -77,6 +75,9 @@ namespace generalgff
 				btn_Apply .Enabled = (_dirtystate = value) != DIRTY_non;
 			}
 		}
+
+		Sortable Copied
+		{ get; set; }
 		#endregion Properties
 
 
@@ -585,7 +586,7 @@ namespace generalgff
 		{
 			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
 			{
-				_copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
+				Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
 			}
 		}
 
@@ -598,7 +599,7 @@ namespace generalgff
 		{
 			if (CanPaste())
 			{
-				_tl.SelectedNode.Nodes.Add(_copied);
+				_tl.SelectedNode.Nodes.Add(Copied);
 			}
 		}
 
@@ -608,7 +609,7 @@ namespace generalgff
 		/// <returns></returns>
 		bool CanPaste()
 		{
-			if (_tl.SelectedNode != null && _copied != null)
+			if (_tl.SelectedNode != null && Copied != null)
 			{
 				// TODO: Check that it makes sense to paste the copied node as
 				// a subnode of the selected node.
