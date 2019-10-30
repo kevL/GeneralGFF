@@ -365,6 +365,11 @@ namespace generalgff
 			AddField(field);
 		}
 
+		/// <summary>
+		/// @note The Fields belonging to a Struct must all use different Labels.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void contextclick_AddStruct(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
@@ -384,7 +389,12 @@ namespace generalgff
 			AddField(field);
 		}
 
-		// cf. GeneralGFF.fileclick_Create()
+		/// <summary>
+		/// @note The Fields belonging to a Struct must all use different Labels.
+		/// cf. GeneralGFF.fileclick_Create()
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void contextclick_AddTopLevelStruct(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();

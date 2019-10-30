@@ -94,8 +94,32 @@ namespace generalgff
 			sc_body.Panel1.Controls.Add(_tl);
 			_tl.Select();
 
+			SubscribeOperations();
 
+			MinimumSize = new Size(sc_body.Panel1MinSize + sc_body.SplitterWidth
+														 + Width - ClientSize.Width, // <- border
+								   150);
+			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
+
+			sc_body.MouseDown += splitCont_MouseDown;
+			sc_body.MouseUp   += splitCont_MouseUp;
+			sc_body.MouseMove += splitCont_MouseMove;
+
+
+			if (File.Exists(filearg))
+			{
+				var loader = new GffLoader();
+				loader.LoadGFFfile(this, filearg);
+			}
+		}
+
+		/// <summary>
+		/// Creates the mainmenu and subscribes handlers to its operations.
+		/// </summary>
+		void SubscribeOperations()
+		{
 			Menu = MenuCreator.Create();
+
 			Menu.MenuItems[MenuCreator.MI_FILE].Popup += filepop;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_CRAT].Click += fileclick_Create;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_OPEN].Click += fileclick_Open;
@@ -116,23 +140,6 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORTER].Click += viewclick_Sort;
 
 			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABOUT].Click += helpclick_About;
-
-
-			MinimumSize = new Size(sc_body.Panel1MinSize + sc_body.SplitterWidth
-														 + Width - ClientSize.Width, // <- border
-								   150);
-			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
-
-			sc_body.MouseDown += splitCont_MouseDown;
-			sc_body.MouseUp   += splitCont_MouseUp;
-			sc_body.MouseMove += splitCont_MouseMove;
-
-
-			if (File.Exists(filearg))
-			{
-				var loader = new GffLoader();
-				loader.LoadGFFfile(this, filearg);
-			}
 		}
 		#endregion cTor
 
@@ -691,9 +698,13 @@ namespace generalgff
 		{
 			if (_tl.Nodes.Count != 0)
 			{
+				_tl.BeginUpdate();
+
 				var node = _tl.SelectedNode;
 				_tl.Sort();
 				_tl.SelectedNode = node;
+
+				_tl.EndUpdate();
 			}
 		}
 
