@@ -256,7 +256,7 @@ namespace generalgff
 					field0.List = new List<uint>();
 					for (int i = 0; i != field.List.Count; ++i)
 					{
-						field0.List[i] = field.List[i];
+						field0.List.Add(field.List[i]);
 					}
 				}
 
