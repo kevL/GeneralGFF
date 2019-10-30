@@ -219,7 +219,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.BYTE;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.BYTE = 0;
 
 			AddField(field);
@@ -229,7 +229,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.CHAR;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.CHAR = 0;
 
 			AddField(field);
@@ -239,7 +239,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.WORD;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.WORD = 0;
 
 			AddField(field);
@@ -249,7 +249,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.SHORT;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.SHORT = 0;
 
 			AddField(field);
@@ -259,7 +259,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.DWORD;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.DWORD = 0;
 
 			AddField(field);
@@ -269,7 +269,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.INT;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.INT = 0;
 
 			AddField(field);
@@ -279,7 +279,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.DWORD64;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.DWORD64 = 0;
 
 			AddField(field);
@@ -289,7 +289,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.INT64;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.INT64 = 0;
 
 			AddField(field);
@@ -299,7 +299,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.FLOAT;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.FLOAT = 0;
 
 			AddField(field);
@@ -309,7 +309,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.DOUBLE;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.DOUBLE = 0;
 
 			AddField(field);
@@ -319,7 +319,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.CResRef;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.CResRef = String.Empty;
 
 			AddField(field);
@@ -329,7 +329,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.CExoString;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.CExoString = String.Empty;
 
 			AddField(field);
@@ -339,7 +339,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.CExoLocString;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.CExoLocStrref = UInt32.MaxValue;
 
 			AddField(field);
@@ -349,7 +349,7 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.VOID;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.VOID = new byte[0];
 
 			AddField(field);
@@ -359,17 +359,12 @@ namespace generalgff
 		{
 			var field = new GffData.Field();
 			field.type = FieldTypes.List;
-			field.label = "label";
+			field.label = GetUniqueLabel();
 			field.List = new List<uint>();
 
 			AddField(field);
 		}
 
-		/// <summary>
-		/// TODO: The Fields belonging to a Struct must all use different Labels.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		void contextclick_AddStruct(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
@@ -381,7 +376,7 @@ namespace generalgff
 				field.label = SelectedNode.Nodes.Count.ToString();
 			}
 			else
-				field.label = "label";
+				field.label = GetUniqueLabel();
 
 			field.Struct = new Struct();
 			field.Struct.typeid = 0;
@@ -390,7 +385,6 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// TODO: The Fields belonging to a Struct must all use different Labels.
 		/// cf. GeneralGFF.fileclick_Create()
 		/// </summary>
 		/// <param name="sender"></param>
@@ -642,11 +636,37 @@ namespace generalgff
 					var field = (GffData.Field)SelectedNode.Tag;
 					if (field.label != f.tb_Label.Text)
 					{
-						field.label = (((Sortable)SelectedNode)._label = f.tb_Label.Text);
-						SelectedNode.Text = GeneralGFF.ConstructNodetext(field);
+						bool abort = false;
 
-						_f.GffData.Changed = true;
-						_f.GffData = _f.GffData;
+						var parent = (GffData.Field)SelectedNode.Parent.Tag;
+						if (parent == null // ie. 'parent' is TopLevelStruct
+							|| parent.type == FieldTypes.Struct)
+						{
+							for (int i = 0; i != SelectedNode.Parent.Nodes.Count; ++i)
+							{
+								if (SelectedNode.Parent.Nodes[i] != SelectedNode
+									&& ((Sortable)SelectedNode.Parent.Nodes[i])._label == f.tb_Label.Text)
+								{
+									string info = "Duplicate labels detected."
+												+ Environment.NewLine + Environment.NewLine
+												+ "Fields within a Struct require unique Labels.";
+									using (var g = new InfoDialog(Globals.Error, info))
+										g.ShowDialog(this);
+
+									abort = true;
+									break;
+								}
+							}
+						}
+
+						if (!abort)
+						{
+							field.label = (((Sortable)SelectedNode)._label = f.tb_Label.Text);
+							SelectedNode.Text = GeneralGFF.ConstructNodetext(field);
+
+							_f.GffData.Changed = true;
+							_f.GffData = _f.GffData;
+						}
 					}
 				}
 			}
@@ -1130,6 +1150,46 @@ namespace generalgff
 					}
 				}
 			}
+		}
+
+
+		const string LABEL = "label";
+
+		/// <summary>
+		/// Gets a generic label that's not a duplicate of an already existing
+		/// label within a current Struct.
+		/// </summary>
+		/// <returns></returns>
+		string GetUniqueLabel()
+		{
+			string label = LABEL;
+
+			var field = (GffData.Field)SelectedNode.Tag;
+			if (field == null // is TopLevelStruct
+				|| field.type == FieldTypes.Struct)
+			{
+				int suf = -1;
+
+				bool valid = false;
+				while (!valid)
+				{
+					valid = true;
+
+					for (int i = 0; i != SelectedNode.Nodes.Count; ++i)
+					{
+						if (((Sortable)SelectedNode.Nodes[i])._label == label)
+						{
+							label = LABEL + (++suf);
+							if (label.Length > Globals.Length_LABEL)
+								label = label.Substring(label.Length - Globals.Length_LABEL);
+
+							valid = false;
+							break;
+						}
+					}
+				}
+			}
+			return label;
 		}
 		#endregion Methods
 	}
