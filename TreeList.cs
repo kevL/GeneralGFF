@@ -366,7 +366,7 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// @note The Fields belonging to a Struct must all use different Labels.
+		/// TODO: The Fields belonging to a Struct must all use different Labels.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -390,7 +390,7 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// @note The Fields belonging to a Struct must all use different Labels.
+		/// TODO: The Fields belonging to a Struct must all use different Labels.
 		/// cf. GeneralGFF.fileclick_Create()
 		/// </summary>
 		/// <param name="sender"></param>
