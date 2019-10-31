@@ -620,29 +620,63 @@ namespace generalgff
 		{
 			if (EnablePaste() && !LocaleExists())
 			{
-				var field = ((GffData.Field)_tl.SelectedNode.Tag);
-				switch (field.type)
+				bool @select = false;
+
+				var node = Sortable.Duplicate(Copied);
+				GffData.Field field, field0;
+
+				if (_tl.SelectedNode.Tag == null // is TopLevelStruct
+					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.Struct)
 				{
-					case FieldTypes.List:
-						// TODO: Wipe the (copied) Struct's Label and give it a pseudo-label.
-						break;
+					string label = _tl.GetUniqueLabel(node._label);
+					if (label != node._label)
+					{
+						field0 = (GffData.Field)node.Tag;
+						field0.label = label;
 
-					case FieldTypes.CExoLocString:
-						LocaleDialog.SetLocaleFlag(ref field.localeflags,
-												   _refLocale.langid,
-												   _refLocale.F);
+						node._label = label;
+						node.Text = GeneralGFF.ConstructNodetext(field0);
 
-						if (field.Locales == null)
-							field.Locales = new List<GffData.Locale>();
+						string info = "Duplicate labels detected: Label changed."
+									+ Environment.NewLine + Environment.NewLine
+									+ "Fields within a Struct shall have unique Labels.";
+						using (var f = new InfoDialog("Warning", info))
+							f.ShowDialog(this);
 
-						((GffData.Field)Copied.Tag).localeid = (uint)field.Locales.Count;
+						@select = true;
+					}
+				}
+				else
+				{
+					switch (field.type)
+					{
+						case FieldTypes.List:
+							field0 = (GffData.Field)node.Tag;
+							field0.label = _tl.SelectedNode.Nodes.Count.ToString();
 
-						field.Locales.Add(GffData.Locale.Duplicate(_refLocale));
-						break;
+							node._label = field0.label;
+							node.Text = GeneralGFF.ConstructNodetext(field0);
+							break;
+
+						case FieldTypes.CExoLocString:
+							LocaleDialog.SetLocaleFlag(ref field.localeflags,
+													   _refLocale.langid,
+													   _refLocale.F);
+
+							if (field.Locales == null)
+								field.Locales = new List<GffData.Locale>();
+
+							((GffData.Field)node.Tag).localeid = (uint)field.Locales.Count;
+
+							field.Locales.Add(GffData.Locale.Duplicate(_refLocale));
+							break;
+					}
 				}
 
-				_tl.SelectedNode.Nodes.Add(Sortable.Duplicate(Copied));
+				_tl.SelectedNode.Nodes.Add(node);
 				_tl.SelectedNode.Expand();
+
+				if (@select) _tl.SelectedNode = node;
 
 				GffData.Changed = true;
 				GffData = GffData;
@@ -663,7 +697,6 @@ namespace generalgff
 				switch (((GffData.Field)_tl.SelectedNode.Tag).type)
 				{
 					case FieldTypes.Struct:
-						// TODO: check the copy's Label against those that already exist in the Struct -> relabel if it exists
 						return true;
 
 					case FieldTypes.List:

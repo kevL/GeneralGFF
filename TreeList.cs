@@ -650,7 +650,7 @@ namespace generalgff
 								{
 									string info = "Duplicate labels detected."
 												+ Environment.NewLine + Environment.NewLine
-												+ "Fields within a Struct require unique Labels.";
+												+ "Fields within a Struct shall have unique Labels.";
 									using (var g = new InfoDialog(Globals.Error, info))
 										g.ShowDialog(this);
 
@@ -1160,15 +1160,15 @@ namespace generalgff
 		/// Gets a generic label that's not a duplicate of an already existing
 		/// label within a current Struct.
 		/// </summary>
+		/// <param name="label"></param>
 		/// <returns></returns>
-		string GetUniqueLabel()
+		internal string GetUniqueLabel(string label = LABEL)
 		{
-			string label = LABEL;
-
 			var field = (GffData.Field)SelectedNode.Tag;
 			if (field == null // is TopLevelStruct
 				|| field.type == FieldTypes.Struct)
 			{
+				string label0 = label;
 				int suf = -1;
 
 				bool valid = false;
@@ -1180,7 +1180,7 @@ namespace generalgff
 					{
 						if (((Sortable)SelectedNode.Nodes[i])._label == label)
 						{
-							label = LABEL + (++suf);
+							label = label0 + (++suf);
 							if (label.Length > Globals.Length_LABEL)
 								label = label.Substring(label.Length - Globals.Length_LABEL);
 

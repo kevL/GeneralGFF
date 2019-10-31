@@ -262,7 +262,7 @@ namespace generalgff
 				} */
 
 				field0.Struct.typeid   = field.Struct.typeid;
-				field0.Struct.fieldids = field.Struct.fieldids;
+//				field0.Struct.fieldids = field.Struct.fieldids;
 
 				return field0;
 			}
