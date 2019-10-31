@@ -601,9 +601,10 @@ namespace generalgff
 			{
 				Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
 
-				if (((GffData.Field)_tl.SelectedNode.Parent.Tag).type == FieldTypes.CExoLocString) // gotta cache the Locale if relevant
+				var field = (GffData.Field)_tl.SelectedNode.Tag;
+				if (field.type == FieldTypes.locale) // gotta cache the Locale if relevant
 				{
-					_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)((GffData.Field)_tl.SelectedNode.Tag).localeid];
+					_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)field.localeid];
 				}
 				else
 					_refLocale = null;
@@ -619,7 +620,6 @@ namespace generalgff
 		{
 			if (EnablePaste() && !LocaleExists())
 			{
-				// TODO: Ensure things are kosher ->
 				var field = ((GffData.Field)_tl.SelectedNode.Tag);
 				switch (field.type)
 				{
