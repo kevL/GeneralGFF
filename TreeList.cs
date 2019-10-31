@@ -215,6 +215,7 @@ namespace generalgff
 			}
 		}
 
+
 		void contextclick_AddByte(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
@@ -360,7 +361,7 @@ namespace generalgff
 			var field = new GffData.Field();
 			field.type = FieldTypes.List;
 			field.label = GetUniqueLabel();
-			field.List = new List<uint>();
+//			field.List = new List<uint>();
 
 			AddField(field);
 		}
@@ -442,14 +443,13 @@ namespace generalgff
 						if (field.Locales == null)
 							field.Locales = new List<GffData.Locale>();
 
+						var fieldloc = new GffData.Field();
+						fieldloc.type = FieldTypes.locale;
+						fieldloc.label = GffData.Locale.GetLanguageString(_langid, _langf);
+						fieldloc.localeid = (uint)field.Locales.Count;
+
 						field.Locales.Add(locale);
-
-						field = new GffData.Field();
-						field.type = FieldTypes.locale;
-						field.label = GffData.Locale.GetLanguageString(_langid, _langf);
-						field.localeid = (uint)SelectedNode.Nodes.Count;
-
-						AddField(field, locale);
+						AddField(fieldloc, locale);
 					}
 				}
 			}
@@ -561,22 +561,23 @@ namespace generalgff
 						case FieldTypes.locale:
 						{
 							var parent = (GffData.Field)SelectedNode.Parent.Tag;
+							var locales = parent.Locales;
 
 							int localeid = (int)((GffData.Field)SelectedNode.Tag).localeid;
-							GffData.Locale locale = parent.Locales[localeid];
+							GffData.Locale locale = locales[localeid];
 
 							LocaleDialog.ClearLocaleFlag(ref parent.localeflags,
 														 locale.langid,
 														 locale.F);
 
-							var locales = SelectedNode.Parent.Nodes;
-							for (++localeid; localeid != locales.Count; ++localeid)
+							for (int i = 0; i != SelectedNode.Parent.Nodes.Count; ++i)
 							{
-								var field = (GffData.Field)locales[localeid].Tag;
-								--field.localeid;
+								var field = (GffData.Field)SelectedNode.Parent.Nodes[i].Tag;
+								if (field.localeid > localeid)
+									--field.localeid;
 							}
 
-							parent.Locales.Remove(locale);
+							locales.Remove(locale);
 							break;
 						}
 					}

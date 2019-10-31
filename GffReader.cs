@@ -46,6 +46,14 @@ namespace generalgff
 		/// </summary>
 		internal static List<GffData.Field> Fields
 		{ get { return _fields; } }
+
+
+/*		static readonly List<uint> _fieldids = new List<uint>();
+		/// <summary>
+		/// 
+		/// </summary>
+		internal static List<uint> FieldIds
+		{ get { return _fieldids; } } */
 		#endregion Properties (static)
 
 

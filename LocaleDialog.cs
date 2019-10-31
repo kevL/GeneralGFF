@@ -13,6 +13,8 @@ namespace generalgff
 			Form
 	{
 		#region Fields (static)
+		internal const uint Loc_non           = 0x000000; // error.
+
 		internal const uint Loc_ENGLISH       = 0x000001; // bitwise values for already used locales ->
 		internal const uint Loc_ENGLISH_F     = 0x000002;
 		internal const uint Loc_FRENCH        = 0x000004;
@@ -309,6 +311,65 @@ namespace generalgff
 					bitloc &= ~Loc_GFFTOKEN;
 					break;
 			}
+		}
+
+		/// <summary>
+		/// Gets a Locale's locale-flag.
+		/// </summary>
+		/// <param name="locale"></param>
+		/// <returns></returns>
+		internal static uint GetLocaleFlag(GffData.Locale locale)
+		{
+			switch (locale.langid)
+			{
+				case Languages.English:
+					if (locale.F) return Loc_ENGLISH_F;
+					return Loc_ENGLISH;
+
+				case Languages.French:
+					if (locale.F) return Loc_FRENCH_F;
+					return Loc_FRENCH;
+
+				case Languages.German:
+					if (locale.F) return Loc_GERMAN_F;
+					return Loc_GERMAN;
+
+				case Languages.Italian:
+					if (locale.F) return Loc_ITALIAN_F;
+					return Loc_ITALIAN;
+
+				case Languages.Spanish:
+					if (locale.F) return Loc_SPANISH_F;
+					return Loc_SPANISH;
+
+				case Languages.Polish:
+					if (locale.F) return Loc_POLISH_F;
+					return Loc_POLISH;
+
+				case Languages.Russian:
+					if (locale.F) return Loc_RUSSIAN_F;
+					return Loc_RUSSIAN;
+
+				case Languages.Korean:
+					if (locale.F) return Loc_KOREAN_F;
+					return Loc_KOREAN;
+
+				case Languages.ChineseTraditional:
+					if (locale.F) return Loc_CHINESETRAD_F;
+					return Loc_CHINESETRAD;
+
+				case Languages.ChineseSimplified:
+					if (locale.F) return Loc_CHINESESIMP_F;
+					return Loc_CHINESESIMP;
+
+				case Languages.Japanese:
+					if (locale.F) return Loc_JAPANESE_F;
+					return Loc_JAPANESE;
+
+				case Languages.GffToken:
+					return Loc_GFFTOKEN;
+			}
+			return Loc_non; // error.
 		}
 		#endregion Methods (static)
 

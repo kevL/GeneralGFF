@@ -51,6 +51,9 @@ namespace generalgff
 		/// <param name="locale">a locale if applicable</param>
 		internal void AddField(GffData.Field field, TreeNode parent, GffData.Locale locale = null)
 		{
+			// TODO: Refactor things throughout the code such that the Tag of a
+			// treenode is *either* a GffData.Field *or* a GffData.Locale.
+
 			string text = GeneralGFF.ConstructNodetext(field, locale);
 
 			var node = new Sortable(text, field.label);

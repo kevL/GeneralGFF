@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
@@ -286,7 +287,8 @@ namespace generalgff
 				}
 
 				case FieldTypes.VOID:
-					return "hexdata";
+					if (field.VOID.Length != 0) return "0x...";
+					return String.Empty;
 
 				case FieldTypes.List:
 					return String.Empty;
@@ -317,16 +319,19 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnResize(EventArgs e)
 		{
-			if (sc_body.Panel2.Width == 0)
+			if (WindowState != FormWindowState.Minimized)
 			{
-				sc_body.FixedPanel = FixedPanel.Panel2;
+				if (sc_body.Panel2.Width == 0)
+				{
+					sc_body.FixedPanel = FixedPanel.Panel2;
+				}
+				else if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
+				{
+					sc_body.SplitterDistance = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
+				}
+				else
+					sc_body.FixedPanel = FixedPanel.Panel1;
 			}
-			else if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
-			{
-				sc_body.SplitterDistance = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
-			}
-			else
-				sc_body.FixedPanel = FixedPanel.Panel1;
 
 			base.OnResize(e);
 		}
@@ -395,6 +400,11 @@ namespace generalgff
 
 
 		#region Handlers (menu)
+		/// <summary>
+		/// Enables/disables File-menu's items appropriately.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void filepop(object sender, EventArgs e)
 		{
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RLOD].Enabled = GffData != null
@@ -539,7 +549,7 @@ namespace generalgff
 
 
 		/// <summary>
-		/// 
+		/// Enables/disables Edit-menu's items appropriately.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -548,7 +558,7 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_CUT].Enabled =
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Enabled = _tl.SelectedNode != null
 																						  && _tl.SelectedNode != _tl.Nodes[0];
-			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Enabled = CanPaste();
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Enabled = EnablePaste();
 		}
 
 		/// <summary>
@@ -571,11 +581,13 @@ namespace generalgff
 		{
 			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
 			{
-				// TODO: Account for nodes that have order like Locales. (see Delete)
 				editclick_Copy(null, EventArgs.Empty);
 				_tl.contextclick_Delete(null, EventArgs.Empty);
 			}
 		}
+
+
+		GffData.Locale _refLocale;
 
 		/// <summary>
 		/// Copies the currently selected treenode.
@@ -584,9 +596,17 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Copy(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
+			if (sender == null // called by editclick_Cut()
+				|| (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0]))
 			{
 				Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
+
+				if (((GffData.Field)_tl.SelectedNode.Parent.Tag).type == FieldTypes.CExoLocString) // gotta cache the Locale if relevant
+				{
+					_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)((GffData.Field)_tl.SelectedNode.Tag).localeid];
+				}
+				else
+					_refLocale = null;
 			}
 		}
 
@@ -597,9 +617,35 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Paste(object sender, EventArgs e)
 		{
-			if (CanPaste())
+			if (EnablePaste() && !LocaleExists())
 			{
-				_tl.SelectedNode.Nodes.Add(Copied);
+				// TODO: Ensure things are kosher ->
+				var field = ((GffData.Field)_tl.SelectedNode.Tag);
+				switch (field.type)
+				{
+					case FieldTypes.List:
+						// TODO: Wipe the (copied) Struct's Label and give it a pseudo-label.
+						break;
+
+					case FieldTypes.CExoLocString:
+						LocaleDialog.SetLocaleFlag(ref field.localeflags,
+												   _refLocale.langid,
+												   _refLocale.F);
+
+						if (field.Locales == null)
+							field.Locales = new List<GffData.Locale>();
+
+						((GffData.Field)Copied.Tag).localeid = (uint)field.Locales.Count;
+
+						field.Locales.Add(GffData.Locale.Duplicate(_refLocale));
+						break;
+				}
+
+				_tl.SelectedNode.Nodes.Add(Sortable.Duplicate(Copied));
+				_tl.SelectedNode.Expand();
+
+				GffData.Changed = true;
+				GffData = GffData;
 			}
 		}
 
@@ -607,19 +653,57 @@ namespace generalgff
 		/// Checks if a paste-operation can proceed.
 		/// </summary>
 		/// <returns></returns>
-		bool CanPaste()
+		bool EnablePaste()
 		{
 			if (_tl.SelectedNode != null && Copied != null)
 			{
-				// TODO: Check that it makes sense to paste the copied node as
-				// a subnode of the selected node.
-				return true;
+				if (_tl.SelectedNode.Tag == null) // is TopLevelStruct
+					return true;
+
+				switch (((GffData.Field)_tl.SelectedNode.Tag).type)
+				{
+					case FieldTypes.Struct:
+						// TODO: check the copy's Label against those that already exist in the Struct -> relabel if it exists
+						return true;
+
+					case FieldTypes.List:
+						return ((GffData.Field)Copied.Tag).type == FieldTypes.Struct;
+
+					case FieldTypes.CExoLocString:
+						return ((GffData.Field)Copied.Tag).type == FieldTypes.locale;
+				}
 			}
 			return false;
 		}
 
 		/// <summary>
-		/// Enables/disables Edit-menu's items appropriately.
+		/// Disallows pasting a locale if it already exists in the CExoLocString
+		/// that user is trying to paste it into.
+		/// </summary>
+		/// <returns></returns>
+		bool LocaleExists()
+		{
+			if (_refLocale != null)
+			{
+				uint localeflags = ((GffData.Field)_tl.SelectedNode.Tag).localeflags;
+				if ((localeflags & LocaleDialog.GetLocaleFlag(_refLocale)) != 0)
+				{
+					string info = "The currently copied locale "
+								+ GffData.Locale.GetLanguageString(_refLocale.langid, _refLocale.F)
+								+ Environment.NewLine
+								+ "already exists in the selected branch.";
+					using (var f = new InfoDialog(Globals.Error, info))
+						f.ShowDialog(this);
+
+					return true;
+				}
+			}
+			return false;
+		}
+
+
+		/// <summary>
+		/// Enables/disables View-menu's items appropriately.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>

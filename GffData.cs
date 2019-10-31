@@ -197,7 +197,7 @@ namespace generalgff
 
 			internal byte[] VOID;
 
-			internal List<uint> List;
+			internal List<uint> List; // this is irrelevant after the file has loaded.
 
 			internal Struct Struct;
 
@@ -241,6 +241,7 @@ namespace generalgff
 					}
 				}
 				field0.localeflags = field.localeflags;
+				field0.localeid    = field.localeid;
 
 				if (field.VOID != null)
 				{
@@ -251,14 +252,14 @@ namespace generalgff
 					}
 				}
 
-				if (field.List != null)
+/*				if (field.List != null)
 				{
 					field0.List = new List<uint>();
 					for (int i = 0; i != field.List.Count; ++i)
 					{
 						field0.List.Add(field.List[i]);
 					}
-				}
+				} */
 
 				field0.Struct.typeid   = field.Struct.typeid;
 				field0.Struct.fieldids = field.Struct.fieldids;
@@ -337,6 +338,23 @@ namespace generalgff
 				if (f) l += "[F]";
 
 				return l;
+			}
+
+
+			/// <summary>
+			/// Duplicates a specified Locale since Clone() is effed regardless.
+			/// </summary>
+			/// <param name="locale"></param>
+			/// <returns></returns>
+			internal static Locale Duplicate(Locale locale)
+			{
+				var locale0 = new Locale();
+
+				locale0.langid = locale.langid;
+				locale0.F      = locale.F;
+				locale0.local  = locale.local;
+
+				return locale0;
 			}
 		}
 
