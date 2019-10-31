@@ -623,7 +623,7 @@ namespace generalgff
 				bool @select = false;
 
 				var node = Sortable.Duplicate(Copied);
-				GffData.Field field, field0;
+				GffData.Field field, fieldC;
 
 				if (_tl.SelectedNode.Tag == null // is TopLevelStruct
 					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.Struct)
@@ -631,11 +631,11 @@ namespace generalgff
 					string label = _tl.GetUniqueLabel(node._label);
 					if (label != node._label)
 					{
-						field0 = (GffData.Field)node.Tag;
-						field0.label = label;
+						fieldC = (GffData.Field)node.Tag;
+						fieldC.label = label;
 
 						node._label = label;
-						node.Text = GeneralGFF.ConstructNodetext(field0);
+						node.Text = GeneralGFF.ConstructNodetext(fieldC);
 
 						string info = "Duplicate labels detected: Label changed."
 									+ Environment.NewLine + Environment.NewLine
@@ -651,11 +651,11 @@ namespace generalgff
 					switch (field.type)
 					{
 						case FieldTypes.List:
-							field0 = (GffData.Field)node.Tag;
-							field0.label = _tl.SelectedNode.Nodes.Count.ToString();
+							fieldC = (GffData.Field)node.Tag;
+							fieldC.label = _tl.SelectedNode.Nodes.Count.ToString();
 
-							node._label = field0.label;
-							node.Text = GeneralGFF.ConstructNodetext(field0);
+							node._label = fieldC.label;
+							node.Text = GeneralGFF.ConstructNodetext(fieldC);
 							break;
 
 						case FieldTypes.CExoLocString:
