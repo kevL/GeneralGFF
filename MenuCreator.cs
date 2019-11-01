@@ -26,6 +26,7 @@ namespace generalgff
 		internal const int MI_EDIT_CUT = 2; // cut
 		internal const int MI_EDIT_COP = 3; // copy
 		internal const int MI_EDIT_PAS = 4; // paste
+		internal const int MI_EDIT_DEL = 5; // delete
 
 		internal const int MI_VIEW_EXPAND = 0; // expand
 		internal const int MI_VIEW_COLLAP = 1; // collapse
@@ -81,6 +82,9 @@ namespace generalgff
 
 			Xenu.MenuItems[MI_EDIT].MenuItems.Add("&Paste");	// #4
 			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_PAS].Shortcut = Shortcut.CtrlV;
+
+			Xenu.MenuItems[MI_EDIT].MenuItems.Add("&Delete");	// #5
+			Xenu.MenuItems[MI_EDIT].MenuItems[MI_EDIT_DEL].Shortcut = Shortcut.Del;
 
 
 			Xenu.MenuItems.Add("&View"); // #2

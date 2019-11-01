@@ -815,8 +815,6 @@ namespace generalgff
 
 
 		#region Methods
-		bool _RtbEnabled;
-
 		/// <summary>
 		/// Disables the controls of panel2.
 		/// </summary>
@@ -832,41 +830,19 @@ namespace generalgff
 			_f.tb_Val.Enabled   = false;
 			_f.tb_Val.BackColor = Color.Thistle;
 
-			if (_RtbEnabled)
-			{
-				_RtbEnabled = false;
+			_f.rt_Val.Enabled   = false;
+			_f.rt_Val.BackColor = Color.Thistle;
 
-				_f.rt_Val.BackColor = Color.Thistle;
-				_f.rt_Val.ReadOnly  = true;
-				_f.rt_Val.TabStop   = false;
-				_f.rt_Val.Cursor    = Cursors.Default;
-				_f.rt_Val.Enter    += _f.enter_Richtextbox;
-			}
+			_f.cb_Custo.Visible =
+			_f.cb_Custo.Checked = false;
 
-			_f.cb_Checker.Visible =
-			_f.cb_Checker.Checked = false;
+			_f.cb_Wordwrap.Visible =
+			_f.cb_Wordwrap.Checked = false;
 
 			_f._editText =
 			_f._prevalText_rt =
 			_f._prevalText_tb = String.Empty;
-			_f._prevalChecker = false;
-		}
-
-		/// <summary>
-		/// Enables the richtextbox.
-		/// </summary>
-		void EnableRichtextbox()
-		{
-			if (!_RtbEnabled)
-			{
-				_RtbEnabled = true;
-
-				_f.rt_Val.BackColor = Color.Honeydew;
-				_f.rt_Val.ReadOnly  = false;
-				_f.rt_Val.TabStop   = true;
-				_f.rt_Val.Cursor    = Cursors.IBeam;
-				_f.rt_Val.Enter    -= _f.enter_Richtextbox;
-			}
+			_f._prevalCusto = false;
 		}
 
 		/// <summary>
@@ -1054,13 +1030,16 @@ namespace generalgff
 
 						_f.rt_Val.Text = field.CExoString;
 
-						EnableRichtextbox();
+						_f.rt_Val.Enabled   = true;
+						_f.rt_Val.BackColor = Color.Honeydew;
+
+						_f.cb_Wordwrap.Visible = true;
 
 						_f._prevalText_rt =
 						_f._editText = _f.rt_Val.Text;
 						break;
 
-					case FieldTypes.CExoLocString:
+					case FieldTypes.CExoLocString: // not a string. Is an integer.
 					{
 						_f.la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
 						_f.la_Val.Text = "CExoLocString";
@@ -1069,23 +1048,19 @@ namespace generalgff
 						if (strref == UInt32.MaxValue)
 						{
 							_f.tb_Val.Text = "-1";
-
-							_f.cb_Checker.Visible =
-							_f.cb_Checker.Checked = false;
 						}
 						else
 						{
 							_f.tb_Val.Text = (strref & Globals.BITS_STRREF).ToString();
 
-							_f.cb_Checker.Visible = true;
-							_f.cb_Checker.Checked = (strref & Globals.BITS_CUSTOM) != 0;
+							_f.cb_Custo.Visible = true;
+							_f.cb_Custo.Checked = (strref & Globals.BITS_CUSTOM) != 0;
 						}
-						_f.cb_Checker.Text = "Custom talktable";
 
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalChecker = _f.cb_Checker.Checked;
+						_f._prevalCusto = _f.cb_Custo.Checked;
 
 						_f._prevalText_tb =
 						_f._editText = _f.tb_Val.Text;
@@ -1101,7 +1076,10 @@ namespace generalgff
 													 .Replace("-", " ")
 													 .ToUpper(CultureInfo.InvariantCulture);
 
-						EnableRichtextbox();
+						_f.rt_Val.Enabled   = true;
+						_f.rt_Val.BackColor = Color.Honeydew;
+
+						_f.cb_Wordwrap.Visible = true;
 
 						_f._prevalText_rt =
 						_f._editText = _f.rt_Val.Text;
@@ -1143,7 +1121,10 @@ namespace generalgff
 
 						_f.rt_Val.Text = locale.local;
 
-						EnableRichtextbox();
+						_f.rt_Val.Enabled   = true;
+						_f.rt_Val.BackColor = Color.Honeydew;
+
+						_f.cb_Wordwrap.Visible = true;
 
 						_f._prevalText_rt =
 						_f._editText = _f.rt_Val.Text;

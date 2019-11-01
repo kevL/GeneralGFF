@@ -34,10 +34,10 @@ namespace generalgff
 
 		internal string _prevalText_rt = String.Empty;
 		internal string _prevalText_tb = String.Empty;
-		internal bool   _prevalChecker;
+		internal bool   _prevalCusto;
 
 		internal string _editText = String.Empty;
-					int _posCaret = 0;
+				 int    _posCaret = 0;
 		#endregion Fields
 
 
@@ -135,6 +135,7 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_CUT].Click += editclick_Cut;
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Click += editclick_Copy;
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Click += editclick_Paste;
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_DEL].Click += editclick_Delete;
 
 			Menu.MenuItems[MenuCreator.MI_VIEW].Popup += viewpop;
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
@@ -308,7 +309,11 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			e.Cancel = !CheckCloseData(Globals.Quit);
+			if (   e.CloseReason != CloseReason.WindowsShutDown
+				&& e.CloseReason != CloseReason.TaskManagerClosing)
+			{
+				e.Cancel = !CheckCloseData(Globals.Quit);
+			}
 		}
 
 
@@ -334,6 +339,36 @@ namespace generalgff
 			}
 
 			base.OnResize(e);
+		}
+
+
+		bool _bypassShortcut;
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="msg"></param>
+		/// <param name="keyData"></param>
+		/// <returns></returns>
+		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+		{
+			logfile.Log("ProcessCmdKey() keyData= " + keyData);
+
+			if (tb_Val.ContainsFocus || rt_Val.ContainsFocus)
+			{
+				switch (keyData)
+				{
+					case Keys.Control | Keys.X:
+					case Keys.Control | Keys.C:
+					case Keys.Control | Keys.V:
+					case Keys.Delete:
+						logfile.Log(". _bypassShortcut");
+						_bypassShortcut = true;
+						break;
+				}
+			}
+
+			return base.ProcessCmdKey(ref msg, keyData);
 		}
 		#endregion Handlers (override)
 
@@ -559,6 +594,7 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Enabled = _tl.SelectedNode != null
 																						  && _tl.SelectedNode != _tl.Nodes[0];
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Enabled = EnablePaste();
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_DEL].Enabled = _tl.SelectedNode != null;
 		}
 
 		/// <summary>
@@ -579,11 +615,18 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Cut(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
+			if (!_bypassShortcut)
 			{
-				editclick_Copy(null, EventArgs.Empty);
-				_tl.contextclick_Delete(null, EventArgs.Empty);
+				logfile.Log("editclick_Cut()");
+
+				if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
+				{
+					editclick_Copy(null, EventArgs.Empty);
+					_tl.contextclick_Delete(null, EventArgs.Empty);
+				}
 			}
+			else
+				_bypassShortcut = false;
 		}
 
 
@@ -596,19 +639,26 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Copy(object sender, EventArgs e)
 		{
-			if (sender == null // called by editclick_Cut()
-				|| (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0]))
+			if (!_bypassShortcut)
 			{
-				Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
+				logfile.Log("editclick_Copy()");
 
-				var field = (GffData.Field)_tl.SelectedNode.Tag;
-				if (field.type == FieldTypes.locale) // gotta cache the Locale if relevant
+				if (sender == null // called by editclick_Cut()
+					|| (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0]))
 				{
-					_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)field.localeid];
+					Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
+
+					var field = (GffData.Field)_tl.SelectedNode.Tag;
+					if (field.type == FieldTypes.locale) // gotta cache the Locale if relevant
+					{
+						_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)field.localeid];
+					}
+					else
+						_refLocale = null;
 				}
-				else
-					_refLocale = null;
 			}
+			else
+				_bypassShortcut = false;
 		}
 
 		/// <summary>
@@ -618,69 +668,76 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Paste(object sender, EventArgs e)
 		{
-			if (EnablePaste() && !LocaleExists())
+			if (!_bypassShortcut)
 			{
-				bool @select = false;
+				logfile.Log("editclick_Paste()");
 
-				var node = Sortable.Duplicate(Copied);
-				GffData.Field field, fieldC;
-
-				if (_tl.SelectedNode.Tag == null // is TopLevelStruct
-					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.Struct)
+				if (EnablePaste() && !LocaleExists())
 				{
-					string label = _tl.GetUniqueLabel(node._label);
-					if (label != node._label)
+					bool @select = false;
+
+					var node = Sortable.Duplicate(Copied);
+					GffData.Field field, fieldC;
+
+					if (_tl.SelectedNode.Tag == null // is TopLevelStruct
+						|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.Struct)
 					{
-						fieldC = (GffData.Field)node.Tag;
-						fieldC.label = label;
-
-						node._label = label;
-						node.Text = GeneralGFF.ConstructNodetext(fieldC);
-
-						string info = "Duplicate labels detected: Label changed."
-									+ Environment.NewLine + Environment.NewLine
-									+ "Fields within a Struct shall have unique Labels.";
-						using (var f = new InfoDialog("Warning", info))
-							f.ShowDialog(this);
-
-						@select = true;
-					}
-				}
-				else
-				{
-					switch (field.type)
-					{
-						case FieldTypes.List:
+						string label = _tl.GetUniqueLabel(node._label);
+						if (label != node._label)
+						{
 							fieldC = (GffData.Field)node.Tag;
-							fieldC.label = _tl.SelectedNode.Nodes.Count.ToString();
+							fieldC.label = label;
 
-							node._label = fieldC.label;
+							node._label = label;
 							node.Text = GeneralGFF.ConstructNodetext(fieldC);
-							break;
 
-						case FieldTypes.CExoLocString:
-							LocaleDialog.SetLocaleFlag(ref field.localeflags,
-													   _refLocale.langid,
-													   _refLocale.F);
+							string info = "Duplicate labels detected: Label changed."
+										+ Environment.NewLine + Environment.NewLine
+										+ "Fields within a Struct shall have unique Labels.";
+							using (var f = new InfoDialog("Warning", info))
+								f.ShowDialog(this);
 
-							if (field.Locales == null)
-								field.Locales = new List<GffData.Locale>();
-
-							((GffData.Field)node.Tag).localeid = (uint)field.Locales.Count;
-
-							field.Locales.Add(GffData.Locale.Duplicate(_refLocale));
-							break;
+							@select = true;
+						}
 					}
+					else
+					{
+						switch (field.type)
+						{
+							case FieldTypes.List:
+								fieldC = (GffData.Field)node.Tag;
+								fieldC.label = _tl.SelectedNode.Nodes.Count.ToString();
+
+								node._label = fieldC.label;
+								node.Text = GeneralGFF.ConstructNodetext(fieldC);
+								break;
+
+							case FieldTypes.CExoLocString:
+								LocaleDialog.SetLocaleFlag(ref field.localeflags,
+														   _refLocale.langid,
+														   _refLocale.F);
+
+								if (field.Locales == null)
+									field.Locales = new List<GffData.Locale>();
+
+								((GffData.Field)node.Tag).localeid = (uint)field.Locales.Count;
+
+								field.Locales.Add(GffData.Locale.Duplicate(_refLocale));
+								break;
+						}
+					}
+
+					_tl.SelectedNode.Nodes.Add(node);
+					_tl.SelectedNode.Expand();
+
+					if (@select) _tl.SelectedNode = node;
+
+					GffData.Changed = true;
+					GffData = GffData;
 				}
-
-				_tl.SelectedNode.Nodes.Add(node);
-				_tl.SelectedNode.Expand();
-
-				if (@select) _tl.SelectedNode = node;
-
-				GffData.Changed = true;
-				GffData = GffData;
 			}
+			else
+				_bypassShortcut = false;
 		}
 
 		/// <summary>
@@ -732,6 +789,26 @@ namespace generalgff
 				}
 			}
 			return false;
+		}
+
+		/// <summary>
+		/// Deletes a treenode.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void editclick_Delete(object sender, EventArgs e)
+		{
+			if (!_bypassShortcut)
+			{
+				if (_tl.SelectedNode != null)
+				{
+					logfile.Log("editclick_Delete()");
+
+					_tl.contextclick_Delete(null, EventArgs.Empty);
+				}
+			}
+			else
+				_bypassShortcut = false;
 		}
 
 
@@ -878,45 +955,41 @@ namespace generalgff
 
 
 		/// <summary>
-		/// Shunts focus away from the richtextbox if it's not "enabled".
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		internal void enter_Richtextbox(object sender, EventArgs e)
-		{
-			tb_Val.Select();
-		}
-
-
-		/// <summary>
-		/// Tracks the position of the caret in the textbox.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void mousedown_Textbox(object sender, MouseEventArgs e)
-		{
-			_posCaret = tb_Val.SelectionStart;
-		}
-
-		/// <summary>
-		/// Tracks the position of the caret in the textbox.
+		/// Tracks the position of the caret in the active textbox.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
 		void keyup(object sender, KeyEventArgs e)
 		{
-			if ((TextBoxBase)sender == tb_Val)
+			if ((Control)sender == tb_Val)
 				_posCaret = tb_Val.SelectionStart;
 			else
 				_posCaret = rt_Val.SelectionStart;
 		}
 
 		/// <summary>
-		/// Handles keydowns in the textbox.
+		/// Tracks the position of the caret in the active textbox.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void keydown_Textbox(object sender, KeyEventArgs e)
+		void mousedown(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				if ((Control)sender == tb_Val)
+					_posCaret = tb_Val.SelectionStart;
+				else
+					_posCaret = rt_Val.SelectionStart;
+			}
+		}
+
+
+		/// <summary>
+		/// Handles keydowns in the singleline textbox.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void keydown_Single(object sender, KeyEventArgs e)
 		{
 			switch (e.KeyData)
 			{
@@ -938,7 +1011,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void textchanged_Textbox(object sender, EventArgs e)
+		void textchanged_Single(object sender, EventArgs e)
 		{
 			if (_tl.SelectedNode != null)
 			{
@@ -982,21 +1055,11 @@ namespace generalgff
 
 
 		/// <summary>
-		/// Tracks the position of the caret in the richtextbox.
+		/// Handles keydowns in the multiline textbox.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void mousedown_Richtextbox(object sender, MouseEventArgs e)
-		{
-			_posCaret = rt_Val.SelectionStart;
-		}
-
-		/// <summary>
-		/// Handles keydowns in the richtextbox.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		void keydown_Richtextbox(object sender, KeyEventArgs e)
+		void keydown_Multi(object sender, KeyEventArgs e)
 		{
 			switch (e.KeyData)
 			{
@@ -1009,11 +1072,11 @@ namespace generalgff
 
 		/// <summary>
 		/// Prevents non-ASCII characters in CExoString and non-hexadecimal
-		/// characters in VOID.
+		/// characters in VOID. Only locals are allowed to use UTF8.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void textchanged_Richtextbox(object sender, EventArgs e)
+		void textchanged_Multi(object sender, EventArgs e)
 		{
 			if (_tl.SelectedNode != null)
 			{
@@ -1066,10 +1129,13 @@ namespace generalgff
 			TreeNode node = _tl.SelectedNode;
 			if (node != null) // safety.
 			{
+				Control editor = tb_Val;
+
 				string val = null; // the string to test
 
-				GffData.Field field   = null;
+				GffData.Field  field  = null;
 				GffData.Locale locale = null;
+
 				bool valid = false;
 
 				if (node.Tag == null) // is TopLevelStruct
@@ -1308,6 +1374,7 @@ namespace generalgff
 
 						case FieldTypes.CExoString:
 						{
+							editor = rt_Val;
 							if (isPrintableAscii(rt_Val.Text, true))
 							{
 								valid = true;
@@ -1321,7 +1388,7 @@ namespace generalgff
 							// NOTE: The GFF-specification stores strrefs as Uint32.
 							val = TrimInteger(tb_Val.Text);
 
-							bool isCust = cb_Checker.Checked;
+							bool isCust = cb_Custo.Checked;
 
 							uint result;
 							if (val == "-1")
@@ -1348,18 +1415,18 @@ namespace generalgff
 							{
 								if (result == UInt32.MaxValue)
 								{
-									cb_Checker.Visible =
-									cb_Checker.Checked =
-									_prevalChecker = false;
+									cb_Custo.Visible =
+									cb_Custo.Checked =
+									_prevalCusto = false;
 								}
 								else
 								{
 									result &= Globals.BITS_STRREF;
 									val = result.ToString();
 
-									cb_Checker.Visible = true;
+									cb_Custo.Visible = true;
 
-									if (_prevalChecker = isCust)
+									if (_prevalCusto = isCust)
 										result |= Globals.BITS_CUSTOM;
 								}
 
@@ -1377,6 +1444,8 @@ namespace generalgff
 
 						case FieldTypes.VOID:
 						{
+							editor = rt_Val;
+
 							val = rt_Val.Text.Trim();
 							val = Regex.Replace(val, @"\s+", " ");
 
@@ -1462,6 +1531,8 @@ namespace generalgff
 
 						case FieldTypes.locale:
 						{
+							editor = rt_Val;
+
 							valid = true;
 
 							locale = ((GffData.Field)node.Parent.Tag).Locales[(int)field.localeid];
@@ -1480,36 +1551,52 @@ namespace generalgff
 					GffData = GffData;
 
 					DirtyState = DIRTY_non;
+
+					_tl.Select();
 				}
 				else
 				{
 					using (var f = new InfoDialog(Globals.Error, "That dog don't hunt."))
-					{
 						f.ShowDialog(this);
-					}
+
+					editor.Select();
 				}
 			}
-
-			_tl.Select();
 		}
 
 
 		/// <summary>
-		/// 
+		/// Sets the dirty-state when the talktable flag is changed.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void checkchanged_Checker(object sender, EventArgs e)
+		void checkchanged_Custo(object sender, EventArgs e)
 		{
 			if (!_tl.BypassDirty)
 			{
-				if (cb_Checker.Checked != _prevalChecker)
+				if (cb_Custo.Checked != _prevalCusto)
 				{
 					DirtyState |= DIRTY_CZECH;
 				}
 				else
 					DirtyState &= ~DIRTY_CZECH;
 			}
+		}
+
+
+		/// <summary>
+		/// Sets textwrap in the multiline textbox.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void checkchanged_Wordwrap(object sender, EventArgs e)
+		{
+			if (rt_Val.WordWrap = cb_Wordwrap.Checked)
+			{
+				rt_Val.ScrollBars = ScrollBars.Vertical;
+			}
+			else
+				rt_Val.ScrollBars = ScrollBars.Both;
 		}
 		#endregion Handlers (panel2)
 
@@ -1518,22 +1605,22 @@ namespace generalgff
 		/// <summary>
 		/// Resets the textbox/richtextbox to a (hopefully) valid state.
 		/// </summary>
-		void ResetEditor(TextBoxBase tbb)
+		void ResetEditor(TextBoxBase editor)
 		{
-			tbb.Text = _editText;
-			RepositionCaret(tbb);
+			editor.Text = _editText;
+			RepositionCaret(editor);
 		}
 
 		/// <summary>
 		/// Repositions the textbox/richtextbox caret to a suitable position.
 		/// </summary>
-		/// <param name="tbb"></param>
-		void RepositionCaret(TextBoxBase tbb)
+		/// <param name="editor"></param>
+		void RepositionCaret(TextBoxBase editor)
 		{
-			if (_posCaret < tbb.Text.Length)
-				tbb.SelectionStart = _posCaret;
+			if (_posCaret < editor.Text.Length)
+				editor.SelectionStart = _posCaret;
 			else
-				tbb.SelectionStart = tbb.Text.Length;
+				editor.SelectionStart = editor.Text.Length;
 		}
 
 

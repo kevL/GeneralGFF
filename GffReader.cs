@@ -577,6 +577,7 @@ namespace generalgff
 											buffer[b] = bytes[offset++];
 
 										locale.local = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
+										locale.local = locale.local.Replace("\r\n","\n").Replace("\r","\n").Replace("\n","\r\n");
 										//logfile.Log("local= " + locale.local);
 
 										field.Locales.Add(locale);
