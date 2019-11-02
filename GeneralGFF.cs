@@ -316,7 +316,6 @@ namespace generalgff
 			}
 		}
 
-
 		/// <summary>
 		/// Tries to keep the split-container panels somewhat predictable when
 		/// resizing the form.
@@ -345,15 +344,13 @@ namespace generalgff
 		bool _bypassShortcut;
 
 		/// <summary>
-		/// 
+		/// Routes edit-key events to the active texbox if appropriate.
 		/// </summary>
 		/// <param name="msg"></param>
 		/// <param name="keyData"></param>
 		/// <returns></returns>
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			logfile.Log("ProcessCmdKey() keyData= " + keyData);
-
 			if (tb_Val.ContainsFocus || rt_Val.ContainsFocus)
 			{
 				switch (keyData)
@@ -362,12 +359,10 @@ namespace generalgff
 					case Keys.Control | Keys.C:
 					case Keys.Control | Keys.V:
 					case Keys.Delete:
-						logfile.Log(". _bypassShortcut");
-						_bypassShortcut = true;
-						break;
+						Edit(keyData);
+						return true;
 				}
 			}
-
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
 		#endregion Handlers (override)
@@ -1002,6 +997,11 @@ namespace generalgff
 					e.SuppressKeyPress = true;
 					btn_Revert.PerformClick();
 					break;
+
+				case Keys.Control | Keys.A:
+					e.SuppressKeyPress = true;
+					tb_Val.SelectAll();
+					break;
 			}
 		}
 
@@ -1066,6 +1066,11 @@ namespace generalgff
 				case Keys.Escape:
 					e.SuppressKeyPress = true;
 					btn_Revert.PerformClick();
+					break;
+
+				case Keys.Control | Keys.A:
+					e.SuppressKeyPress = true;
+					rt_Val.SelectAll();
 					break;
 			}
 		}
@@ -1583,7 +1588,6 @@ namespace generalgff
 			}
 		}
 
-
 		/// <summary>
 		/// Sets textwrap in the multiline textbox.
 		/// </summary>
@@ -1602,6 +1606,52 @@ namespace generalgff
 
 
 		#region Methods
+		void Edit(Keys keyData)
+		{
+			TextBoxBase tb;
+			if (tb_Val.ContainsFocus) tb = tb_Val;
+			else                      tb = rt_Val;
+
+			switch (keyData)
+			{
+				case Keys.Control | Keys.X:
+					tb.Cut();
+					break;
+
+				case Keys.Control | Keys.C:
+					tb.Copy();
+					break;
+
+				case Keys.Control | Keys.V:
+					tb.Paste();
+					break;
+
+				case Keys.Delete:
+				{
+					int length;
+					if (tb.SelectedText.Length != 0)
+					{
+						length = tb.SelectedText.Length;
+					}
+					else if (tb.SelectionStart != tb.Text.Length)
+					{
+						length = 1;
+					}
+					else
+						return;
+
+					int pos = tb.SelectionStart;
+					tb.Text = tb.Text.Substring(0, tb.SelectionStart)
+							+ tb.Text.Substring(tb.SelectionStart + length,
+												tb.Text.Length - tb.SelectionStart - length);
+					tb.SelectionStart = pos;
+					tb.ScrollToCaret();
+					break;
+				}
+			}
+		}
+
+
 		/// <summary>
 		/// Resets the textbox/richtextbox to a (hopefully) valid state.
 		/// </summary>
@@ -1656,32 +1706,6 @@ namespace generalgff
 
 
 		#region Methods (static)
-		/// <summary>
-		/// Roll yer own keyboard-navigation keys checker.
-		/// @note 'keycode' shall include modifers - ie, pass in KeyCode not
-		/// KeyData.
-		/// </summary>
-		/// <param name="keycode"></param>
-		/// <returns></returns>
-		static bool isNavigation(Keys keycode)
-		{
-			switch (keycode)
-			{
-				case Keys.Up:
-				case Keys.Down:
-				case Keys.Left:
-				case Keys.Right:
-				case Keys.Home:
-				case Keys.End:
-				case Keys.PageUp:
-				case Keys.PageDown:
-				case Keys.Back:
-				case Keys.Delete:
-					return true;
-			}
-			return false;
-		}
-
 		/// <summary>
 		/// Checks if a string is printable ascii.
 		/// </summary>
