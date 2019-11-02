@@ -521,6 +521,7 @@ namespace generalgff
 									buffer[b] = bytes[offset++];
 
 								field.CExoString = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+								field.CExoString = field.CExoString.Replace("\r\n","\n").Replace("\r","\n").Replace("\n","\r\n");
 								break;
 
 							case FieldTypes.CExoLocString:
