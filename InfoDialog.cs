@@ -45,7 +45,7 @@ namespace generalgff
 			}
 			w += la_Info.Padding.Left + la_Info.Padding.Right;
 
-			la_Info.Height = (TextRenderer.MeasureText(lines[0], la_Info.Font).Height + PadVert) * lines.Length;
+			la_Info.Height = (TextRenderer.MeasureText(lines[0], la_Info.Font).Height + PadVert) * lines.Length + PadVert;
 
 			ClientSize = new Size(w, la_Info.Height + hButton);
 		}
@@ -107,8 +107,8 @@ namespace generalgff
 			this.la_Info.Location = new System.Drawing.Point(0, 0);
 			this.la_Info.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Info.Name = "la_Info";
-			this.la_Info.Padding = new System.Windows.Forms.Padding(2, 0, 5, 0);
-			this.la_Info.Size = new System.Drawing.Size(239, 20);
+			this.la_Info.Padding = new System.Windows.Forms.Padding(5, 0, 6, 0);
+			this.la_Info.Size = new System.Drawing.Size(239, 22);
 			this.la_Info.TabIndex = 0;
 			this.la_Info.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
