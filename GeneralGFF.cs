@@ -1631,6 +1631,13 @@ namespace generalgff
 					else if (tb.SelectionStart != tb.Text.Length)
 					{
 						length = 1;
+
+						if (tb.SelectionStart < tb.Text.Length - 2
+							&& tb.Text.Substring(tb.SelectionStart,     1) == "\r"
+							&& tb.Text.Substring(tb.SelectionStart + 1, 1) == "\n")
+						{
+							length = 2;
+						}
 					}
 					else
 						return;
@@ -1640,6 +1647,7 @@ namespace generalgff
 							+ tb.Text.Substring(tb.SelectionStart + length,
 												tb.Text.Length - tb.SelectionStart - length);
 					tb.SelectionStart = pos;
+
 					tb.ScrollToCaret();
 					break;
 				}
