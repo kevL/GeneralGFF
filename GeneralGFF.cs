@@ -1620,6 +1620,9 @@ namespace generalgff
 
 				case Keys.Delete:
 				{
+					// NOTE: multiline textboxes are lousy editors
+					// TODO: reconsider a RichTextBox.
+
 					int length;
 					if (tb.SelectedText.Length != 0)
 					{
