@@ -1614,17 +1614,9 @@ namespace generalgff
 
 			switch (keyData)
 			{
-				case Keys.Control | Keys.X:
-					tb.Cut();
-					break;
-
-				case Keys.Control | Keys.C:
-					tb.Copy();
-					break;
-
-				case Keys.Control | Keys.V:
-					tb.Paste();
-					break;
+				case Keys.Control | Keys.X: tb.Cut();   break;
+				case Keys.Control | Keys.C: tb.Copy();  break;
+				case Keys.Control | Keys.V: tb.Paste(); break;
 
 				case Keys.Delete:
 				{
