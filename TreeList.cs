@@ -536,10 +536,13 @@ namespace generalgff
 				{
 					switch (((GffData.Field)SelectedNode.Tag).type)
 					{
-						case FieldTypes.Struct:	// Structs in Lists do not have a Label so
-						{						// keep the pseudo-labels' sequential order ->
+						case FieldTypes.Struct:
+						{
+							// Structs in Lists do not have a Label so keep their pseudo-labels' sequential order
+
 							var parent = SelectedNode.Parent;
-							if (((GffData.Field)parent.Tag).type == FieldTypes.List)
+							if (parent.Tag != null
+								&& ((GffData.Field)parent.Tag).type == FieldTypes.List)
 							{
 								Sortable node;
 
