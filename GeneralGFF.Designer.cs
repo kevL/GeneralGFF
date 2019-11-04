@@ -24,6 +24,9 @@ namespace generalgff
 		Button btn_Apply;
 		Button btn_Revert;
 
+		StatusStrip ss_bot;
+		internal ToolStripStatusLabel tssl_info;
+
 
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -55,8 +58,11 @@ namespace generalgff
 			this.la_Val = new System.Windows.Forms.Label();
 			this.tb_Val = new System.Windows.Forms.TextBox();
 			this.la_Des = new System.Windows.Forms.Label();
+			this.ss_bot = new System.Windows.Forms.StatusStrip();
+			this.tssl_info = new System.Windows.Forms.ToolStripStatusLabel();
 			this.sc_body.Panel2.SuspendLayout();
 			this.sc_body.SuspendLayout();
+			this.ss_bot.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// sc_body
@@ -201,11 +207,30 @@ namespace generalgff
 			this.la_Des.TabIndex = 0;
 			this.la_Des.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
+			// ss_bot
+			// 
+			this.ss_bot.Font = new System.Drawing.Font("Consolas", 6.25F, System.Drawing.FontStyle.Bold);
+			this.ss_bot.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+			this.tssl_info});
+			this.ss_bot.Location = new System.Drawing.Point(0, 552);
+			this.ss_bot.Name = "ss_bot";
+			this.ss_bot.Size = new System.Drawing.Size(792, 22);
+			this.ss_bot.TabIndex = 1;
+			// 
+			// tssl_info
+			// 
+			this.tssl_info.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
+			this.tssl_info.Name = "tssl_info";
+			this.tssl_info.Size = new System.Drawing.Size(0, 0);
+			this.tssl_info.Spring = true;
+			this.tssl_info.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+			// 
 			// GeneralGFF
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(792, 574);
+			this.Controls.Add(this.ss_bot);
 			this.Controls.Add(this.sc_body);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
@@ -216,7 +241,10 @@ namespace generalgff
 			this.sc_body.Panel2.ResumeLayout(false);
 			this.sc_body.Panel2.PerformLayout();
 			this.sc_body.ResumeLayout(false);
+			this.ss_bot.ResumeLayout(false);
+			this.ss_bot.PerformLayout();
 			this.ResumeLayout(false);
+			this.PerformLayout();
 
 		}
 	}

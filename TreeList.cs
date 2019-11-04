@@ -541,7 +541,7 @@ namespace generalgff
 							// Structs in Lists do not have a Label so keep their pseudo-labels' sequential order
 
 							var parent = SelectedNode.Parent;
-							if (parent.Tag != null
+							if (parent.Tag != null // parent is NOT TopLevelStruct
 								&& ((GffData.Field)parent.Tag).type == FieldTypes.List)
 							{
 								Sortable node;
@@ -846,6 +846,8 @@ namespace generalgff
 			_f._prevalText_rt =
 			_f._prevalText_tb = String.Empty;
 			_f._prevalCusto = false;
+
+			_f.tssl_info.Text = String.Empty;
 		}
 
 		/// <summary>
@@ -856,6 +858,28 @@ namespace generalgff
 		internal void SelectField(TreeNode node)
 		{
 			DisableEditPanel();
+
+			var labels = new List<string>(); // print tree-path to statusbar ->
+			var curnode = node;
+			do
+			{
+				if (curnode.Tag == null) // is TopLevelStruct
+				{
+					labels.Add(curnode.Text);
+					break;
+				}
+				labels.Add(((Sortable)curnode)._label);
+			}
+			while ((curnode = curnode.Parent) != null);
+
+			string path = String.Empty;
+			for (int i = labels.Count - 1; i != -1; --i)
+			{
+				path += labels[i];
+				if (i != 0) path += "|";
+			}
+			_f.tssl_info.Text = path;
+
 
 			if (node.Tag == null) // is TopLevelStruct's node
 			{
