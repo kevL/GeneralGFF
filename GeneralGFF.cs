@@ -990,8 +990,8 @@ namespace generalgff
 			{
 				case Keys.Enter:
 					e.SuppressKeyPress = true;
-					BeginInvoke((MethodInvoker)delegate			// don't effing beep ->
-					{ click_Apply(null, EventArgs.Empty); });	// Thanks
+					BeginInvoke((MethodInvoker)delegate			// don't effing beep -> it masks the Exclamation sound if click_Apply() errors.
+					{ click_Apply(null, EventArgs.Empty); });	// Thanks!
 					break;
 
 				case Keys.Escape:
