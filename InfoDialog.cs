@@ -26,9 +26,15 @@ namespace generalgff
 			Text = title;
 			la_Info.Text = info;
 
-			if (title == Globals.Error)
+			switch (title)
 			{
-				System.Media.SystemSounds.Exclamation.Play();
+				case Globals.About:
+					KeyDown += keydown;
+					break;
+
+				case Globals.Error:
+					System.Media.SystemSounds.Exclamation.Play();
+					break;
 			}
 
 
@@ -50,6 +56,20 @@ namespace generalgff
 			ClientSize = new Size(w, la_Info.Height + hButton);
 		}
 		#endregion cTor
+
+
+		#region Handlers
+		/// <summary>
+		/// Special handling for the About box - close on F2.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void keydown(object sender, KeyEventArgs e)
+		{
+			if (e.KeyData == Keys.F2)
+				Close();
+		}
+		#endregion Handlers
 
 
 
@@ -123,6 +143,7 @@ namespace generalgff
 			this.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
 			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
+			this.KeyPreview = true;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "InfoDialog";

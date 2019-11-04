@@ -16,6 +16,8 @@
 		internal const string TopLevelStruct   = "TopLevelStruct";
 		internal const string SUF_F            = "[F]";
 
+		internal const string About  = "About";
+
 		internal const string Error  = "Error";
 		internal const string Quit   = "Quit";
 		internal const string Close  = "Close";

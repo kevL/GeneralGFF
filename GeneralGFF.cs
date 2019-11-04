@@ -926,7 +926,7 @@ namespace generalgff
 								  "{0:yyyy MMM d} {0:HH}:{0:mm}:{0:ss} UTC", // {0:zzz}
 								  dt);
 
-			using (var f = new InfoDialog("About", text))
+			using (var f = new InfoDialog(Globals.About, text))
 			{
 				f.ShowDialog(this);
 			}
