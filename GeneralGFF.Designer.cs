@@ -122,7 +122,7 @@ namespace generalgff
 			this.cb_Wordwrap.Location = new System.Drawing.Point(10, 130);
 			this.cb_Wordwrap.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_Wordwrap.Name = "cb_Wordwrap";
-			this.cb_Wordwrap.Size = new System.Drawing.Size(130, 16);
+			this.cb_Wordwrap.Size = new System.Drawing.Size(75, 16);
 			this.cb_Wordwrap.TabIndex = 6;
 			this.cb_Wordwrap.Text = "wordwrap";
 			this.cb_Wordwrap.UseVisualStyleBackColor = true;
@@ -149,7 +149,7 @@ namespace generalgff
 			this.cb_Custo.Location = new System.Drawing.Point(10, 80);
 			this.cb_Custo.Margin = new System.Windows.Forms.Padding(0);
 			this.cb_Custo.Name = "cb_Custo";
-			this.cb_Custo.Size = new System.Drawing.Size(130, 16);
+			this.cb_Custo.Size = new System.Drawing.Size(125, 16);
 			this.cb_Custo.TabIndex = 4;
 			this.cb_Custo.Text = "Custom talktable";
 			this.cb_Custo.UseVisualStyleBackColor = true;
