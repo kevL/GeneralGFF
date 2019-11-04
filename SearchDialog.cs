@@ -44,6 +44,7 @@ namespace generalgff
 
 
 		#region Fields
+		GeneralGFF _f;
 		TreeList _tl;
 		TreeNode _start0;
 		bool _reverse;
@@ -60,13 +61,14 @@ namespace generalgff
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		internal SearchDialog(TreeList tl)
+		internal SearchDialog(GeneralGFF f)
 		{
 			InitializeComponent();
 
 			DontBeepEvent += SearchDontBeep;
 
-			_tl = tl;
+			_f  =  f;
+			_tl = _f._tl;
 
 			if (_x != -1)
 			{
@@ -103,6 +105,7 @@ namespace generalgff
 					break;
 
 				case Keys.Enter:
+				case Keys.F3:
 					e.SuppressKeyPress = true;
 
 					DBType = DontBeepType.DBT_D;
@@ -110,6 +113,7 @@ namespace generalgff
 					break;
 
 				case Keys.Shift | Keys.Enter:
+				case Keys.Shift | Keys.F3:
 					e.SuppressKeyPress = true;
 
 					DBType = DontBeepType.DBT_U;
@@ -124,6 +128,8 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
+			_f._search = null;
+
 			_text = tb_Search.Text;
 			_substring = rb_Substring.Checked;
 
@@ -141,7 +147,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void click_Down(object sender, EventArgs e)
+		internal void click_Down(object sender, EventArgs e)
 		{
 			_reverse = false;
 			Search();
@@ -152,7 +158,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void click_Up(object sender, EventArgs e)
+		internal void click_Up(object sender, EventArgs e)
 		{
 			_reverse = true;
 			Search();

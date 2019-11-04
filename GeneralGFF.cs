@@ -38,6 +38,8 @@ namespace generalgff
 
 		internal string _editText = String.Empty;
 				 int    _posCaret = 0;
+
+		internal SearchDialog _search;
 		#endregion Fields
 
 
@@ -348,17 +350,34 @@ namespace generalgff
 		/// <returns></returns>
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			if (tb_Val.ContainsFocus || rt_Val.ContainsFocus)
+			//logfile.Log("ProcessCmdKey() keyData= " + keyData);
+
+			switch (keyData)
 			{
-				switch (keyData)
-				{
-					case Keys.Control | Keys.X:
-					case Keys.Control | Keys.C:
-					case Keys.Control | Keys.V:
-					case Keys.Delete:
+				case Keys.Control | Keys.X:
+				case Keys.Control | Keys.C:
+				case Keys.Control | Keys.V:
+				case Keys.Delete:
+					if (tb_Val.ContainsFocus || rt_Val.ContainsFocus)
 						Edit(keyData);
-						return true;
-				}
+
+					return true;
+
+				case Keys.F3:
+					if (_search == null)
+						editclick_Search(null, EventArgs.Empty);
+					else
+						_search.click_Down(null, EventArgs.Empty);
+
+					return true;
+
+				case Keys.Shift | Keys.F3:
+					if (_search == null)
+						editclick_Search(null, EventArgs.Empty);
+					else
+						_search.click_Up(null, EventArgs.Empty);
+
+					return true;
 			}
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
@@ -596,8 +615,8 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Search(object sender, EventArgs e)
 		{
-			var f = new SearchDialog(_tl);
-			f.Show(this);
+			_search = new SearchDialog(this);
+			_search.Show(this);
 		}
 
 		/// <summary>
