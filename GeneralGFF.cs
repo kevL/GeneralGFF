@@ -649,7 +649,7 @@ namespace generalgff
 			if (EnablePaste() && !LocaleExists())
 			{
 				var node = Sortable.Duplicate(Copied);
-				GffData.Field field, fieldC;
+				GffData.Field field;
 
 				if (_tl.SelectedNode.Tag == null // is TopLevelStruct
 					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.Struct)
@@ -657,11 +657,11 @@ namespace generalgff
 					string label = _tl.GetUniqueLabel(node._label);
 					if (label != node._label)
 					{
-						fieldC = (GffData.Field)node.Tag;
-						fieldC.label = label;
+						field = (GffData.Field)node.Tag;
+						field.label = label;
 
 						node._label = label;
-						node.Text = GeneralGFF.ConstructNodetext(fieldC);
+						node.Text = GeneralGFF.ConstructNodetext(field);
 
 						using (var f = new InfoDialog("Warning", "Duplicate labels detected: Label changed."))
 							f.ShowDialog(this);
@@ -672,11 +672,11 @@ namespace generalgff
 					switch (field.type)
 					{
 						case FieldTypes.List:
-							fieldC = (GffData.Field)node.Tag;
-							fieldC.label = _tl.SelectedNode.Nodes.Count.ToString();
+							field = (GffData.Field)node.Tag;
+							field.label = _tl.SelectedNode.Nodes.Count.ToString();
 
-							node._label = fieldC.label;
-							node.Text = GeneralGFF.ConstructNodetext(fieldC);
+							node._label = field.label;
+							node.Text = GeneralGFF.ConstructNodetext(field);
 							break;
 
 						case FieldTypes.CExoLocString:
@@ -731,7 +731,7 @@ namespace generalgff
 
 		/// <summary>
 		/// Disallows pasting a locale if it already exists in the CExoLocString
-		/// that user is trying to paste it into.
+		/// that user is trying to paste into.
 		/// </summary>
 		/// <returns></returns>
 		bool LocaleExists()
@@ -741,10 +741,10 @@ namespace generalgff
 				uint localeflags = ((GffData.Field)_tl.SelectedNode.Tag).localeflags;
 				if ((localeflags & LocaleDialog.GetLocaleFlag(_refLocale)) != 0)
 				{
-					string info = "The currently copied locale "
-								+ GffData.Locale.GetLanguageString(_refLocale.langid, _refLocale.F)
-								+ Environment.NewLine
-								+ "already exists in the selected branch.";
+					string info = "The currently copied Locale already exists in the branch."
+								+ Environment.NewLine + Environment.NewLine
+								+ GffData.Locale.GetLanguageString(_refLocale.langid, _refLocale.F);
+
 					using (var f = new InfoDialog(Globals.Error, info))
 						f.ShowDialog(this);
 
