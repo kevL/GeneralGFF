@@ -34,6 +34,7 @@ namespace generalgff
 
 				case Globals.Error:
 					System.Media.SystemSounds.Exclamation.Play();
+					bt_Okay.Text = "/z";
 					break;
 			}
 
@@ -54,6 +55,8 @@ namespace generalgff
 			la_Info.Height = (TextRenderer.MeasureText(lines[0], la_Info.Font).Height + PadVert) * lines.Length + PadVert;
 
 			ClientSize = new Size(w, la_Info.Height + hButton);
+
+			bt_Okay.Location = new Point((ClientSize.Width - bt_Okay.Width) / 2, bt_Okay.Top);
 		}
 		#endregion cTor
 
