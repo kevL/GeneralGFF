@@ -223,7 +223,7 @@ namespace generalgff
 					if (token) return "token";
 					return "locale";
 			}
-			return "ErROr: field-type unknown";
+			return "ErROr: field type unknown";
 		}
 
 		/// <summary>
@@ -290,8 +290,12 @@ namespace generalgff
 				}
 
 				case FieldTypes.VOID:
-					if (field.VOID.Length != 0) return "0x...";
-					return String.Empty;
+				{
+					int length = field.VOID.Length;
+					string val = length + " byte";
+					if (length != 1) val += "s";
+					return val;
+				}
 
 				case FieldTypes.List:
 					return String.Empty;
