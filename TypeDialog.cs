@@ -30,6 +30,7 @@ namespace generalgff
 			rb_IFO.Tag = GffType.IFO;
 			rb_JRL.Tag = GffType.JRL;
 			rb_ROS.Tag = GffType.ROS;
+			rb_RST.Tag = GffType.RST;
 			rb_ULT.Tag = GffType.ULT;
 			rb_UPE.Tag = GffType.UPE;
 			rb_UTC.Tag = GffType.UTC;
@@ -55,6 +56,7 @@ namespace generalgff
 				case GffType.IFO:     rb_IFO.Checked = true; break;
 				case GffType.JRL:     rb_JRL.Checked = true; break;
 				case GffType.ROS:     rb_ROS.Checked = true; break;
+				case GffType.RST:     rb_RST.Checked = true; break;
 				case GffType.ULT:     rb_ULT.Checked = true; break;
 				case GffType.UPE:     rb_UPE.Checked = true; break;
 				case GffType.UTC:     rb_UTC.Checked = true; break;
@@ -106,6 +108,7 @@ namespace generalgff
 		RadioButton rb_IFO;
 		RadioButton rb_JRL;
 		RadioButton rb_ROS;
+		RadioButton rb_RST;
 		RadioButton rb_ULT;
 		RadioButton rb_UPE;
 		RadioButton rb_UTC;
@@ -157,6 +160,7 @@ namespace generalgff
 			this.rb_IFO = new System.Windows.Forms.RadioButton();
 			this.rb_JRL = new System.Windows.Forms.RadioButton();
 			this.rb_ROS = new System.Windows.Forms.RadioButton();
+			this.rb_RST = new System.Windows.Forms.RadioButton();
 			this.rb_ULT = new System.Windows.Forms.RadioButton();
 			this.rb_UPE = new System.Windows.Forms.RadioButton();
 			this.rb_UTC = new System.Windows.Forms.RadioButton();
@@ -213,7 +217,7 @@ namespace generalgff
 			this.pl_bot.Controls.Add(this.bt_Accept);
 			this.pl_bot.Controls.Add(this.bt_Cancel);
 			this.pl_bot.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pl_bot.Location = new System.Drawing.Point(0, 260);
+			this.pl_bot.Location = new System.Drawing.Point(0, 280);
 			this.pl_bot.Margin = new System.Windows.Forms.Padding(0);
 			this.pl_bot.Name = "pl_bot";
 			this.pl_bot.Size = new System.Drawing.Size(164, 36);
@@ -231,6 +235,7 @@ namespace generalgff
 			this.gb_locale.Controls.Add(this.rb_IFO);
 			this.gb_locale.Controls.Add(this.rb_JRL);
 			this.gb_locale.Controls.Add(this.rb_ROS);
+			this.gb_locale.Controls.Add(this.rb_RST);
 			this.gb_locale.Controls.Add(this.rb_ULT);
 			this.gb_locale.Controls.Add(this.rb_UPE);
 			this.gb_locale.Controls.Add(this.rb_UTC);
@@ -247,7 +252,7 @@ namespace generalgff
 			this.gb_locale.Location = new System.Drawing.Point(0, 20);
 			this.gb_locale.Margin = new System.Windows.Forms.Padding(0);
 			this.gb_locale.Name = "gb_locale";
-			this.gb_locale.Size = new System.Drawing.Size(164, 240);
+			this.gb_locale.Size = new System.Drawing.Size(164, 260);
 			this.gb_locale.TabIndex = 1;
 			this.gb_locale.TabStop = false;
 			// 
@@ -256,10 +261,10 @@ namespace generalgff
 			this.rb_Gen.Location = new System.Drawing.Point(20, 15);
 			this.rb_Gen.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_Gen.Name = "rb_Gen";
-			this.rb_Gen.Size = new System.Drawing.Size(70, 20);
+			this.rb_Gen.Size = new System.Drawing.Size(105, 20);
 			this.rb_Gen.TabIndex = 0;
 			this.rb_Gen.TabStop = true;
-			this.rb_Gen.Text = "generic";
+			this.rb_Gen.Text = "GFF - generic";
 			this.rb_Gen.UseVisualStyleBackColor = true;
 			this.rb_Gen.CheckedChanged += new System.EventHandler(this.checkchanged);
 			// 
@@ -371,13 +376,25 @@ namespace generalgff
 			this.rb_ROS.UseVisualStyleBackColor = true;
 			this.rb_ROS.CheckedChanged += new System.EventHandler(this.checkchanged);
 			// 
+			// rb_RST
+			// 
+			this.rb_RST.Location = new System.Drawing.Point(20, 215);
+			this.rb_RST.Margin = new System.Windows.Forms.Padding(0);
+			this.rb_RST.Name = "rb_RST";
+			this.rb_RST.Size = new System.Drawing.Size(45, 20);
+			this.rb_RST.TabIndex = 10;
+			this.rb_RST.TabStop = true;
+			this.rb_RST.Text = "RST";
+			this.rb_RST.UseVisualStyleBackColor = true;
+			this.rb_RST.CheckedChanged += new System.EventHandler(this.checkchanged);
+			// 
 			// rb_ULT
 			// 
-			this.rb_ULT.Location = new System.Drawing.Point(20, 215);
+			this.rb_ULT.Location = new System.Drawing.Point(20, 235);
 			this.rb_ULT.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_ULT.Name = "rb_ULT";
 			this.rb_ULT.Size = new System.Drawing.Size(45, 20);
-			this.rb_ULT.TabIndex = 10;
+			this.rb_ULT.TabIndex = 11;
 			this.rb_ULT.TabStop = true;
 			this.rb_ULT.Text = "ULT";
 			this.rb_ULT.UseVisualStyleBackColor = true;
@@ -385,11 +402,11 @@ namespace generalgff
 			// 
 			// rb_UPE
 			// 
-			this.rb_UPE.Location = new System.Drawing.Point(100, 15);
+			this.rb_UPE.Location = new System.Drawing.Point(100, 35);
 			this.rb_UPE.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UPE.Name = "rb_UPE";
 			this.rb_UPE.Size = new System.Drawing.Size(45, 20);
-			this.rb_UPE.TabIndex = 11;
+			this.rb_UPE.TabIndex = 12;
 			this.rb_UPE.TabStop = true;
 			this.rb_UPE.Text = "UPE";
 			this.rb_UPE.UseVisualStyleBackColor = true;
@@ -397,11 +414,11 @@ namespace generalgff
 			// 
 			// rb_UTC
 			// 
-			this.rb_UTC.Location = new System.Drawing.Point(100, 35);
+			this.rb_UTC.Location = new System.Drawing.Point(100, 55);
 			this.rb_UTC.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTC.Name = "rb_UTC";
 			this.rb_UTC.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTC.TabIndex = 12;
+			this.rb_UTC.TabIndex = 13;
 			this.rb_UTC.TabStop = true;
 			this.rb_UTC.Text = "UTC";
 			this.rb_UTC.UseVisualStyleBackColor = true;
@@ -409,11 +426,11 @@ namespace generalgff
 			// 
 			// rb_UTD
 			// 
-			this.rb_UTD.Location = new System.Drawing.Point(100, 55);
+			this.rb_UTD.Location = new System.Drawing.Point(100, 75);
 			this.rb_UTD.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTD.Name = "rb_UTD";
 			this.rb_UTD.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTD.TabIndex = 13;
+			this.rb_UTD.TabIndex = 14;
 			this.rb_UTD.TabStop = true;
 			this.rb_UTD.Text = "UTD";
 			this.rb_UTD.UseVisualStyleBackColor = true;
@@ -421,11 +438,11 @@ namespace generalgff
 			// 
 			// rb_UTE
 			// 
-			this.rb_UTE.Location = new System.Drawing.Point(100, 75);
+			this.rb_UTE.Location = new System.Drawing.Point(100, 95);
 			this.rb_UTE.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTE.Name = "rb_UTE";
 			this.rb_UTE.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTE.TabIndex = 14;
+			this.rb_UTE.TabIndex = 15;
 			this.rb_UTE.TabStop = true;
 			this.rb_UTE.Text = "UTE";
 			this.rb_UTE.UseVisualStyleBackColor = true;
@@ -433,11 +450,11 @@ namespace generalgff
 			// 
 			// rb_UTI
 			// 
-			this.rb_UTI.Location = new System.Drawing.Point(100, 95);
+			this.rb_UTI.Location = new System.Drawing.Point(100, 115);
 			this.rb_UTI.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTI.Name = "rb_UTI";
 			this.rb_UTI.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTI.TabIndex = 15;
+			this.rb_UTI.TabIndex = 16;
 			this.rb_UTI.TabStop = true;
 			this.rb_UTI.Text = "UTI";
 			this.rb_UTI.UseVisualStyleBackColor = true;
@@ -445,11 +462,11 @@ namespace generalgff
 			// 
 			// rb_UTM
 			// 
-			this.rb_UTM.Location = new System.Drawing.Point(100, 115);
+			this.rb_UTM.Location = new System.Drawing.Point(100, 135);
 			this.rb_UTM.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTM.Name = "rb_UTM";
 			this.rb_UTM.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTM.TabIndex = 16;
+			this.rb_UTM.TabIndex = 17;
 			this.rb_UTM.TabStop = true;
 			this.rb_UTM.Text = "UTM";
 			this.rb_UTM.UseVisualStyleBackColor = true;
@@ -457,11 +474,11 @@ namespace generalgff
 			// 
 			// rb_UTP
 			// 
-			this.rb_UTP.Location = new System.Drawing.Point(100, 135);
+			this.rb_UTP.Location = new System.Drawing.Point(100, 155);
 			this.rb_UTP.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTP.Name = "rb_UTP";
 			this.rb_UTP.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTP.TabIndex = 17;
+			this.rb_UTP.TabIndex = 18;
 			this.rb_UTP.TabStop = true;
 			this.rb_UTP.Text = "UTP";
 			this.rb_UTP.UseVisualStyleBackColor = true;
@@ -469,11 +486,11 @@ namespace generalgff
 			// 
 			// rb_UTS
 			// 
-			this.rb_UTS.Location = new System.Drawing.Point(100, 155);
+			this.rb_UTS.Location = new System.Drawing.Point(100, 175);
 			this.rb_UTS.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTS.Name = "rb_UTS";
 			this.rb_UTS.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTS.TabIndex = 18;
+			this.rb_UTS.TabIndex = 19;
 			this.rb_UTS.TabStop = true;
 			this.rb_UTS.Text = "UTS";
 			this.rb_UTS.UseVisualStyleBackColor = true;
@@ -481,11 +498,11 @@ namespace generalgff
 			// 
 			// rb_UTT
 			// 
-			this.rb_UTT.Location = new System.Drawing.Point(100, 175);
+			this.rb_UTT.Location = new System.Drawing.Point(100, 195);
 			this.rb_UTT.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTT.Name = "rb_UTT";
 			this.rb_UTT.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTT.TabIndex = 19;
+			this.rb_UTT.TabIndex = 20;
 			this.rb_UTT.TabStop = true;
 			this.rb_UTT.Text = "UTT";
 			this.rb_UTT.UseVisualStyleBackColor = true;
@@ -493,11 +510,11 @@ namespace generalgff
 			// 
 			// rb_UTW
 			// 
-			this.rb_UTW.Location = new System.Drawing.Point(100, 195);
+			this.rb_UTW.Location = new System.Drawing.Point(100, 215);
 			this.rb_UTW.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTW.Name = "rb_UTW";
 			this.rb_UTW.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTW.TabIndex = 20;
+			this.rb_UTW.TabIndex = 21;
 			this.rb_UTW.TabStop = true;
 			this.rb_UTW.Text = "UTW";
 			this.rb_UTW.UseVisualStyleBackColor = true;
@@ -505,11 +522,11 @@ namespace generalgff
 			// 
 			// rb_WMP
 			// 
-			this.rb_WMP.Location = new System.Drawing.Point(100, 215);
+			this.rb_WMP.Location = new System.Drawing.Point(100, 235);
 			this.rb_WMP.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_WMP.Name = "rb_WMP";
 			this.rb_WMP.Size = new System.Drawing.Size(45, 20);
-			this.rb_WMP.TabIndex = 21;
+			this.rb_WMP.TabIndex = 22;
 			this.rb_WMP.TabStop = true;
 			this.rb_WMP.Text = "WMP";
 			this.rb_WMP.UseVisualStyleBackColor = true;
@@ -519,7 +536,7 @@ namespace generalgff
 			// 
 			this.AcceptButton = this.bt_Accept;
 			this.CancelButton = this.bt_Cancel;
-			this.ClientSize = new System.Drawing.Size(164, 296);
+			this.ClientSize = new System.Drawing.Size(164, 316);
 			this.Controls.Add(this.gb_locale);
 			this.Controls.Add(this.pl_bot);
 			this.Controls.Add(this.la_head);

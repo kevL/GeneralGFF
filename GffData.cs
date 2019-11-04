@@ -77,18 +77,19 @@ namespace generalgff
 		IFO,		//  7
 		JRL,		//  8
 		ROS,		//  9
-		ULT,		// 10
-		UPE,		// 11
-		UTC,		// 12
-		UTD,		// 13
-		UTE,		// 14
-		UTI,		// 15
-		UTM,		// 16
-		UTP,		// 17
-		UTS,		// 18
-		UTT,		// 19
-		UTW,		// 20
-		WMP			// 21
+		RST,		// 10
+		ULT,		// 11
+		UPE,		// 12
+		UTC,		// 13
+		UTD,		// 14
+		UTE,		// 15
+		UTI,		// 16
+		UTM,		// 17
+		UTP,		// 18
+		UTS,		// 19
+		UTT,		// 20
+		UTW,		// 21
+		WMP			// 22
 	}
 	#endregion Enums (global)
 
@@ -379,6 +380,7 @@ namespace generalgff
 				case "IFO": return GffType.IFO; // (1) module info (2) saved player character list and data
 				case "JRL": return GffType.JRL; // journal
 				case "ROS": return GffType.ROS; // roster character
+				case "RST": return GffType.RST; // rosterlist
 				case "ULT": return GffType.ULT; // light effect
 				case "UPE": return GffType.UPE; // placeable effect
 				case "UTC": return GffType.UTC; // creature
@@ -413,6 +415,7 @@ namespace generalgff
 				case GffType.IFO: return "IFO"; // (1) module info (2) saved player character list and data
 				case GffType.JRL: return "JRL"; // journal
 				case GffType.ROS: return "ROS"; // roster character
+				case GffType.RST: return "RST"; // rosterlist
 				case GffType.ULT: return "ULT"; // light effect
 				case GffType.UPE: return "UPE"; // placeable effect
 				case GffType.UTC: return "UTC"; // creature
@@ -445,6 +448,7 @@ namespace generalgff
 				+ "|module info or player list info|*.IFO"
 				+ "|journal|*.JRL"
 				+ "|roster character|*.ROS"
+				+ "|rosterlist|*.RST"
 				+ "|light effect|*.ULT"
 				+ "|placeable effect|*.UPE"
 				+ "|creature object|*.UTC"
