@@ -438,30 +438,57 @@ namespace generalgff
 		/// </summary>
 		internal const string FileDialogFilter =
 				  "All files|*.*"
-				+ "|generic file|*.GFF"
-				+ "|area object|*.ARE"
-				+ "|player character|*.BIC"
-				+ "|campaign info|*.CAM"
-				+ "|faction table|*.FAC"
-				+ "|area object lists|*.GIC"
-				+ "|area properties and objects|*.GIT"
-				+ "|module info or player list info|*.IFO"
-				+ "|journal|*.JRL"
-				+ "|roster character|*.ROS"
-				+ "|rosterlist|*.RST"
-				+ "|light effect|*.ULT"
-				+ "|placeable effect|*.UPE"
-				+ "|creature object|*.UTC"
-				+ "|door object|*.UTD"
-				+ "|encounter object|*.UTE"
-				+ "|item object|*.UTI"
-				+ "|merchant store|*.UTM"
-				+ "|placeable object|*.UTP"
-				+ "|sound object|*.UTS"
-				+ "|trigger object|*.UTT"
-				+ "|waypoint object|*.UTW"
-				+ "|world map info|*.WMP";
+				+ "|" + GFF + "|*.GFF"
+				+ "|" + ARE + "|*.ARE"
+				+ "|" + BIC + "|*.BIC"
+				+ "|" + CAM + "|*.CAM"
+				+ "|" + FAC + "|*.FAC"
+				+ "|" + GIC + "|*.GIC"
+				+ "|" + GIT + "|*.GIT"
+				+ "|" + IFO + "|*.IFO"
+				+ "|" + JRL + "|*.JRL"
+				+ "|" + ROS + "|*.ROS"
+				+ "|" + RST + "|*.RST"
+				+ "|" + ULT + "|*.ULT"
+				+ "|" + UPE + "|*.UPE"
+				+ "|" + UTC + "|*.UTC"
+				+ "|" + UTD + "|*.UTD"
+				+ "|" + UTE + "|*.UTE"
+				+ "|" + UTI + "|*.UTI"
+				+ "|" + UTM + "|*.UTM"
+				+ "|" + UTP + "|*.UTP"
+				+ "|" + UTS + "|*.UTS"
+				+ "|" + UTT + "|*.UTT"
+				+ "|" + UTW + "|*.UTW"
+				+ "|" + WMP + "|*.WMP";
 
 		#endregion Methods (static)
+
+
+		#region tips
+		internal const string GFF = "generic file";
+		internal const string ARE = "area object";
+		internal const string BIC = "player character";
+		internal const string CAM = "campaign info";
+		internal const string FAC = "faction table";
+		internal const string GIC = "area object lists";
+		internal const string GIT = "area properties and objects";
+		internal const string IFO = "module info or playerlist info";
+		internal const string JRL = "journal";
+		internal const string ROS = "roster character";
+		internal const string RST = "rosterlist";
+		internal const string ULT = "light effect";
+		internal const string UPE = "placeable effect";
+		internal const string UTC = "creature object";
+		internal const string UTD = "door object";
+		internal const string UTE = "encounter object";
+		internal const string UTI = "item object";
+		internal const string UTM = "merchant store";
+		internal const string UTP = "placeable object";
+		internal const string UTS = "sound object";
+		internal const string UTT = "trigger object";
+		internal const string UTW = "waypoint object";
+		internal const string WMP = "world map info";
+		#endregion tips
 	}
 }

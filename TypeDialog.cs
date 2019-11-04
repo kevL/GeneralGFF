@@ -19,6 +19,7 @@ namespace generalgff
 		internal TypeDialog()
 		{
 			InitializeComponent();
+			SetTooltips();
 
 			rb_Gen.Tag = GffType.generic;
 			rb_ARE.Tag = GffType.ARE;
@@ -71,6 +72,37 @@ namespace generalgff
 				case GffType.WMP:     rb_WMP.Checked = true; break;
 			}
 		}
+
+
+		/// <summary>
+		/// Assigns tooltips to the radio-buttons.
+		/// </summary>
+		void SetTooltips()
+		{
+			toolTip1.SetToolTip(rb_Gen, GffData.GFF);
+			toolTip1.SetToolTip(rb_ARE, GffData.ARE);
+			toolTip1.SetToolTip(rb_BIC, GffData.BIC);
+			toolTip1.SetToolTip(rb_CAM, GffData.CAM);
+			toolTip1.SetToolTip(rb_FAC, GffData.FAC);
+			toolTip1.SetToolTip(rb_GIC, GffData.GIC);
+			toolTip1.SetToolTip(rb_GIT, GffData.GIT);
+			toolTip1.SetToolTip(rb_IFO, GffData.IFO);
+			toolTip1.SetToolTip(rb_JRL, GffData.JRL);
+			toolTip1.SetToolTip(rb_ROS, GffData.ROS);
+			toolTip1.SetToolTip(rb_RST, GffData.RST);
+			toolTip1.SetToolTip(rb_ULT, GffData.ULT);
+			toolTip1.SetToolTip(rb_UPE, GffData.UPE);
+			toolTip1.SetToolTip(rb_UTC, GffData.UTC);
+			toolTip1.SetToolTip(rb_UTD, GffData.UTD);
+			toolTip1.SetToolTip(rb_UTE, GffData.UTE);
+			toolTip1.SetToolTip(rb_UTI, GffData.UTI);
+			toolTip1.SetToolTip(rb_UTM, GffData.UTM);
+			toolTip1.SetToolTip(rb_UTP, GffData.UTP);
+			toolTip1.SetToolTip(rb_UTS, GffData.UTS);
+			toolTip1.SetToolTip(rb_UTT, GffData.UTT);
+			toolTip1.SetToolTip(rb_UTW, GffData.UTW);
+			toolTip1.SetToolTip(rb_WMP, GffData.WMP);
+		}
 		#endregion cTor
 
 
@@ -98,6 +130,7 @@ namespace generalgff
 		Button bt_Accept;
 		Button bt_Cancel;
 		Panel pl_bot;
+
 		GroupBox gb_locale;
 		RadioButton rb_Gen;
 		RadioButton rb_ARE;
@@ -123,6 +156,8 @@ namespace generalgff
 		RadioButton rb_CAM;
 		RadioButton rb_WMP;
 
+		ToolTip toolTip1;
+
 
 		/// <summary>
 		/// Disposes resources used by the form.
@@ -145,6 +180,7 @@ namespace generalgff
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.la_head = new System.Windows.Forms.Label();
 			this.bt_Accept = new System.Windows.Forms.Button();
 			this.bt_Cancel = new System.Windows.Forms.Button();
@@ -173,6 +209,7 @@ namespace generalgff
 			this.rb_UTT = new System.Windows.Forms.RadioButton();
 			this.rb_UTW = new System.Windows.Forms.RadioButton();
 			this.rb_WMP = new System.Windows.Forms.RadioButton();
+			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.pl_bot.SuspendLayout();
 			this.gb_locale.SuspendLayout();
 			this.SuspendLayout();
@@ -531,6 +568,16 @@ namespace generalgff
 			this.rb_WMP.Text = "WMP";
 			this.rb_WMP.UseVisualStyleBackColor = true;
 			this.rb_WMP.CheckedChanged += new System.EventHandler(this.checkchanged);
+			// 
+			// toolTip1
+			// 
+			this.toolTip1.AutoPopDelay = 3750;
+			this.toolTip1.InitialDelay = 150;
+			this.toolTip1.ReshowDelay = 100;
+			this.toolTip1.ShowAlways = true;
+			this.toolTip1.StripAmpersands = true;
+			this.toolTip1.UseAnimation = false;
+			this.toolTip1.UseFading = false;
 			// 
 			// TypeDialog
 			// 
