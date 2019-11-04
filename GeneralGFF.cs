@@ -886,9 +886,7 @@ namespace generalgff
 								  dt);
 
 			using (var f = new InfoDialog(Globals.About, text))
-			{
 				f.ShowDialog(this);
-			}
 		}
 		#endregion Handlers (menu)
 
@@ -935,8 +933,8 @@ namespace generalgff
 			{
 				case Keys.Enter:
 					e.SuppressKeyPress = true;
-					BeginInvoke((MethodInvoker)delegate			// don't beep if/when click_Apply() errors ->
-					{ click_Apply(null, EventArgs.Empty); });	// it masks the Exclamation sound
+					BeginInvoke((MethodInvoker)delegate	// don't beep if/when click_Apply() errors ->
+					{ btn_Apply.PerformClick(); });		// it masks the Exclamation sound
 					break;
 
 				case Keys.Escape:
