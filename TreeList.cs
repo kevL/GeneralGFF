@@ -651,10 +651,7 @@ namespace generalgff
 								if (SelectedNode.Parent.Nodes[i] != SelectedNode
 									&& ((Sortable)SelectedNode.Parent.Nodes[i])._label == f.tb_Label.Text)
 								{
-									string info = "Duplicate labels detected."
-												+ Environment.NewLine + Environment.NewLine
-												+ "Fields within a Struct shall have unique Labels.";
-									using (var g = new InfoDialog(Globals.Error, info))
+									using (var g = new InfoDialog(Globals.Error, "Duplicate labels detected."))
 										g.ShowDialog(this);
 
 									abort = true;

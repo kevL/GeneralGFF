@@ -87,7 +87,7 @@ namespace generalgff
 			this.sc_body.Panel2.Controls.Add(this.tb_Val);
 			this.sc_body.Panel2.Controls.Add(this.la_Des);
 			this.sc_body.Panel2MinSize = 0;
-			this.sc_body.Size = new System.Drawing.Size(792, 574);
+			this.sc_body.Size = new System.Drawing.Size(792, 552);
 			this.sc_body.SplitterDistance = 450;
 			this.sc_body.SplitterWidth = 2;
 			this.sc_body.TabIndex = 0;
@@ -108,7 +108,7 @@ namespace generalgff
 			this.rt_Val.Multiline = true;
 			this.rt_Val.Name = "rt_Val";
 			this.rt_Val.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.rt_Val.Size = new System.Drawing.Size(338, 422);
+			this.rt_Val.Size = new System.Drawing.Size(338, 400);
 			this.rt_Val.TabIndex = 7;
 			this.rt_Val.WordWrap = false;
 			this.rt_Val.TextChanged += new System.EventHandler(this.textchanged_Multi);
@@ -230,8 +230,8 @@ namespace generalgff
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(792, 574);
-			this.Controls.Add(this.ss_bot);
 			this.Controls.Add(this.sc_body);
+			this.Controls.Add(this.ss_bot);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
 			this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
