@@ -76,7 +76,7 @@ namespace generalgff
 				ClientSize = new Size( _w, _h);
 			}
 			else
-				Location = Cursor.Position;
+				Location = new Point(_f.Left + 20, _f.Top  + 20);
 
 			tb_Search.Text = _text;
 
