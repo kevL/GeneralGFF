@@ -839,8 +839,7 @@ namespace generalgff
 			_f.cb_Custo.Visible =
 			_f.cb_Custo.Checked = false;
 
-			_f.cb_Wordwrap.Visible =
-			_f.cb_Wordwrap.Checked = false;
+			_f.cb_Wordwrap.Visible = false;
 
 			_f._editText =
 			_f._prevalText_rt =
