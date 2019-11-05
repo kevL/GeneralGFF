@@ -910,7 +910,7 @@ namespace generalgff
 						break;
 
 					case FieldTypes.CHAR:
-						_f.la_Des.Text = sbyte.MinValue + ".." + sbyte.MaxValue;
+						_f.la_Des.Text = SByte.MinValue + ".." + SByte.MaxValue;
 						_f.la_Val.Text = "CHAR";
 
 						_f.tb_Val.Text = field.CHAR.ToString();
@@ -1002,7 +1002,7 @@ namespace generalgff
 
 					case FieldTypes.FLOAT:
 					{
-						_f.la_Des.Text = float.MinValue + ".." + float.MaxValue;
+						_f.la_Des.Text = Single.MinValue + ".." + Single.MaxValue;
 						_f.la_Val.Text = "FLOAT";
 
 						string f = field.FLOAT.ToString();

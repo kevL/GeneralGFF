@@ -1174,7 +1174,7 @@ namespace generalgff
 						case FieldTypes.CHAR:
 						{
 							sbyte result;
-							if (valid = sbyte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
+							if (valid = SByte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
 							{
 								field.CHAR = result;
 
@@ -1293,7 +1293,7 @@ namespace generalgff
 						case FieldTypes.FLOAT:
 						{
 							float result;
-							if (valid = float.TryParse((val = TrimFloat(tb_Val.Text)), out result))
+							if (valid = Single.TryParse((val = TrimFloat(tb_Val.Text)), out result))
 							{
 								field.FLOAT = result;
 
