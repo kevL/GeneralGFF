@@ -24,7 +24,7 @@
 		internal const string Reload = "Reload";
 
 
-		internal const uint BITS_STRREF = 0x00FFFFFF;
+		internal const uint BITS_STRREF = 0x00FFFFFF; // talktable bitflags ->
 		internal const uint BITS_CUSTOM = 0x01000000;
 		internal const uint BITS_UNUSED = 0xFE000000;
 	}
