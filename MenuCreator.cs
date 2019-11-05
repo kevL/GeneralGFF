@@ -18,8 +18,9 @@ namespace generalgff
 		internal const int MI_FILE_RLOD   = 3; // reload
 		internal const int MI_FILE_SAVE   = 4; // save
 		internal const int MI_FILE_SAVS   = 5; // saveas
-		// 6 is Separator
-		internal const int MI_FILE_QUIT   = 7; // quit
+		internal const int MI_FILE_EXPT   = 6; // export
+		// 7 is Separator
+		internal const int MI_FILE_QUIT   = 8; // quit
 
 		internal const int MI_EDIT_SER = 0; // search
 		// 1 is Separator
@@ -61,9 +62,12 @@ namespace generalgff
 			Xenu.MenuItems[MI_FILE].MenuItems.Add("Sav&e GFF file As ...");	// #5
 			Xenu.MenuItems[MI_FILE].MenuItems[MI_FILE_SAVS].Shortcut = Shortcut.CtrlE;
 
-			Xenu.MenuItems[MI_FILE].MenuItems.Add("-");						// #6
+			Xenu.MenuItems[MI_FILE].MenuItems.Add("Ex&port GFF file ...");	// #6
+			Xenu.MenuItems[MI_FILE].MenuItems[MI_FILE_EXPT].Shortcut = Shortcut.CtrlP;
 
-			Xenu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #7
+			Xenu.MenuItems[MI_FILE].MenuItems.Add("-");						// #7
+
+			Xenu.MenuItems[MI_FILE].MenuItems.Add("&Quit");					// #8
 			Xenu.MenuItems[MI_FILE].MenuItems[MI_FILE_QUIT].Shortcut = Shortcut.CtrlQ;
 
 

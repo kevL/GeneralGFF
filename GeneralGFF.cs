@@ -131,6 +131,7 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RLOD].Click += fileclick_Reload;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Click += fileclick_Save;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Click += fileclick_SaveAs;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_EXPT].Click += fileclick_Export;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_QUIT].Click += fileclick_Quit;
 
 			Menu.MenuItems[MenuCreator.MI_EDIT].Popup += editpop;
@@ -487,7 +488,8 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
 																						   && GffData.Changed
 																						   && GffData.Pfe != Globals.TopLevelStruct;
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Enabled =
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_EXPT].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -592,7 +594,7 @@ namespace generalgff
 					sfd.Title  = "Save as GFF file";
 					sfd.Filter = GffData.FileDialogFilter;
 
-//					sfd.DefaultExt = "GFF";
+//					sfd.DefaultExt = GffData.GetGffString(GffData.Type);
 
 					if (GffData.Pfe != Globals.TopLevelStruct)
 					{
@@ -607,6 +609,41 @@ namespace generalgff
 						_tl.Nodes[0].Text = label; // update TLS-label
 
 						GffData.Pfe = sfd.FileName;
+						GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
+
+						GffData.Changed = false;
+						GffData = GffData; // update titlebar text
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Saves the current data to a user-labeled file.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void fileclick_Export(object sender, EventArgs e)
+		{
+			if (_tl.Nodes.Count != 0)
+			{
+				using (var sfd = new SaveFileDialog())
+				{
+					sfd.Title  = "Export to GFF file";
+					sfd.Filter = GffData.FileDialogFilter;
+
+//					sfd.DefaultExt = GffData.GetGffString(GffData.Type);
+
+					if (GffData.Pfe != Globals.TopLevelStruct)
+					{
+						sfd.InitialDirectory = Path.GetDirectoryName(GffData.Pfe);
+						sfd.FileName         = Path.GetFileName(GffData.Pfe);
+					}
+
+					if (sfd.ShowDialog(this) == DialogResult.OK
+						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.TypeVer)
+						&& sfd.FileName == GffData.Pfe)
+					{
 						GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
 
 						GffData.Changed = false;
