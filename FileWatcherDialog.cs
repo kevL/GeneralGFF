@@ -171,7 +171,6 @@ namespace generalgff
 			// la_Info
 			// 
 			this.la_Info.Dock = System.Windows.Forms.DockStyle.Top;
-			this.la_Info.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.la_Info.Location = new System.Drawing.Point(0, 0);
 			this.la_Info.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Info.Name = "la_Info";
