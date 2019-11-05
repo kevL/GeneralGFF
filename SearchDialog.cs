@@ -128,7 +128,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			_f._search = null;
+			_f.Search = null;
 
 			_text = tb_Search.Text;
 			_substring = rb_Substring.Checked;

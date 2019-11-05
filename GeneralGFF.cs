@@ -38,8 +38,6 @@ namespace generalgff
 
 		internal string _editText = String.Empty;
 				 int    _posCaret = 0;
-
-		internal SearchDialog _search;
 		#endregion Fields
 
 
@@ -81,6 +79,9 @@ namespace generalgff
 
 		Sortable Copied
 		{ get; set; }
+
+		internal SearchDialog Search
+		{ private get; set; }
 		#endregion Properties
 
 
@@ -351,7 +352,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="msg"></param>
 		/// <param name="keyData"></param>
-		/// <returns></returns>
+		/// <returns>true if the input gets handled</returns>
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
 			//logfile.Log("ProcessCmdKey() keyData= " + keyData);
@@ -368,18 +369,18 @@ namespace generalgff
 					return true;
 
 				case Keys.F3:
-					if (_search == null)
+					if (Search == null)
 						editclick_Search(null, EventArgs.Empty);
 					else
-						_search.click_Down(null, EventArgs.Empty);
+						Search.click_Down(null, EventArgs.Empty);
 
 					return true;
 
 				case Keys.Shift | Keys.F3:
-					if (_search == null)
+					if (Search == null)
 						editclick_Search(null, EventArgs.Empty);
 					else
-						_search.click_Up(null, EventArgs.Empty);
+						Search.click_Up(null, EventArgs.Empty);
 
 					return true;
 			}
@@ -619,8 +620,8 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Search(object sender, EventArgs e)
 		{
-			_search = new SearchDialog(this);
-			_search.Show(this);
+			Search = new SearchDialog(this);
+			Search.Show(this);
 		}
 
 		/// <summary>
