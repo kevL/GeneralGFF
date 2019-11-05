@@ -37,7 +37,7 @@ namespace generalgff
 				_f.WindowState  = FormWindowState.Normal;
 
 			tb_Path.Text = _f.GffData.Pfe;
-			Width = TextRenderer.MeasureText(tb_Path.Text, tb_Path.Font).Width + 28;
+			Width = TextRenderer.MeasureText(tb_Path.Text, tb_Path.Font).Width + 20;
 
 			string text = String.Empty;
 			switch (_fwType = fwType)
@@ -86,6 +86,7 @@ namespace generalgff
 							break;
 
 						case FILE_WSC:
+							_f.GffData.Changed = false;
 							_f.fileclick_Reload(null, EventArgs.Empty);
 							break;
 					}
@@ -170,7 +171,7 @@ namespace generalgff
 			// la_Info
 			// 
 			this.la_Info.Dock = System.Windows.Forms.DockStyle.Top;
-			this.la_Info.ForeColor = System.Drawing.Color.Firebrick;
+			this.la_Info.ForeColor = System.Drawing.SystemColors.ControlText;
 			this.la_Info.Location = new System.Drawing.Point(0, 0);
 			this.la_Info.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Info.Name = "la_Info";

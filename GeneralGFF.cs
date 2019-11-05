@@ -553,7 +553,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		internal void fileclick_Reload(object sender, EventArgs e)
 		{
-			if (CheckCloseData(Globals.Reload)) // TODO: bypass if reloaded by the FileWatcher
+			if (CheckCloseData(Globals.Reload))
 			{
 				var loader = new GffLoader();
 				loader.LoadGFFfile(this, GffData.Pfe);
