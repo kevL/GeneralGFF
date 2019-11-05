@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteDialog.cs" />
+    <Compile Include="FileWatcherDialog.cs" />
     <Compile Include="GffLoader.cs" />
     <Compile Include="InfoDialog.cs" />
     <Compile Include="LabelDialog.cs" />
@@ -81,6 +82,9 @@
   <ItemGroup>
     <EmbeddedResource Include="DeleteDialog.resx">
       <DependentUpon>DeleteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FileWatcherDialog.resx">
+      <DependentUpon>FileWatcherDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InfoDialog.resx">
       <DependentUpon>InfoDialog.cs</DependentUpon>

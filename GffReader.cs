@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 
@@ -102,6 +103,7 @@ namespace generalgff
 
 					data.TypeVer = ver;
 					data.Type = GffData.GetGffType(ver.Substring(0,3));
+					data.Latest = File.GetLastWriteTime(pfe);
 
 
 // HEADER METADATA ->

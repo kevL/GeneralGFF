@@ -386,6 +386,30 @@ namespace generalgff
 			}
 			return base.ProcessCmdKey(ref msg, keyData);
 		}
+
+		/// <summary>
+		/// Checks if the file on disk has changed or been deleted when this
+		/// form takes focus.
+		/// </summary>
+		/// <param name="e"></param>
+		protected override void OnActivated(EventArgs e)
+		{
+			if (GffData != null && GffData.Pfe != Globals.TopLevelStruct)
+			{
+				if (!File.Exists(GffData.Pfe))
+				{
+					using (var fwd = new FileWatcherDialog(this, FileWatcherDialog.FILE_DEL))
+						fwd.ShowDialog(this);
+				}
+				else if (File.GetLastWriteTime(GffData.Pfe) != GffData.Latest)
+				{
+					GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
+
+					using (var fwd = new FileWatcherDialog(this, FileWatcherDialog.FILE_WSC))
+						fwd.ShowDialog(this);
+				}
+			}
+		}
 		#endregion Handlers (override)
 
 
@@ -527,9 +551,9 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void fileclick_Reload(object sender, EventArgs e)
+		internal void fileclick_Reload(object sender, EventArgs e)
 		{
-			if (CheckCloseData(Globals.Reload))
+			if (CheckCloseData(Globals.Reload)) // TODO: bypass if reloaded by the FileWatcher
 			{
 				var loader = new GffLoader();
 				loader.LoadGFFfile(this, GffData.Pfe);
@@ -541,12 +565,14 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void fileclick_Save(object sender, EventArgs e)
+		internal void fileclick_Save(object sender, EventArgs e)
 		{
 			if (_tl.Nodes.Count != 0 && GffData.Changed
 				&& GffData.Pfe != Globals.TopLevelStruct
 				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.TypeVer))
 			{
+				GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
+
 				GffData.Changed = false;
 				GffData = GffData; // update titlebar text
 			}
@@ -581,6 +607,8 @@ namespace generalgff
 						_tl.Nodes[0].Text = label; // update TLS-label
 
 						GffData.Pfe = sfd.FileName;
+						GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
+
 						GffData.Changed = false;
 						GffData = GffData; // update titlebar text
 					}

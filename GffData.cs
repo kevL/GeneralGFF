@@ -144,6 +144,12 @@ namespace generalgff
 		/// </summary>
 		internal bool Changed
 		{ get; set; }
+
+		/// <summary>
+		/// Stores the file's latest DateTime.
+		/// </summary>
+		internal DateTime Latest
+		{ get; set; }
 		#endregion Properties
 
 
