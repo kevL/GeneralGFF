@@ -983,8 +983,10 @@ namespace generalgff
 		void helpclick_About(object sender, EventArgs e)
 		{
 			string text = "GeneralGFF Editor"
+						+ Environment.NewLine + Environment.NewLine
+						+ "- designed for and tested against"
 						+ Environment.NewLine
-						+ "- Neverwinter Nights 2"
+						+ "  Neverwinter Nights 2"
 						+ Environment.NewLine + Environment.NewLine;
 
 			var an = Assembly.GetExecutingAssembly().GetName();
@@ -1003,6 +1005,7 @@ namespace generalgff
 				  + String.Format(CultureInfo.CurrentCulture,
 								  "{0:yyyy MMM d} {0:HH}:{0:mm}:{0:ss} UTC", // {0:zzz}
 								  dt);
+			text += Environment.NewLine;
 
 			using (var f = new InfoDialog(Globals.About, text))
 				f.ShowDialog(this);
