@@ -128,9 +128,9 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_FILE].Popup += filepop;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_CRAT].Click += fileclick_Create;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_OPEN].Click += fileclick_Open;
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RLOD].Click += fileclick_Reload;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RELD].Click += fileclick_Reload;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Click += fileclick_Save;
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Click += fileclick_SaveAs;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVA].Click += fileclick_SaveAs;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_EXPT].Click += fileclick_Export;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_QUIT].Click += fileclick_Quit;
 
@@ -142,11 +142,11 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_DEL].Click += editclick_Delete;
 
 			Menu.MenuItems[MenuCreator.MI_VIEW].Popup += viewpop;
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPAND].Click += viewclick_ExpandSelected;
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLLAP].Click += viewclick_CollapseSelected;
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORTER].Click += viewclick_Sort;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPD].Click += viewclick_ExpandSelected;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLP].Click += viewclick_CollapseSelected;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORT].Click += viewclick_Sort;
 
-			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABOUT].Click += helpclick_About;
+			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABT].Click += helpclick_About;
 		}
 		#endregion cTor
 
@@ -483,12 +483,12 @@ namespace generalgff
 		/// <param name="e"></param>
 		void filepop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RLOD].Enabled = GffData != null
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RELD].Enabled = GffData != null
 																						   && GffData.Pfe != Globals.TopLevelStruct;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
 																						   && GffData.Changed
 																						   && GffData.Pfe != Globals.TopLevelStruct;
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVS].Enabled =
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVA].Enabled =
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_EXPT].Enabled = _tl.Nodes.Count != 0;
 		}
 
@@ -549,20 +549,6 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Reloads the currently loaded file.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		internal void fileclick_Reload(object sender, EventArgs e)
-		{
-			if (CheckCloseData(Globals.Reload))
-			{
-				var loader = new GffLoader();
-				loader.LoadGFFfile(this, GffData.Pfe);
-			}
-		}
-
-		/// <summary>
 		/// Saves the currently loaded file.
 		/// </summary>
 		/// <param name="sender"></param>
@@ -615,6 +601,20 @@ namespace generalgff
 						GffData = GffData; // update titlebar text
 					}
 				}
+			}
+		}
+
+		/// <summary>
+		/// Reloads the currently loaded file.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		internal void fileclick_Reload(object sender, EventArgs e)
+		{
+			if (CheckCloseData(Globals.Reload))
+			{
+				var loader = new GffLoader();
+				loader.LoadGFFfile(this, GffData.Pfe);
 			}
 		}
 
@@ -862,11 +862,10 @@ namespace generalgff
 		/// <param name="e"></param>
 		void viewpop(object sender, EventArgs e)
 		{
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPAND].Enabled =
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLLAP].Enabled = _tl.SelectedNode != null
-																							 && _tl.SelectedNode.Nodes.Count != 0;
-
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORTER].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPD].Enabled =
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLP].Enabled = _tl.SelectedNode != null
+																						   && _tl.SelectedNode.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORT].Enabled = _tl.Nodes.Count != 0;
 		}
 
 		/// <summary>
