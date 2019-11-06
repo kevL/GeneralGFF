@@ -399,15 +399,22 @@ namespace generalgff
 			{
 				if (!File.Exists(GffData.Pfe))
 				{
-					using (var fwd = new FileWatchDialog(this, FileWatchDialog.FILE_DEL))
-						fwd.ShowDialog(this);
+					if (!FileWatchDialog.Bypass)
+					{
+						FileWatchDialog.Bypass = true;
+						using (var fwd = new FileWatchDialog(this, FileWatchDialog.FILE_DEL))
+							fwd.ShowDialog(this);
+					}
 				}
-				else if (File.GetLastWriteTime(GffData.Pfe) != GffData.Latest)
+				else
 				{
-					GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
-
-					using (var fwd = new FileWatchDialog(this, FileWatchDialog.FILE_WSC))
-						fwd.ShowDialog(this);
+					DateTime dt = File.GetLastWriteTime(GffData.Pfe);
+					if (dt != GffData.Latest)
+					{
+						GffData.Latest = dt;
+						using (var fwd = new FileWatchDialog(this, FileWatchDialog.FILE_WSC))
+							fwd.ShowDialog(this);
+					}
 				}
 			}
 		}
@@ -484,7 +491,7 @@ namespace generalgff
 		void filepop(object sender, EventArgs e)
 		{
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RELD].Enabled = GffData != null
-																						   && GffData.Pfe != Globals.TopLevelStruct;
+																						   && File.Exists(GffData.Pfe);
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
 																						   && GffData.Changed
 																						   && GffData.Pfe != Globals.TopLevelStruct;
@@ -559,6 +566,7 @@ namespace generalgff
 				&& GffData.Pfe != Globals.TopLevelStruct
 				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.TypeVer))
 			{
+				FileWatchDialog.Bypass = false;
 				GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
 
 				GffData.Changed = false;
@@ -595,6 +603,8 @@ namespace generalgff
 						_tl.Nodes[0].Text = label; // update TLS-label
 
 						GffData.Pfe = sfd.FileName;
+
+						FileWatchDialog.Bypass = false;
 						GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
 
 						GffData.Changed = false;
@@ -611,7 +621,8 @@ namespace generalgff
 		/// <param name="e"></param>
 		internal void fileclick_Reload(object sender, EventArgs e)
 		{
-			if (CheckCloseData(Globals.Reload))
+			if (GffData != null && File.Exists(GffData.Pfe)
+				&& CheckCloseData(Globals.Reload))
 			{
 				var loader = new GffLoader();
 				loader.LoadGFFfile(this, GffData.Pfe);
@@ -644,6 +655,10 @@ namespace generalgff
 						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.TypeVer)
 						&& sfd.FileName == GffData.Pfe)
 					{
+						// NOTE: This happens only if user chooses to export/
+						// write the current data to the original file.
+
+						FileWatchDialog.Bypass = false;
 						GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
 
 						GffData.Changed = false;

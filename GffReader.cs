@@ -103,7 +103,9 @@ namespace generalgff
 
 					data.TypeVer = ver;
 					data.Type = GffData.GetGffType(ver.Substring(0,3));
+
 					data.Latest = File.GetLastWriteTime(pfe);
+					FileWatchDialog.Bypass = false;
 
 
 // HEADER METADATA ->

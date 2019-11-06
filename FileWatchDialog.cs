@@ -14,6 +14,15 @@ namespace generalgff
 		#endregion Fields (static)
 
 
+		#region Properties (static)
+		/// <summary>
+		/// Bypasses file-exists (FILE_DEL) checks if true.
+		/// </summary>
+		internal static bool Bypass
+		{ get; set; }
+		#endregion Properties (static)
+
+
 		#region Fields
 		GeneralGFF _f;
 
@@ -86,7 +95,7 @@ namespace generalgff
 							break;
 
 						case FILE_WSC:
-							_f.GffData.Changed = false;
+							_f.GffData.Changed = false; // bypass close-check
 							_f.fileclick_Reload(null, EventArgs.Empty);
 							break;
 					}
