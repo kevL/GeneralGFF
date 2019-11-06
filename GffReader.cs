@@ -92,7 +92,7 @@ namespace generalgff
 
 					if (ver.Substring(3) != Globals.SupportedVersion)
 					{
-						FileService.ShowErrorBox("That is not a version 3.2 GFF file.");
+						FileService.error("That is not a version 3.2 GFF file.");
 						return null;
 					}
 
@@ -121,7 +121,7 @@ namespace generalgff
 					// The Struct-section will always start at 56-bytes (0x38)
 					if (StructOffset != Globals.Length_HEADER)
 					{
-						FileService.ShowErrorBox("That does not appear to be a GFF file.");
+						FileService.error("That does not appear to be a GFF file.");
 						return null;
 					}
 
@@ -642,7 +642,7 @@ namespace generalgff
 					return data;
 				}
 
-				FileService.ShowErrorBox("That file has no data.");
+				FileService.error("That file has no data.");
 			}
 			return null;
 		}

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Windows.Forms;
 
 
 namespace generalgff
@@ -35,13 +34,13 @@ namespace generalgff
 				}
 				catch (Exception ex)
 				{
-					ShowErrorBox("File could not be read." + Environment.NewLine + Environment.NewLine
+					error("File could not be read." + Environment.NewLine + Environment.NewLine
 								 + pfe + Environment.NewLine + Environment.NewLine + ex);
 					return null;
 				}
 			}
 			else
-				ShowErrorBox("File does not exist." + Environment.NewLine + Environment.NewLine + pfe);
+				error("File does not exist." + Environment.NewLine + Environment.NewLine + pfe);
 
 			return bytes;
 		}
@@ -66,7 +65,7 @@ namespace generalgff
 			}
 			catch (Exception ex)
 			{
-				ShowErrorBox("File could not be created." + Environment.NewLine + Environment.NewLine + ex);
+				error("File could not be created." + Environment.NewLine + Environment.NewLine + ex);
 				return null;
 			}
 			return fs;
@@ -98,7 +97,7 @@ namespace generalgff
 					}
 					catch (Exception ex)
 					{
-						ShowErrorBox("File backup could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
+						error("File backup could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
 						return false;
 					}
 				}
@@ -114,7 +113,18 @@ namespace generalgff
 				}
 				catch (Exception ex)
 				{
-					ShowErrorBox("File could not be replaced." + Environment.NewLine + Environment.NewLine + ex);
+					error("File could not be replaced." + Environment.NewLine + Environment.NewLine + ex);
+					return false;
+				}
+
+				// this deletes the .GGB backup. Disable this try/catch block to keep the backup.
+				try
+				{
+					File.Delete(pfeBackup);
+				}
+				catch (Exception ex)
+				{
+					error("File could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
 					return false;
 				}
 			}
@@ -140,7 +150,7 @@ namespace generalgff
 			}
 			catch (Exception ex)
 			{
-				ShowErrorBox("File could not be copied." + Environment.NewLine + Environment.NewLine + ex);
+				error("File could not be copied." + Environment.NewLine + Environment.NewLine + ex);
 				return false;
 			}
 
@@ -150,7 +160,7 @@ namespace generalgff
 			}
 			catch (Exception ex)
 			{
-				ShowErrorBox("File could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
+				error("File could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
 				return false;
 			}
 			return true;
@@ -160,13 +170,11 @@ namespace generalgff
 		/// <summary>
 		/// A generic error dialog.
 		/// </summary>
-		/// <param name="error"></param>
-		internal static void ShowErrorBox(string error)
+		/// <param name="er"></param>
+		internal static void error(string er)
 		{
-			using (var f = new InfoDialog(Globals.Error, error))
-			{
+			using (var f = new InfoDialog(Globals.Error, er))
 				f.ShowDialog();
-			}
 		}
 		#endregion Methods (static)
 	}
