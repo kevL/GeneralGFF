@@ -399,14 +399,14 @@ namespace generalgff
 			{
 				if (!File.Exists(GffData.Pfe))
 				{
-					using (var fwd = new FileWatcherDialog(this, FileWatcherDialog.FILE_DEL))
+					using (var fwd = new FileWatchDialog(this, FileWatchDialog.FILE_DEL))
 						fwd.ShowDialog(this);
 				}
 				else if (File.GetLastWriteTime(GffData.Pfe) != GffData.Latest)
 				{
 					GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
 
-					using (var fwd = new FileWatcherDialog(this, FileWatcherDialog.FILE_WSC))
+					using (var fwd = new FileWatchDialog(this, FileWatchDialog.FILE_WSC))
 						fwd.ShowDialog(this);
 				}
 			}

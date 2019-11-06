@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace generalgff
 {
-	sealed class FileWatcherDialog
+	sealed class FileWatchDialog
 		:
 			Form
 	{
@@ -27,7 +27,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="f"></param>
 		/// <param name="fwType"></param>
-		internal FileWatcherDialog(GeneralGFF f, int fwType)
+		internal FileWatchDialog(GeneralGFF f, int fwType)
 		{
 			InitializeComponent();
 
@@ -212,7 +212,7 @@ namespace generalgff
 			this.pnl_Top.Size = new System.Drawing.Size(325, 45);
 			this.pnl_Top.TabIndex = 0;
 			// 
-			// FileWatcherDialog
+			// FileWatchDialog
 			// 
 			this.CancelButton = this.btn_Cancel;
 			this.ClientSize = new System.Drawing.Size(325, 79);
@@ -223,7 +223,7 @@ namespace generalgff
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.MinimumSize = new System.Drawing.Size(333, 105);
-			this.Name = "FileWatcherDialog";
+			this.Name = "FileWatchDialog";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
