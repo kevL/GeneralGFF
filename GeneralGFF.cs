@@ -115,10 +115,13 @@ namespace generalgff
 
 			SubscribeOperations();
 
-			MinimumSize = new Size(sc_body.Panel1MinSize + sc_body.SplitterWidth
-														 + Width - ClientSize.Width, // <- border
-								   150);
-			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize, sc_body.Panel1.Height);
+
+			sc_body.Panel1MinSize = sc_body.Panel1MinSize + SystemInformation.VerticalScrollBarWidth;
+			MinimumSize  = new Size(sc_body.Panel1MinSize + sc_body.SplitterWidth
+														  + Width - ClientSize.Width, // <- border
+									150);
+			sc_body.Panel1.ClientSize = new Size(sc_body.Panel1MinSize,
+												 sc_body.Panel1.Height);
 
 			sc_body.MouseDown += splitCont_MouseDown;
 			sc_body.MouseUp   += splitCont_MouseUp;
@@ -348,17 +351,17 @@ namespace generalgff
 			if (WindowState != FormWindowState.Minimized)
 			{
 				if (sc_body.Panel2.Width == 0)
-				{
 					sc_body.FixedPanel = FixedPanel.Panel2;
-				}
-				else if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
-				{
-					sc_body.SplitterDistance = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
-				}
 				else
+				{
 					sc_body.FixedPanel = FixedPanel.Panel1;
+					if (sc_body.SplitterDistance > ClientSize.Width - sc_body.SplitterWidth)
+					{
+						int dist = ClientSize.Width - sc_body.SplitterWidth - sc_body.Panel2.Width;
+						sc_body.SplitterDistance = Math.Max(sc_body.Panel1MinSize, dist);
+					}
+				}
 			}
-
 			base.OnResize(e);
 		}
 

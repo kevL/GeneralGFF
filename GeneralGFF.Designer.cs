@@ -73,7 +73,7 @@ namespace generalgff
 			this.sc_body.Location = new System.Drawing.Point(0, 0);
 			this.sc_body.Margin = new System.Windows.Forms.Padding(0);
 			this.sc_body.Name = "sc_body";
-			this.sc_body.Panel1MinSize = 450;
+			this.sc_body.Panel1MinSize = 447;
 			// 
 			// sc_body.Panel2
 			// 
@@ -87,8 +87,8 @@ namespace generalgff
 			this.sc_body.Panel2.Controls.Add(this.tb_Val);
 			this.sc_body.Panel2.Controls.Add(this.la_Des);
 			this.sc_body.Panel2MinSize = 0;
-			this.sc_body.Size = new System.Drawing.Size(792, 552);
-			this.sc_body.SplitterDistance = 450;
+			this.sc_body.Size = new System.Drawing.Size(767, 532);
+			this.sc_body.SplitterDistance = 447;
 			this.sc_body.SplitterWidth = 2;
 			this.sc_body.TabIndex = 0;
 			// 
@@ -108,7 +108,7 @@ namespace generalgff
 			this.rt_Val.Multiline = true;
 			this.rt_Val.Name = "rt_Val";
 			this.rt_Val.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-			this.rt_Val.Size = new System.Drawing.Size(338, 400);
+			this.rt_Val.Size = new System.Drawing.Size(316, 380);
 			this.rt_Val.TabIndex = 7;
 			this.rt_Val.WordWrap = false;
 			this.rt_Val.TextChanged += new System.EventHandler(this.textchanged_Multi);
@@ -137,7 +137,7 @@ namespace generalgff
 			this.btn_Apply.Location = new System.Drawing.Point(1, 99);
 			this.btn_Apply.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Apply.Name = "btn_Apply";
-			this.btn_Apply.Size = new System.Drawing.Size(336, 25);
+			this.btn_Apply.Size = new System.Drawing.Size(314, 25);
 			this.btn_Apply.TabIndex = 5;
 			this.btn_Apply.Text = "APPLY";
 			this.btn_Apply.UseVisualStyleBackColor = true;
@@ -160,7 +160,7 @@ namespace generalgff
 			// 
 			this.btn_Revert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_Revert.Enabled = false;
-			this.btn_Revert.Location = new System.Drawing.Point(280, 56);
+			this.btn_Revert.Location = new System.Drawing.Point(258, 56);
 			this.btn_Revert.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Revert.Name = "btn_Revert";
 			this.btn_Revert.Size = new System.Drawing.Size(57, 20);
@@ -189,7 +189,7 @@ namespace generalgff
 			this.tb_Val.Margin = new System.Windows.Forms.Padding(0);
 			this.tb_Val.MaxLength = 0;
 			this.tb_Val.Name = "tb_Val";
-			this.tb_Val.Size = new System.Drawing.Size(338, 20);
+			this.tb_Val.Size = new System.Drawing.Size(316, 20);
 			this.tb_Val.TabIndex = 1;
 			this.tb_Val.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
 			this.tb_Val.WordWrap = false;
@@ -212,9 +212,9 @@ namespace generalgff
 			this.ss_bot.Font = new System.Drawing.Font("Consolas", 6.25F, System.Drawing.FontStyle.Bold);
 			this.ss_bot.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
 			this.tssl_info});
-			this.ss_bot.Location = new System.Drawing.Point(0, 552);
+			this.ss_bot.Location = new System.Drawing.Point(0, 532);
 			this.ss_bot.Name = "ss_bot";
-			this.ss_bot.Size = new System.Drawing.Size(792, 22);
+			this.ss_bot.Size = new System.Drawing.Size(767, 22);
 			this.ss_bot.TabIndex = 1;
 			// 
 			// tssl_info
@@ -229,7 +229,7 @@ namespace generalgff
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(792, 574);
+			this.ClientSize = new System.Drawing.Size(767, 554);
 			this.Controls.Add(this.sc_body);
 			this.Controls.Add(this.ss_bot);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
