@@ -838,7 +838,7 @@ namespace generalgff
 
 			_f.cb_Wordwrap.Visible = false;
 
-			_f._editText =
+			_f._edittext =
 			_f._prevalText_rt =
 			_f._prevalText_tb = String.Empty;
 			_f._prevalCusto = false;
@@ -888,7 +888,7 @@ namespace generalgff
 				_f.tb_Val.BackColor = Color.Violet;
 
 				_f._prevalText_tb =
-				_f._editText = _f.tb_Val.Text;
+				_f._edittext = _f.tb_Val.Text;
 			}
 			else
 			{
@@ -906,7 +906,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.CHAR:
@@ -919,7 +919,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.WORD:
@@ -932,7 +932,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.SHORT:
@@ -945,7 +945,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD:
@@ -958,7 +958,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT:
@@ -971,7 +971,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.DWORD64:
@@ -984,7 +984,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.INT64:
@@ -997,7 +997,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.FLOAT:
@@ -1013,7 +1013,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 					}
 
@@ -1030,7 +1030,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 					}
 
@@ -1044,7 +1044,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.CExoString:
@@ -1059,7 +1059,7 @@ namespace generalgff
 						_f.cb_Wordwrap.Visible = true;
 
 						_f._prevalText_rt =
-						_f._editText = _f.rt_Val.Text;
+						_f._edittext = _f.rt_Val.Text;
 						break;
 
 					case FieldTypes.CExoLocString: // not a string. Is an integer.
@@ -1086,7 +1086,7 @@ namespace generalgff
 						_f._prevalCusto = _f.cb_Custo.Checked;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 					}
 
@@ -1105,7 +1105,7 @@ namespace generalgff
 						_f.cb_Wordwrap.Visible = true;
 
 						_f._prevalText_rt =
-						_f._editText = _f.rt_Val.Text;
+						_f._edittext = _f.rt_Val.Text;
 						break;
 					}
 
@@ -1123,7 +1123,7 @@ namespace generalgff
 						_f.tb_Val.BackColor = Color.Honeydew;
 
 						_f._prevalText_tb =
-						_f._editText = _f.tb_Val.Text;
+						_f._edittext = _f.tb_Val.Text;
 						break;
 
 					case FieldTypes.locale:
@@ -1150,7 +1150,7 @@ namespace generalgff
 						_f.cb_Wordwrap.Visible = true;
 
 						_f._prevalText_rt =
-						_f._editText = _f.rt_Val.Text;
+						_f._edittext = _f.rt_Val.Text;
 						break;
 					}
 				}

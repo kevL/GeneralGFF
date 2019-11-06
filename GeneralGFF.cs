@@ -20,11 +20,18 @@ namespace generalgff
 		#region Fields (static)
 		const string TITLE = "GeneralGFF";
 
+		/// <summary>
+		/// Total width in characters allowed for the label in the treenode text.
+		/// </summary>
 		const int LENGTH_LABEL = 17;
+		/// <summary>
+		/// Total width in characters allowed for the type-descriptor in the
+		/// treenode text.
+		/// </summary>
 		const int LENGTH_TYPE  = 17;
 
-		internal const int DIRTY_non   = 0x0;
-				 const int DIRTY_TEXTS = 0x1;
+		internal const int DIRTY_non   = 0x0; // these constants are used to track the
+				 const int DIRTY_TEXTS = 0x1; // state of the Apply and Revert buttons ->
 				 const int DIRTY_CZECH = 0x2;
 		#endregion Fields (static)
 
@@ -32,12 +39,12 @@ namespace generalgff
 		#region Fields
 		internal TreeList _tl;
 
-		internal string _prevalText_rt = String.Empty;
-		internal string _prevalText_tb = String.Empty;
-		internal bool   _prevalCusto;
+		internal string _prevalText_rt = String.Empty;	// cached text used by Revert
+		internal string _prevalText_tb = String.Empty;	// cached text used by Revert
+		internal bool   _prevalCusto;					// cached check-state used by Revert
 
-		internal string _editText = String.Empty;
-				 int    _posCaret = 0;
+		internal string _edittext = String.Empty;	// stored val that's reverted to if user enters an invalid character
+				 int    _posCaret = 0;				// tracks the position of the caret in case text gets reset to '_edittext'
 		#endregion Fields
 
 
@@ -65,7 +72,7 @@ namespace generalgff
 
 		int _dirtystate;
 		/// <summary>
-		/// Enables or disables the apply and revert buttons in the editor-panel.
+		/// Enables or disables the Apply and Revert buttons in the editor-panel.
 		/// </summary>
 		internal int DirtyState
 		{
@@ -77,9 +84,16 @@ namespace generalgff
 			}
 		}
 
+		/// <summary>
+		/// A cloned treenode along with its Field, plus any subnodes and their
+		/// Fields.
+		/// </summary>
 		Sortable Copied
 		{ get; set; }
 
+		/// <summary>
+		/// Pointer to the Search dialog.
+		/// </summary>
 		internal SearchDialog Search
 		{ private get; set; }
 		#endregion Properties
@@ -1095,7 +1109,7 @@ namespace generalgff
 						ResetEditor(tb_Val);
 					}
 					else
-						_editText = tb_Val.Text;
+						_edittext = tb_Val.Text;
 				}
 				else
 				{
@@ -1107,7 +1121,7 @@ namespace generalgff
 								ResetEditor(tb_Val);
 							}
 							else
-								_editText = tb_Val.Text;
+								_edittext = tb_Val.Text;
 							break;
 					}
 				}
@@ -1146,7 +1160,7 @@ namespace generalgff
 								ResetEditor(rt_Val);
 							}
 							else
-								_editText = rt_Val.Text;
+								_edittext = rt_Val.Text;
 							break;
 
 						case FieldTypes.VOID:
@@ -1155,7 +1169,7 @@ namespace generalgff
 								ResetEditor(rt_Val);
 							}
 							else
-								_editText = rt_Val.Text;
+								_edittext = rt_Val.Text;
 							break;
 					}
 
@@ -1722,7 +1736,7 @@ namespace generalgff
 		/// </summary>
 		void ResetEditor(TextBoxBase editor)
 		{
-			editor.Text = _editText;
+			editor.Text = _edittext;
 			RepositionCaret(editor);
 		}
 
