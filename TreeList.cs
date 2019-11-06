@@ -730,18 +730,15 @@ namespace generalgff
 		/// <param name="e"></param>
 		void contextclick_Toggle(object sender, EventArgs e)
 		{
-			SelectedNode.Toggle();
+			if (SelectedNode.IsExpanded)
+				SelectedNode.Collapse(true);
+			else
+				SelectedNode.Expand();
 		}
 		#endregion Context
 
 
 		#region Handlers (override)
-//		protected override void WndProc(ref Message m)
-//		{
-//			if (m.Msg == 0x203) m.Msg = 0x201; // change WM_LBUTTONDBLCLK to WM_LBUTTONCLICK
-//			base.WndProc(ref m);
-//		}
-
 		/// <summary>
 		/// Handles keydown events.
 		/// </summary>
@@ -762,7 +759,8 @@ namespace generalgff
 		/// </summary>
 		void Toggle()
 		{
-			SelectedNode.Toggle();
+			if (SelectedNode != null)
+				contextclick_Toggle(null, EventArgs.Empty);
 		}
 
 
