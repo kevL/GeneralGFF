@@ -115,7 +115,7 @@ namespace generalgff
 			// 
 			this.bt_Okay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.bt_Okay.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.bt_Okay.Location = new System.Drawing.Point(165, 25);
+			this.bt_Okay.Location = new System.Drawing.Point(165, 26);
 			this.bt_Okay.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Okay.Name = "bt_Okay";
 			this.bt_Okay.Size = new System.Drawing.Size(70, 25);

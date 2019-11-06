@@ -968,7 +968,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		void helpclick_About(object sender, EventArgs e)
 		{
-			string text = "GeneralGFF editor"
+			string text = "GeneralGFF Editor"
+						+ Environment.NewLine
+						+ "- Neverwinter Nights 2"
 						+ Environment.NewLine + Environment.NewLine;
 
 			var an = Assembly.GetExecutingAssembly().GetName();
