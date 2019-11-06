@@ -148,10 +148,10 @@ namespace generalgff
 			this.btn_Cancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 			| System.Windows.Forms.AnchorStyles.Right)));
 			this.btn_Cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.btn_Cancel.Location = new System.Drawing.Point(208, 5);
+			this.btn_Cancel.Location = new System.Drawing.Point(200, 2);
 			this.btn_Cancel.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Cancel.Name = "btn_Cancel";
-			this.btn_Cancel.Size = new System.Drawing.Size(100, 26);
+			this.btn_Cancel.Size = new System.Drawing.Size(100, 30);
 			this.btn_Cancel.TabIndex = 1;
 			this.btn_Cancel.Text = "Cancel";
 			this.btn_Cancel.UseVisualStyleBackColor = true;
@@ -161,10 +161,10 @@ namespace generalgff
 			this.btn_Action.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
 			| System.Windows.Forms.AnchorStyles.Left)));
 			this.btn_Action.DialogResult = System.Windows.Forms.DialogResult.Yes;
-			this.btn_Action.Location = new System.Drawing.Point(15, 5);
+			this.btn_Action.Location = new System.Drawing.Point(25, 2);
 			this.btn_Action.Margin = new System.Windows.Forms.Padding(0);
 			this.btn_Action.Name = "btn_Action";
-			this.btn_Action.Size = new System.Drawing.Size(100, 26);
+			this.btn_Action.Size = new System.Drawing.Size(100, 30);
 			this.btn_Action.TabIndex = 0;
 			this.btn_Action.UseVisualStyleBackColor = true;
 			// 
@@ -194,8 +194,8 @@ namespace generalgff
 			// 
 			this.pnl_Bot.Controls.Add(this.btn_Cancel);
 			this.pnl_Bot.Controls.Add(this.btn_Action);
-			this.pnl_Bot.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pnl_Bot.Location = new System.Drawing.Point(0, 45);
+			this.pnl_Bot.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.pnl_Bot.Location = new System.Drawing.Point(0, 40);
 			this.pnl_Bot.Margin = new System.Windows.Forms.Padding(0);
 			this.pnl_Bot.Name = "pnl_Bot";
 			this.pnl_Bot.Size = new System.Drawing.Size(325, 34);
@@ -209,20 +209,20 @@ namespace generalgff
 			this.pnl_Top.Location = new System.Drawing.Point(0, 0);
 			this.pnl_Top.Margin = new System.Windows.Forms.Padding(0);
 			this.pnl_Top.Name = "pnl_Top";
-			this.pnl_Top.Size = new System.Drawing.Size(325, 45);
+			this.pnl_Top.Size = new System.Drawing.Size(325, 40);
 			this.pnl_Top.TabIndex = 0;
 			// 
 			// FileWatchDialog
 			// 
 			this.CancelButton = this.btn_Cancel;
-			this.ClientSize = new System.Drawing.Size(325, 79);
+			this.ClientSize = new System.Drawing.Size(325, 74);
 			this.Controls.Add(this.pnl_Bot);
 			this.Controls.Add(this.pnl_Top);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.Icon = global::GeneralGFF.Properties.Resources.generalgff_32;
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
-			this.MinimumSize = new System.Drawing.Size(333, 105);
+			this.MinimumSize = new System.Drawing.Size(333, 100);
 			this.Name = "FileWatchDialog";
 			this.ShowInTaskbar = false;
 			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
