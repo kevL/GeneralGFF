@@ -73,9 +73,6 @@ namespace generalgff
 		/// <param name="pfe">path-file-extension - ensure file exists before call</param>
 		internal static GffData ReadGFFfile(string pfe)
 		{
-			Structs.Clear();
-			Fields .Clear();
-
 			byte[] bytes = FileService.ReadFile(pfe);
 			if (bytes != null)
 			{

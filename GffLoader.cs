@@ -41,6 +41,9 @@ namespace generalgff
 			}
 
 			f._tl.EndUpdate();
+
+			GffReader.Structs.Clear();
+			GffReader.Fields .Clear();
 		}
 
 		/// <summary>
@@ -49,7 +52,7 @@ namespace generalgff
 		/// <param name="field">a Field to add</param>
 		/// <param name="parent">a treenode to add it to</param>
 		/// <param name="locale">a locale if applicable</param>
-		internal void AddField(GffData.Field field, TreeNode parent, GffData.Locale locale = null)
+		void AddField(GffData.Field field, TreeNode parent, GffData.Locale locale = null)
 		{
 			// TODO: Refactor things throughout the code such that the Tag of a
 			// treenode is *either* a GffData.Field *or* a GffData.Locale.
