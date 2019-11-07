@@ -373,8 +373,6 @@ namespace generalgff
 		/// <returns>true if the input gets handled</returns>
 		protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
 		{
-			//logfile.Log("ProcessCmdKey() keyData= " + keyData);
-
 			switch (keyData)
 			{
 				case Keys.Control | Keys.X:
@@ -382,9 +380,11 @@ namespace generalgff
 				case Keys.Control | Keys.V:
 				case Keys.Delete:
 					if (tb_Val.ContainsFocus || rt_Val.ContainsFocus)
+					{
 						Edit(keyData);
-
-					return true;
+						return true;
+					}
+					break;
 
 				case Keys.F3:
 					if (Search == null)
