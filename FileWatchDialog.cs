@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Windows.Forms;
 
 
@@ -80,29 +81,31 @@ namespace generalgff
 
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			switch (DialogResult)
+			if (   e.CloseReason != CloseReason.WindowsShutDown
+				&& e.CloseReason != CloseReason.TaskManagerClosing)
 			{
-				case DialogResult.Cancel:	// btn_Cancel
-					_f.GffData.Changed = true;
-					_f.GffData = _f.GffData;
-					break;
+				switch (DialogResult)
+				{
+					case DialogResult.Cancel:	// btn_Cancel
+						_f.GffData.Changed = true;
+						_f.GffData = _f.GffData;
+						break;
 
-				case DialogResult.Yes:		// btn_Action
-					switch (_fwType)
-					{
-						case FILE_DEL:
-							_f.fileclick_Save(null, EventArgs.Empty);
-							break;
+					case DialogResult.Yes:		// btn_Action
+						switch (_fwType)
+						{
+							case FILE_DEL:
+								_f.fileclick_Save(null, EventArgs.Empty);
+								break;
 
-						case FILE_WSC:
-							_f.GffData.Changed = false; // bypass close-check
-							_f.fileclick_Reload(null, EventArgs.Empty);
-							break;
-					}
-					break;
+							case FILE_WSC:
+								_f.GffData.Changed = false; // bypass close-check
+								_f.fileclick_Reload(null, EventArgs.Empty);
+								break;
+						}
+						break;
+				}
 			}
-
-			base.OnFormClosing(e);
 		}
 		#endregion Events (override)
 
@@ -112,7 +115,7 @@ namespace generalgff
 		/// <summary>
 		/// Designer variable used to keep track of non-visual components.
 		/// </summary>
-		System.ComponentModel.IContainer components = null;
+		IContainer components = null;
 
 		Button btn_Cancel;
 		Button btn_Action;

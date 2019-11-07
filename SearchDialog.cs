@@ -128,15 +128,19 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			_f.Search = null;
+			if (   e.CloseReason != CloseReason.WindowsShutDown
+				&& e.CloseReason != CloseReason.TaskManagerClosing)
+			{
+				_f.Search = null;
 
-			_text = tb_Search.Text;
-			_substring = rb_Substring.Checked;
+				_text = tb_Search.Text;
+				_substring = rb_Substring.Checked;
 
-			_x = Math.Max(0, Location.X);
-			_y = Math.Max(0, Location.Y);
-			_w = ClientSize.Width;
-			_h = ClientSize.Height;
+				_x = Math.Max(0, Location.X);
+				_y = Math.Max(0, Location.Y);
+				_w = ClientSize.Width;
+				_h = ClientSize.Height;
+			}
 		}
 		#endregion Handlers (override)
 

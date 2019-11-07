@@ -39,15 +39,17 @@ namespace generalgff
 
 		#region Handlers
 		/// <summary>
-		/// 
+		/// Cancels close if user does a stupid.
 		/// </summary>
 		/// <param name="e"></param>
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			e.Cancel = _stop;
-			_stop = false;
-
-//			base.OnFormClosing(e);
+			if (   e.CloseReason != CloseReason.WindowsShutDown
+				&& e.CloseReason != CloseReason.TaskManagerClosing)
+			{
+				e.Cancel = _stop;
+				_stop = false;
+			}
 		}
 		#endregion Handlers
 
@@ -63,7 +65,7 @@ namespace generalgff
 		{
 			if (String.IsNullOrEmpty(tb_Label.Text)
 				|| tb_Label.Text.Length > Globals.Length_LABEL
-				|| !isAlphanumeric(tb_Label.Text))
+				|| !valid(tb_Label.Text))
 			{
 				_stop = true;
 				baddog();
@@ -94,7 +96,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="text"></param>
 		/// <returns></returns>
-		bool isAlphanumeric(string text)
+		bool valid(string text)
 		{
 			int c;
 			for (int i = 0; i != text.Length; ++i)
@@ -119,10 +121,9 @@ namespace generalgff
 			string info = "Labels have a max length of 16 characters, a" + Environment.NewLine
 						+ "min length of 1 character, and may contain"   + Environment.NewLine
 						+ "only alphanumeric or underscore characters.";
+
 			using (var f = new InfoDialog(Globals.Error, info))
-			{
 				f.ShowDialog(this);
-			}
 		}
 		#endregion Methods
 

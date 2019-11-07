@@ -35,7 +35,11 @@ namespace generalgff
 		#region Handlers (override)
 		protected override void OnFormClosing(FormClosingEventArgs e)
 		{
-			if (_abort) DialogResult = DialogResult.Abort;
+			if (   e.CloseReason != CloseReason.WindowsShutDown
+				&& e.CloseReason != CloseReason.TaskManagerClosing)
+			{
+				if (_abort) DialogResult = DialogResult.Abort;
+			}
 		}
 		#endregion Handlers (override)
 
