@@ -10,9 +10,6 @@ namespace generalgff
 		:
 			Form
 	{
-		const int PadVert = 2;
-
-
 		#region cTor
 		/// <summary>
 		/// cTor.
@@ -34,29 +31,38 @@ namespace generalgff
 
 				case Globals.Error:
 					System.Media.SystemSounds.Exclamation.Play();
-					bt_Okay.Text = "/z";
+					bt_Okay.Text = "Cancel";
 					break;
 			}
 
 
-			int vertborder = Height - ClientSize.Height;
-			int hButton = Height - la_Info.Height - vertborder;
+			int hPadBot = ClientSize.Height - la_Info.Height;
 
-			int w = 0, wTest;
+			int w = 0, wTest, h = 0, hTest;
 			string[] separators = { "\r\n", "\r", "\n" };
 			string[] lines = info.Split(separators, StringSplitOptions.None);
+			logfile.Log("lines= " + lines.Length);
+
+			var size = new Size();
 			foreach (var line in lines)
 			{
-				if ((wTest = TextRenderer.MeasureText(line, la_Info.Font).Width) > w)
+				size = TextRenderer.MeasureText(line, la_Info.Font);
+				if ((wTest = size.Width) > w)
 					w = wTest;
+
+				if ((hTest = size.Height) > h)
+					h = hTest;
 			}
 			w += la_Info.Padding.Left + la_Info.Padding.Right;
 
-			la_Info.Height = (TextRenderer.MeasureText(lines[0], la_Info.Font).Height + PadVert) * lines.Length + PadVert;
+			if (w < bt_Okay.Width)
+				w = bt_Okay.Width;
 
-			ClientSize = new Size(w, la_Info.Height + hButton);
+			la_Info.Height = h * lines.Length + la_Info.Padding.Top;
 
-			bt_Okay.Location = new Point((ClientSize.Width - bt_Okay.Width) / 2, bt_Okay.Top);
+			ClientSize = new Size(w, la_Info.Height + hPadBot);
+
+			bt_Okay.Location = new Point((w - bt_Okay.Width) / 2, bt_Okay.Top);
 		}
 		#endregion cTor
 
@@ -115,7 +121,7 @@ namespace generalgff
 			// 
 			this.bt_Okay.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.bt_Okay.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.bt_Okay.Location = new System.Drawing.Point(165, 26);
+			this.bt_Okay.Location = new System.Drawing.Point(170, 28);
 			this.bt_Okay.Margin = new System.Windows.Forms.Padding(0);
 			this.bt_Okay.Name = "bt_Okay";
 			this.bt_Okay.Size = new System.Drawing.Size(70, 25);
@@ -130,8 +136,8 @@ namespace generalgff
 			this.la_Info.Location = new System.Drawing.Point(0, 0);
 			this.la_Info.Margin = new System.Windows.Forms.Padding(0);
 			this.la_Info.Name = "la_Info";
-			this.la_Info.Padding = new System.Windows.Forms.Padding(5, 0, 6, 0);
-			this.la_Info.Size = new System.Drawing.Size(239, 22);
+			this.la_Info.Padding = new System.Windows.Forms.Padding(5, 5, 6, 0);
+			this.la_Info.Size = new System.Drawing.Size(244, 22);
 			this.la_Info.TabIndex = 0;
 			this.la_Info.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
 			// 
@@ -139,7 +145,7 @@ namespace generalgff
 			// 
 			this.AcceptButton = this.bt_Okay;
 			this.CancelButton = this.bt_Okay;
-			this.ClientSize = new System.Drawing.Size(239, 54);
+			this.ClientSize = new System.Drawing.Size(244, 56);
 			this.Controls.Add(this.la_Info);
 			this.Controls.Add(this.bt_Okay);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
