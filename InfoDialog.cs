@@ -41,7 +41,6 @@ namespace generalgff
 			int w = 0, wTest, h = 0, hTest;
 			string[] separators = { "\r\n", "\r", "\n" };
 			string[] lines = info.Split(separators, StringSplitOptions.None);
-			logfile.Log("lines= " + lines.Length);
 
 			var size = new Size();
 			foreach (var line in lines)
