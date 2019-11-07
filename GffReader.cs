@@ -73,6 +73,9 @@ namespace generalgff
 		/// <param name="pfe">path-file-extension - ensure file exists before call</param>
 		internal static GffData ReadGFFfile(string pfe)
 		{
+			Structs.Clear(); // Structs and Fields will be cleared after load completes
+			Fields .Clear(); // but do it here (before load starts) also - jic.
+
 			byte[] bytes = FileService.ReadFile(pfe);
 			if (bytes != null)
 			{
