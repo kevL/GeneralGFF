@@ -524,7 +524,7 @@ namespace generalgff
 								for (b = 0; b != length; ++b)
 									buffer[b] = bytes[offset++];
 
-								field.CExoString = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
+								field.CExoString = Encoding.UTF8.GetString(buffer, 0, buffer.Length);
 								field.CExoString = field.CExoString.Replace("\r\n","\n").Replace("\r","\n").Replace("\n","\r\n");
 								break;
 
@@ -532,21 +532,21 @@ namespace generalgff
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 
-								buffer = new byte[4];								// total length (not incl/ these 4 bytes) ->
-								for (b = 0; b != 4; ++b)							// aka Pointless. just advance the offset val
+								buffer = new byte[4];							// total length (not incl/ these 4 bytes) ->
+								for (b = 0; b != 4; ++b)						// aka Pointless. just advance the offset val
 									buffer[b] = bytes[offset++];
 
 								if (!le) Array.Reverse(buffer);
 								length = BitConverter.ToUInt32(buffer, 0); // 4-byte size
 
-								buffer = new byte[4];								// strref (-1 no strref)
+								buffer = new byte[4];							// strref (-1 no strref)
 								for (b = 0; b != 4; ++b)
 									buffer[b] = bytes[offset++];
 
 								if (!le) Array.Reverse(buffer);
 								field.CExoLocStrref = BitConverter.ToUInt32(buffer, 0); // 4-byte size
 
-								buffer = new byte[4];								// substring count
+								buffer = new byte[4];							// substring count
 								for (b = 0; b != 4; ++b)
 									buffer[b] = bytes[offset++];
 

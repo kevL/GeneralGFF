@@ -1104,8 +1104,8 @@ namespace generalgff
 			if (_tl.SelectedNode != null)
 			{
 				object tag = _tl.SelectedNode.Tag;
-
-				if (tag == null) // is TopLevelStruct's node
+				if (tag == null // is TopLevelStruct
+					|| ((GffData.Field)tag).type == FieldTypes.CResRef)
 				{
 					if (!isPrintableAscii(tb_Val.Text))
 					{
@@ -1113,20 +1113,6 @@ namespace generalgff
 					}
 					else
 						_edittext = tb_Val.Text;
-				}
-				else
-				{
-					switch (((GffData.Field)tag).type)
-					{
-						case FieldTypes.CResRef:
-							if (!isPrintableAscii(tb_Val.Text))
-							{
-								ResetEditor(tb_Val);
-							}
-							else
-								_edittext = tb_Val.Text;
-							break;
-					}
 				}
 
 				if (!_tl.BypassDirty)
@@ -1142,8 +1128,7 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Prevents non-ASCII characters in CExoString and non-hexadecimal
-		/// characters in VOID. Only locals are allowed to use UTF8.
+		/// Prevents non-hexadecimal characters in VOID.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -1151,40 +1136,25 @@ namespace generalgff
 		{
 			if (_tl.SelectedNode != null)
 			{
-				object tag = _tl.SelectedNode.Tag;
-
-				if (tag != null) // is NOT TopLevelStruct's node
+				var field = ((GffData.Field)_tl.SelectedNode.Tag);
+				if (field != null && field.type == FieldTypes.VOID)
 				{
-					switch (((GffData.Field)tag).type)
+					if (!isHexadecimal(rt_Val.Text))
 					{
-						case FieldTypes.CExoString:
-							if (!isPrintableAscii(rt_Val.Text, true))
-							{
-								ResetEditor(rt_Val);
-							}
-							else
-								_edittext = rt_Val.Text;
-							break;
-
-						case FieldTypes.VOID:
-							if (!isHexadecimal(rt_Val.Text))
-							{
-								ResetEditor(rt_Val);
-							}
-							else
-								_edittext = rt_Val.Text;
-							break;
+						ResetEditor(rt_Val);
 					}
+					else
+						_edittext = rt_Val.Text;
+				}
 
-					if (!_tl.BypassDirty)
+				if (!_tl.BypassDirty)
+				{
+					if (rt_Val.Text != _prevalText_rt)
 					{
-						if (rt_Val.Text != _prevalText_rt)
-						{
-							DirtyState |= DIRTY_TEXTS;
-						}
-						else
-							DirtyState &= ~DIRTY_TEXTS;
+						DirtyState |= DIRTY_TEXTS;
 					}
+					else
+						DirtyState &= ~DIRTY_TEXTS;
 				}
 			}
 		}
@@ -1446,11 +1416,9 @@ namespace generalgff
 						case FieldTypes.CExoString:
 						{
 							editor = rt_Val;
-							if (isPrintableAscii(rt_Val.Text, true))
-							{
-								valid = true;
-								field.CExoString = (_prevalText_rt = rt_Val.Text);
-							}
+
+							valid = true;
+							field.CExoString = (_prevalText_rt = rt_Val.Text);
 							break;
 						}
 
@@ -1792,16 +1760,14 @@ namespace generalgff
 		/// Checks if a string is printable ascii.
 		/// </summary>
 		/// <param name="text"></param>
-		/// <param name="allowCrlf"></param>
 		/// <returns></returns>
-		static bool isPrintableAscii(string text, bool allowCrlf = false)
+		static bool isPrintableAscii(string text)
 		{
 			int c;
 			for (int i = 0; i != text.Length; ++i)
 			{
 				c = (int)text[i];
-				if ((!allowCrlf || (c != 10 && c != 13))	// lf cr
-					&& (c < 32 || c > 126))					// printable ascii
+				if (c < 32 || c > 126)
 				{
 					return false;
 				}

@@ -539,26 +539,22 @@ namespace generalgff
 
 				// arbitrary length in the DataBlock ->
 				case FieldTypes.CResRef:
-				{
 					// Ensure that user uses only ASCII characters and that the
 					// length is < 256. (16-chars for NwN and 32-chars for NwN2)
 					// [I believe that this is the only difference between NwN and NwN2 GFF-data.]
 					//
 					// NOTE: CResRef is stored in lowercase characters w/out extension.
 
-					string str = field.CResRef.ToLower(CultureInfo.InvariantCulture); // NOTE: That should already be lc.
-					DataBlock.Add((byte)str.Length);
-					DataBlock.AddRange(Encoding.ASCII.GetBytes(str));
+					buffer = Encoding.ASCII.GetBytes(field.CResRef.ToLower(CultureInfo.InvariantCulture)); // NOTE: That should already be lc.
+					DataBlock.Add((byte)buffer.Length);
+					DataBlock.AddRange(buffer);
 					break;
-				}
 
 				case FieldTypes.CExoString:
-				{
-					string str = field.CExoString;
-					DataBlock.AddRange(GetBytes((uint)str.Length));
-					DataBlock.AddRange(Encoding.ASCII.GetBytes(str));
+					buffer = Encoding.UTF8.GetBytes(field.CExoString);
+					DataBlock.AddRange(GetBytes((uint)buffer.Length));
+					DataBlock.AddRange(buffer);
 					break;
-				}
 
 				case FieldTypes.CExoLocString:
 				{
@@ -567,8 +563,8 @@ namespace generalgff
 					// NOTE: what if there are no strings ... does StringCount
 					// still need to be set "0" or can it be forgotten ... I
 					// think the safe thing to do is to set it regardless.
-					int strings = node.Nodes.Count;
-					byte[] bufferLocalCount = GetBytes((uint)strings); // (DWORD)
+					int locals = node.Nodes.Count;
+					byte[] bufferLocalCount = GetBytes((uint)locals); // (DWORD)
 
 					// NOTE: 'total' does not include the size of the 'total' variable itself.
 					int total = bufferStrref.Length + bufferLocalCount.Length;
@@ -578,17 +574,16 @@ namespace generalgff
 
 					GffData.Locale locale;
 					int langid;
-					string local;
+					byte[] local;
 
-					//logfile.Log(". . strings= " + strings);
-					for (int i = 0; i != strings; ++i)
+					//logfile.Log(". . locals= " + locals);
+					for (int i = 0; i != locals; ++i)
 					{
 //						int localeid = (int)((GffData.Field)node.Nodes[i].Tag).localeid;
 //						locale = ((GffData.Field)node.Nodes[i].Tag).Locales[localeid];
 
-						// NOTE: 'localeid' ought be identical to 'i'.
-						//logfile.Log(". . . [" + i + "]");
-						//logfile.Log(". . . localeid= " + ((GffData.Field)node.Nodes[i].Tag).localeid);
+						// NOTE: 'localeid' shall be identical to 'i'.
+						//logfile.Log(". . . localeid[" + i + "]= " + ((GffData.Field)node.Nodes[i].Tag).localeid);
 
 						locale = ((GffData.Field)node.Tag).Locales[i];
 
@@ -600,7 +595,7 @@ namespace generalgff
 							buffer = BitConverter.GetBytes(langid); // (INT)
 						}
 						else
-							buffer = BitConverter.GetBytes((uint)locale.langid); // (UINT)->(INT)
+							buffer = BitConverter.GetBytes(unchecked((int)locale.langid)); // converts gracefully tgit.
 
 						if (!_le) Array.Reverse(buffer);
 
@@ -608,7 +603,8 @@ namespace generalgff
 						total += buffer.Length;
 
 
-						local = locale.local;
+						local = Encoding.UTF8.GetBytes(locale.local);
+
 						buffer = BitConverter.GetBytes(local.Length); // (INT)
 						if (!_le) Array.Reverse(buffer);
 
@@ -616,14 +612,13 @@ namespace generalgff
 						total += buffer.Length;
 
 
-						buffer = Encoding.UTF8.GetBytes(local);
-						bytesList.Add(buffer);
-						total += buffer.Length;
+						bytesList.Add(local);
+						total += local.Length;
 					}
 
-					byte[] bufferTotal = GetBytes((uint)total); // (DWORD)
+					buffer = GetBytes((uint)total); // (DWORD)
 
-					DataBlock.AddRange(bufferTotal);
+					DataBlock.AddRange(buffer);
 					DataBlock.AddRange(bufferStrref);
 					DataBlock.AddRange(bufferLocalCount);
 
@@ -730,17 +725,13 @@ namespace generalgff
 		/// <returns></returns>
 		static uint GetLabelId(string label)
 		{
-			//logfile.Log("GetLabelId() label= " + label);
-
 			int id = LabelsList.IndexOf(label);
 			if (id == -1)
 			{
 				uint labelid = (uint)LabelsList.Count;
-				LabelsList.Add(label); // TODO: do Labels in ASCII
+				LabelsList.Add(label);
 				return labelid;
 			}
-
-			//logfile.Log(". id= " + id);
 			return (uint)id;
 		}
 
@@ -751,8 +742,6 @@ namespace generalgff
 		/// </summary>
 		static void ConvertLabelsListToLabels()
 		{
-			//logfile.Log("ConvertLabelsListToLabels()");
-
 			foreach (var label in LabelsList)
 			{
 				byte[] ascii = Encoding.ASCII.GetBytes(label);

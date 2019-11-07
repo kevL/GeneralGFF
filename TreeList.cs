@@ -1046,7 +1046,7 @@ namespace generalgff
 						break;
 
 					case FieldTypes.CExoString:
-						_f.la_Des.Text = "ASCII";
+						_f.la_Des.Text = "UTF8";
 						_f.la_Val.Text = "CExoString";
 
 						_f.rt_Val.Text = field.CExoString;
