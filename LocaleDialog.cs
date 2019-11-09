@@ -40,7 +40,7 @@ namespace generalgff
 
 		internal const uint Loc_GFFTOKEN      = 0x400000;
 
-		internal const uint Loc_ALL           = 0x7FFFFF;
+		internal const uint Loc_ALL           = 0x7FFFFD;
 		#endregion Fields (static)
 
 
