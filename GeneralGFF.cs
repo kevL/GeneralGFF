@@ -1879,13 +1879,10 @@ namespace generalgff
 						la_Des.Text = UInt64.MinValue + ".." + UInt64.MaxValue;
 						la_Val.Text = "DWORD64";
 
-						tb_Val.Text = field.DWORD64.ToString();
-
 						tb_Val.Enabled   = true;
 						tb_Val.BackColor = Color.Honeydew;
 
-						_prevalText_tb =
-						_edittext = tb_Val.Text;
+						tb_Val.Text = (_prevalText_tb = _edittext = field.DWORD64.ToString());
 						break;
 
 					case FieldTypes.INT64:
@@ -2046,9 +2043,7 @@ namespace generalgff
 			{
 				c = (int)text[i];
 				if (c < 32 || c > 126)
-				{
 					return false;
-				}
 			}
 			return true;
 		}
