@@ -129,10 +129,7 @@ namespace generalgff
 
 
 			if (File.Exists(filearg))
-			{
-				var loader = new GffLoader();
-				loader.LoadGFFfile(this, filearg);
-			}
+				GffLoader.LoadGFFfile(this, filearg);
 		}
 
 		/// <summary>
@@ -564,10 +561,7 @@ namespace generalgff
 					ofd.Filter = GffData.FileDialogFilter;
 
 					if (ofd.ShowDialog(this) == DialogResult.OK)
-					{
-						var loader = new GffLoader();
-						loader.LoadGFFfile(this, ofd.FileName);
-					}
+						GffLoader.LoadGFFfile(this, ofd.FileName);
 				}
 			}
 		}
@@ -641,8 +635,7 @@ namespace generalgff
 			if (GffData != null && File.Exists(GffData.Pfe)
 				&& CheckCloseData(Globals.Reload))
 			{
-				var loader = new GffLoader();
-				loader.LoadGFFfile(this, GffData.Pfe);
+				GffLoader.LoadGFFfile(this, GffData.Pfe);
 			}
 		}
 
@@ -971,7 +964,9 @@ namespace generalgff
 
 				var node = _tl.SelectedNode;
 				_tl.Sort();
-				_tl.SelectedNode = node;
+
+				if (!(_tl.SelectedNode = node).IsVisible)
+					_tl.SelectedNode.EnsureVisible(); // _tl.TopNode = _tl.SelectedNode;
 
 				_tl.EndUpdate();
 			}

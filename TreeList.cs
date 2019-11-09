@@ -589,7 +589,7 @@ namespace generalgff
 				SelectedNode.Remove();
 
 				if (SelectedNode == null)
-					DisableEditPanel();
+					ResetEditPanel();
 
 				if (_f.GffData != null) _f.GffData.Changed = true;
 				_f.GffData = _f.GffData;
@@ -803,10 +803,7 @@ namespace generalgff
 				_f.TopMost = false;
 
 				if (_f.CheckCloseData(Globals.Close))
-				{
-					var loader = new GffLoader();
-					loader.LoadGFFfile(_f, file);
-				}
+					GffLoader.LoadGFFfile(_f, file);
 			}
 		}
 		#endregion Handlers (override)
@@ -814,9 +811,9 @@ namespace generalgff
 
 		#region Methods
 		/// <summary>
-		/// Disables the controls of panel2.
+		/// Resets the controls of panel2.
 		/// </summary>
-		void DisableEditPanel()
+		internal void ResetEditPanel()
 		{
 			_f.DirtyState = GeneralGFF.DIRTY_non;
 
@@ -851,7 +848,7 @@ namespace generalgff
 		/// <param name="node"></param>
 		internal void SelectField(TreeNode node)
 		{
-			DisableEditPanel();
+			ResetEditPanel();
 
 			var labels = new List<string>(); // print tree-path to statusbar ->
 			var curnode = node;

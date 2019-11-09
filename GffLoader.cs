@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace generalgff
 {
-	sealed class GffLoader
+	static class GffLoader
 	{
 		#region Methods
 		/// <summary>
@@ -14,10 +14,12 @@ namespace generalgff
 		/// </summary>
 		/// <param name="f"></param>
 		/// <param name="pfe"></param>
-		internal void LoadGFFfile(GeneralGFF f, string pfe)
+		internal static void LoadGFFfile(GeneralGFF f, string pfe)
 		{
 			f._tl.BeginUpdate();
 			f._tl.Nodes.Clear();
+
+			f._tl.ResetEditPanel();
 
 			f.GffData = GffReader.ReadGFFfile(pfe);
 			if (f.GffData != null && GffReader.Structs.Count != 0)
@@ -52,7 +54,7 @@ namespace generalgff
 		/// <param name="field">a Field to add</param>
 		/// <param name="parent">a treenode to add it to</param>
 		/// <param name="locale">a locale if applicable</param>
-		void AddField(GffData.Field field, TreeNode parent, GffData.Locale locale = null)
+		static void AddField(GffData.Field field, TreeNode parent, GffData.Locale locale = null)
 		{
 			// TODO: Refactor things throughout the code such that the Tag of a
 			// treenode is *either* a GffData.Field *or* a GffData.Locale.
