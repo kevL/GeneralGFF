@@ -1110,15 +1110,12 @@ namespace generalgff
 						_edittext = tb_Val.Text;
 				}
 
-				if (!_tl.BypassDirty)
+				if (tb_Val.Text != _prevalText_tb)
 				{
-					if (tb_Val.Text != _prevalText_tb)
-					{
-						DirtyState |= DIRTY_TEXTS;
-					}
-					else
-						DirtyState &= ~DIRTY_TEXTS;
+					DirtyState |= DIRTY_TEXTS;
 				}
+				else
+					DirtyState &= ~DIRTY_TEXTS;
 			}
 		}
 
@@ -1142,15 +1139,12 @@ namespace generalgff
 						_edittext = rt_Val.Text;
 				}
 
-				if (!_tl.BypassDirty)
+				if (rt_Val.Text != _prevalText_rt)
 				{
-					if (rt_Val.Text != _prevalText_rt)
-					{
-						DirtyState |= DIRTY_TEXTS;
-					}
-					else
-						DirtyState &= ~DIRTY_TEXTS;
+					DirtyState |= DIRTY_TEXTS;
 				}
+				else
+					DirtyState &= ~DIRTY_TEXTS;
 			}
 		}
 
@@ -1606,8 +1600,6 @@ namespace generalgff
 		void click_Revert(object sender, EventArgs e)
 		{
 			_tl.SelectField(_tl.SelectedNode);
-			DirtyState = DIRTY_non;
-
 			_tl.Select();
 		}
 
@@ -1619,15 +1611,12 @@ namespace generalgff
 		/// <param name="e"></param>
 		void checkchanged_Custo(object sender, EventArgs e)
 		{
-			if (!_tl.BypassDirty)
+			if (cb_Custo.Checked != _prevalCusto)
 			{
-				if (cb_Custo.Checked != _prevalCusto)
-				{
-					DirtyState |= DIRTY_CZECH;
-				}
-				else
-					DirtyState &= ~DIRTY_CZECH;
+				DirtyState |= DIRTY_CZECH;
 			}
+			else
+				DirtyState &= ~DIRTY_CZECH;
 		}
 
 		/// <summary>

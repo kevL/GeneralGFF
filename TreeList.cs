@@ -30,8 +30,6 @@ namespace generalgff
 		/// This list's top-level F.
 		/// </summary>
 		readonly GeneralGFF _f;
-
-		internal bool BypassDirty;
 		#endregion Fields
 
 
@@ -85,11 +83,8 @@ namespace generalgff
 			ContextMenu.MenuItems.Clear();
 
 			if (SelectedNode != null)
-			{
-				BypassDirty = true;
 				SelectField(SelectedNode); // revert the editpanel
-				BypassDirty = false;
-			}
+
 
 			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
 			if (info != null)
@@ -770,9 +765,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnAfterSelect(TreeViewEventArgs e)
 		{
-			BypassDirty = true;
 			SelectField(e.Node);
-			BypassDirty = false;
 		}
 
 
@@ -846,13 +839,10 @@ namespace generalgff
 				_f.la_Des.Text = "ASCII";
 				_f.la_Val.Text = "GFF type + version";
 
-				_f.tb_Val.Text = _f.GffData.TypeVer;
-
 				_f.tb_Val.Enabled   = true;
 				_f.tb_Val.BackColor = Color.Violet;
 
-				_f._prevalText_tb =
-				_f._edittext = _f.tb_Val.Text;
+				_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = _f.GffData.TypeVer);
 			}
 			else
 			{
@@ -864,78 +854,60 @@ namespace generalgff
 						_f.la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
 						_f.la_Val.Text = "BYTE";
 
-						_f.tb_Val.Text = field.BYTE.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.BYTE.ToString());
 						break;
 
 					case FieldTypes.CHAR:
 						_f.la_Des.Text = SByte.MinValue + ".." + SByte.MaxValue;
 						_f.la_Val.Text = "CHAR";
 
-						_f.tb_Val.Text = field.CHAR.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.CHAR.ToString());
 						break;
 
 					case FieldTypes.WORD:
 						_f.la_Des.Text = UInt16.MinValue + ".." + UInt16.MaxValue;
 						_f.la_Val.Text = "WORD";
 
-						_f.tb_Val.Text = field.WORD.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.WORD.ToString());
 						break;
 
 					case FieldTypes.SHORT:
 						_f.la_Des.Text = Int16.MinValue + ".." + Int16.MaxValue;
 						_f.la_Val.Text = "SHORT";
 
-						_f.tb_Val.Text = field.SHORT.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.SHORT.ToString());
 						break;
 
 					case FieldTypes.DWORD:
 						_f.la_Des.Text = UInt32.MinValue + ".." + UInt32.MaxValue;
 						_f.la_Val.Text = "DWORD";
 
-						_f.tb_Val.Text = field.DWORD.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.DWORD.ToString());
 						break;
 
 					case FieldTypes.INT:
 						_f.la_Des.Text = Int32.MinValue + ".." + Int32.MaxValue;
 						_f.la_Val.Text = "INT";
 
-						_f.tb_Val.Text = field.INT.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.INT.ToString());
 						break;
 
 					case FieldTypes.DWORD64:
@@ -955,13 +927,10 @@ namespace generalgff
 						_f.la_Des.Text = Int64.MinValue + ".." + Int64.MaxValue;
 						_f.la_Val.Text = "INT64";
 
-						_f.tb_Val.Text = field.INT64.ToString();
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.INT64.ToString());
 						break;
 
 					case FieldTypes.FLOAT:
@@ -969,15 +938,13 @@ namespace generalgff
 						_f.la_Des.Text = Single.MinValue + ".." + Single.MaxValue;
 						_f.la_Val.Text = "FLOAT";
 
-						string f = field.FLOAT.ToString();
-						if (!f.Contains(".")) f += ".0";
-						_f.tb_Val.Text = f;
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						string f = field.FLOAT.ToString();
+						if (!f.Contains(".")) f += ".0";
+
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = f);
 						break;
 					}
 
@@ -986,15 +953,13 @@ namespace generalgff
 						_f.la_Des.Text = Double.MinValue + ".." + Double.MaxValue;
 						_f.la_Val.Text = "DOUBLE";
 
-						string d = field.DOUBLE.ToString();
-						if (!d.Contains(".")) d += ".0";
-						_f.tb_Val.Text = d;
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						string d = field.DOUBLE.ToString();
+						if (!d.Contains(".")) d += ".0";
+
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = d);
 						break;
 					}
 
@@ -1002,28 +967,22 @@ namespace generalgff
 						_f.la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII lc";
 						_f.la_Val.Text = "CResRef";
 
-						_f.tb_Val.Text = field.CResRef;
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = field.CResRef);
 						break;
 
 					case FieldTypes.CExoString:
 						_f.la_Des.Text = "UTF8";
 						_f.la_Val.Text = "CExoString";
 
-						_f.rt_Val.Text = field.CExoString;
-
 						_f.rt_Val.Enabled   = true;
 						_f.rt_Val.BackColor = Color.Honeydew;
 
 						_f.cb_Wordwrap.Visible = true;
 
-						_f._prevalText_rt =
-						_f._edittext = _f.rt_Val.Text;
+						_f.rt_Val.Text = (_f._prevalText_rt = _f._edittext = field.CExoString);
 						break;
 
 					case FieldTypes.CExoLocString: // not a string. Is an integer.
@@ -1031,26 +990,21 @@ namespace generalgff
 						_f.la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
 						_f.la_Val.Text = "CExoLocString";
 
-						uint strref = field.CExoLocStrref;
-						if (strref == UInt32.MaxValue)
-						{
-							_f.tb_Val.Text = "-1";
-						}
-						else
-						{
-							_f.tb_Val.Text = (strref & Globals.BITS_STRREF).ToString();
-
-							_f.cb_Custo.Visible = true;
-							_f.cb_Custo.Checked = (strref & Globals.BITS_CUSTOM) != 0;
-						}
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalCusto = _f.cb_Custo.Checked;
+						uint strref = field.CExoLocStrref;
+						if (strref == UInt32.MaxValue)
+						{
+							_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = "-1");
+						}
+						else
+						{
+							_f.cb_Custo.Visible = true;
+							_f.cb_Custo.Checked = (_f._prevalCusto = (strref & Globals.BITS_CUSTOM) != 0);
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+							_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = (strref & Globals.BITS_STRREF).ToString());
+						}
 						break;
 					}
 
@@ -1059,17 +1013,14 @@ namespace generalgff
 						_f.la_Des.Text = "binary data";
 						_f.la_Val.Text = "VOID";
 
-						_f.rt_Val.Text = BitConverter.ToString(field.VOID)
-													 .Replace("-", " ")
-													 .ToUpper(CultureInfo.InvariantCulture);
-
 						_f.rt_Val.Enabled   = true;
 						_f.rt_Val.BackColor = Color.Honeydew;
 
 						_f.cb_Wordwrap.Visible = true;
 
-						_f._prevalText_rt =
-						_f._edittext = _f.rt_Val.Text;
+						_f.rt_Val.Text = (_f._prevalText_rt = _f._edittext = BitConverter.ToString(field.VOID)
+																						 .Replace("-", " ")
+																						 .ToUpper(CultureInfo.InvariantCulture));
 						break;
 					}
 
@@ -1081,13 +1032,10 @@ namespace generalgff
 						_f.la_Des.Text = "TypeId" + Environment.NewLine + UInt32.MinValue + ".." + UInt32.MaxValue;
 						_f.la_Val.Text = "Struct";
 
-						_f.tb_Val.Text = "[" + field.Struct.typeid + "]";
-
 						_f.tb_Val.Enabled   = true;
 						_f.tb_Val.BackColor = Color.Honeydew;
 
-						_f._prevalText_tb =
-						_f._edittext = _f.tb_Val.Text;
+						_f.tb_Val.Text = (_f._prevalText_tb = _f._edittext = "[" + field.Struct.typeid + "]");
 						break;
 
 					case FieldTypes.locale:
@@ -1106,15 +1054,12 @@ namespace generalgff
 							_f.la_Val.Text = "locale";
 						}
 
-						_f.rt_Val.Text = locale.local;
-
 						_f.rt_Val.Enabled   = true;
 						_f.rt_Val.BackColor = Color.Honeydew;
 
 						_f.cb_Wordwrap.Visible = true;
 
-						_f._prevalText_rt =
-						_f._edittext = _f.rt_Val.Text;
+						_f.rt_Val.Text = (_f._prevalText_rt = _f._edittext = locale.local);
 						break;
 					}
 				}
