@@ -1599,7 +1599,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void click_Revert(object sender, EventArgs e)
 		{
-			_tl.SelectField(_tl.SelectedNode);
+			SelectField(_tl.SelectedNode);
 			_tl.Select();
 		}
 
@@ -1767,6 +1767,269 @@ namespace generalgff
 
 			tssl_info.Text = String.Empty;
 		}
+
+		/// <summary>
+		/// Populates (or re-populates) the editpanel.
+		/// @note Ensure that 'node' is valid before call.
+		/// </summary>
+		/// <param name="node"></param>
+		internal void SelectField(TreeNode node)
+		{
+			ResetEditPanel();
+
+			var labels = new List<string>(); // print tree-path to statusbar ->
+			var curnode = node;
+			do
+			{
+				if (curnode.Tag == null) // is TopLevelStruct
+				{
+					labels.Add(curnode.Text);
+					break;
+				}
+				labels.Add(((Sortable)curnode)._label);
+			}
+			while ((curnode = curnode.Parent) != null);
+
+			string path = String.Empty;
+			for (int i = labels.Count - 1; i != -1; --i)
+			{
+				path += labels[i];
+				if (i != 0) path += "|";
+			}
+			tssl_info.Text = path;
+
+
+			if (node.Tag == null) // is TopLevelStruct's node
+			{
+				la_Des.Text = "ASCII";
+				la_Val.Text = "GFF type + version";
+
+				tb_Val.Enabled   = true;
+				tb_Val.BackColor = Color.Violet;
+
+				tb_Val.Text = (_prevalText_tb = _edittext = GffData.TypeVer);
+			}
+			else
+			{
+				var field = (GffData.Field)node.Tag;
+
+				switch (field.type)
+				{
+					case FieldTypes.BYTE:
+						la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
+						la_Val.Text = "BYTE";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.BYTE.ToString());
+						break;
+
+					case FieldTypes.CHAR:
+						la_Des.Text = SByte.MinValue + ".." + SByte.MaxValue;
+						la_Val.Text = "CHAR";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.CHAR.ToString());
+						break;
+
+					case FieldTypes.WORD:
+						la_Des.Text = UInt16.MinValue + ".." + UInt16.MaxValue;
+						la_Val.Text = "WORD";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.WORD.ToString());
+						break;
+
+					case FieldTypes.SHORT:
+						la_Des.Text = Int16.MinValue + ".." + Int16.MaxValue;
+						la_Val.Text = "SHORT";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.SHORT.ToString());
+						break;
+
+					case FieldTypes.DWORD:
+						la_Des.Text = UInt32.MinValue + ".." + UInt32.MaxValue;
+						la_Val.Text = "DWORD";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.DWORD.ToString());
+						break;
+
+					case FieldTypes.INT:
+						la_Des.Text = Int32.MinValue + ".." + Int32.MaxValue;
+						la_Val.Text = "INT";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.INT.ToString());
+						break;
+
+					case FieldTypes.DWORD64:
+						la_Des.Text = UInt64.MinValue + ".." + UInt64.MaxValue;
+						la_Val.Text = "DWORD64";
+
+						tb_Val.Text = field.DWORD64.ToString();
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						_prevalText_tb =
+						_edittext = tb_Val.Text;
+						break;
+
+					case FieldTypes.INT64:
+						la_Des.Text = Int64.MinValue + ".." + Int64.MaxValue;
+						la_Val.Text = "INT64";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.INT64.ToString());
+						break;
+
+					case FieldTypes.FLOAT:
+					{
+						la_Des.Text = Single.MinValue + ".." + Single.MaxValue;
+						la_Val.Text = "FLOAT";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						string f = field.FLOAT.ToString();
+						if (!f.Contains(".")) f += ".0";
+
+						tb_Val.Text = (_prevalText_tb = _edittext = f);
+						break;
+					}
+
+					case FieldTypes.DOUBLE:
+					{
+						la_Des.Text = Double.MinValue + ".." + Double.MaxValue;
+						la_Val.Text = "DOUBLE";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						string d = field.DOUBLE.ToString();
+						if (!d.Contains(".")) d += ".0";
+
+						tb_Val.Text = (_prevalText_tb = _edittext = d);
+						break;
+					}
+
+					case FieldTypes.CResRef:
+						la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII lc";
+						la_Val.Text = "CResRef";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.CResRef);
+						break;
+
+					case FieldTypes.CExoString:
+						la_Des.Text = "UTF8";
+						la_Val.Text = "CExoString";
+
+						rt_Val.Enabled   = true;
+						rt_Val.BackColor = Color.Honeydew;
+
+						cb_Wordwrap.Visible = true;
+
+						rt_Val.Text = (_prevalText_rt = _edittext = field.CExoString);
+						break;
+
+					case FieldTypes.CExoLocString: // not a string. Is an integer.
+					{
+						la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
+						la_Val.Text = "CExoLocString";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						uint strref = field.CExoLocStrref;
+						if (strref == UInt32.MaxValue)
+						{
+							tb_Val.Text = (_prevalText_tb = _edittext = "-1");
+						}
+						else
+						{
+							cb_Custo.Visible = true;
+							cb_Custo.Checked = (_prevalCusto = (strref & Globals.BITS_CUSTOM) != 0);
+
+							tb_Val.Text = (_prevalText_tb = _edittext = (strref & Globals.BITS_STRREF).ToString());
+						}
+						break;
+					}
+
+					case FieldTypes.VOID:
+					{
+						la_Des.Text = "binary data";
+						la_Val.Text = "VOID";
+
+						rt_Val.Enabled   = true;
+						rt_Val.BackColor = Color.Honeydew;
+
+						cb_Wordwrap.Visible = true;
+
+						rt_Val.Text = (_prevalText_rt = _edittext = BitConverter.ToString(field.VOID)
+																				.Replace("-", " ")
+																				.ToUpper(CultureInfo.InvariantCulture));
+						break;
+					}
+
+					case FieldTypes.List:
+						la_Val.Text = "List";
+						break;
+
+					case FieldTypes.Struct:
+						la_Des.Text = "TypeId" + Environment.NewLine + UInt32.MinValue + ".." + UInt32.MaxValue;
+						la_Val.Text = "Struct";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = "[" + field.Struct.typeid + "]");
+						break;
+
+					case FieldTypes.locale:
+					{
+						var parent = (GffData.Field)node.Parent.Tag;
+						GffData.Locale locale = parent.Locales[(int)field.localeid];
+
+						if (locale.langid == Languages.GffToken)
+						{
+							la_Des.Text = "UTF8";
+							la_Val.Text = "GffToken";
+						}
+						else
+						{
+							la_Des.Text = "UTF8 localized";
+							la_Val.Text = "locale";
+						}
+
+						rt_Val.Enabled   = true;
+						rt_Val.BackColor = Color.Honeydew;
+
+						cb_Wordwrap.Visible = true;
+
+						rt_Val.Text = (_prevalText_rt = _edittext = locale.local);
+						break;
+					}
+				}
+			}
+		}
 		#endregion Methods
 
 
@@ -1923,6 +2186,12 @@ namespace generalgff
 	/// </summary>
 	static class DateTimeExtension
 	{
+		/// <summary>
+		/// Gets the time/date of build timestamp.
+		/// </summary>
+		/// <param name="assembly"></param>
+		/// <param name="target"></param>
+		/// <returns></returns>
 		internal static DateTime GetLinkerTime(this Assembly assembly, TimeZoneInfo target = null)
 		{
 			var filePath = assembly.Location;
