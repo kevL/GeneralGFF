@@ -19,7 +19,7 @@ namespace generalgff
 			f._tl.BeginUpdate();
 			f._tl.Nodes.Clear();
 
-			f._tl.ResetEditPanel();
+			f.ResetEditPanel();
 
 			f.GffData = GffReader.ReadGFFfile(pfe);
 			if (f.GffData != null && GffReader.Structs.Count != 0)

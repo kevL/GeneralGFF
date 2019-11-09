@@ -1747,6 +1747,37 @@ namespace generalgff
 			}
 			return true;
 		}
+
+		/// <summary>
+		/// Resets the controls of panel2.
+		/// </summary>
+		internal void ResetEditPanel()
+		{
+			DirtyState = GeneralGFF.DIRTY_non;
+
+			la_Des.Text =
+			la_Val.Text =
+			tb_Val.Text =
+			rt_Val.Text = String.Empty;
+
+			tb_Val.Enabled   = false;
+			tb_Val.BackColor = Color.Thistle;
+
+			rt_Val.Enabled   = false;
+			rt_Val.BackColor = Color.Thistle;
+
+			cb_Custo.Visible =
+			cb_Custo.Checked = false;
+
+			cb_Wordwrap.Visible = false;
+
+			_edittext =
+			_prevalText_rt =
+			_prevalText_tb = String.Empty;
+			_prevalCusto = false;
+
+			tssl_info.Text = String.Empty;
+		}
 		#endregion Methods
 
 

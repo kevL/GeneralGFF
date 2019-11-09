@@ -589,7 +589,7 @@ namespace generalgff
 				SelectedNode.Remove();
 
 				if (SelectedNode == null)
-					ResetEditPanel();
+					_f.ResetEditPanel();
 
 				if (_f.GffData != null) _f.GffData.Changed = true;
 				_f.GffData = _f.GffData;
@@ -811,44 +811,13 @@ namespace generalgff
 
 		#region Methods
 		/// <summary>
-		/// Resets the controls of panel2.
-		/// </summary>
-		internal void ResetEditPanel()
-		{
-			_f.DirtyState = GeneralGFF.DIRTY_non;
-
-			_f.la_Des.Text =
-			_f.la_Val.Text =
-			_f.tb_Val.Text =
-			_f.rt_Val.Text = String.Empty;
-
-			_f.tb_Val.Enabled   = false;
-			_f.tb_Val.BackColor = Color.Thistle;
-
-			_f.rt_Val.Enabled   = false;
-			_f.rt_Val.BackColor = Color.Thistle;
-
-			_f.cb_Custo.Visible =
-			_f.cb_Custo.Checked = false;
-
-			_f.cb_Wordwrap.Visible = false;
-
-			_f._edittext =
-			_f._prevalText_rt =
-			_f._prevalText_tb = String.Empty;
-			_f._prevalCusto = false;
-
-			_f.tssl_info.Text = String.Empty;
-		}
-
-		/// <summary>
 		/// Populates (or re-populates) the editpanel.
 		/// @note Ensure that 'node' is valid before call.
 		/// </summary>
 		/// <param name="node"></param>
 		internal void SelectField(TreeNode node)
 		{
-			ResetEditPanel();
+			_f.ResetEditPanel();
 
 			var labels = new List<string>(); // print tree-path to statusbar ->
 			var curnode = node;
