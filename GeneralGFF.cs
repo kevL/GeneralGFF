@@ -1770,24 +1770,24 @@ namespace generalgff
 
 		/// <summary>
 		/// Populates (or re-populates) the editpanel.
-		/// @note Ensure that 'node' is valid before call.
+		/// @note Ensure that '_tl.SelectedNode' is valid before call.
 		/// </summary>
 		internal void SelectField()
 		{
 			ResetEditPanel();
 
 			var labels = new List<string>(); // print tree-path to statusbar ->
-			var curnode = _tl.SelectedNode;
+			var node = _tl.SelectedNode;
 			do
 			{
-				if (curnode.Tag == null) // is TopLevelStruct
+				if (node.Tag == null) // is TopLevelStruct
 				{
-					labels.Add(curnode.Text);
+					labels.Add(node.Text);
 					break;
 				}
-				labels.Add(((Sortable)curnode)._label);
+				labels.Add(((Sortable)node)._label);
 			}
-			while ((curnode = curnode.Parent) != null);
+			while ((node = node.Parent) != null);
 
 			string path = String.Empty;
 			for (int i = labels.Count - 1; i != -1; --i)
