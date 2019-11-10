@@ -6,6 +6,9 @@ using System.Windows.Forms;
 
 namespace generalgff
 {
+	/// <summary>
+	/// Static object that loads GFF files.
+	/// </summary>
 	static class GffLoader
 	{
 		#region Methods
@@ -89,7 +92,7 @@ namespace generalgff
 						field.label  = i.ToString();
 						field.Struct = GffReader.Structs[(int)list[i]];
 
-						AddField(field, node, null);
+						AddField(field, node);
 					}
 					break;
 				}

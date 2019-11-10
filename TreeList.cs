@@ -83,7 +83,7 @@ namespace generalgff
 			ContextMenu.MenuItems.Clear();
 
 			if (SelectedNode != null)
-				_f.SelectField(SelectedNode); // revert the editpanel
+				_f.SelectField(); // revert the editpanel
 
 
 			TreeViewHitTestInfo info = HitTest(PointToClient(Cursor.Position)); // NOTE: That is fullrow.
@@ -765,7 +765,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		protected override void OnAfterSelect(TreeViewEventArgs e)
 		{
-			_f.SelectField(e.Node);
+			_f.SelectField();
 		}
 
 

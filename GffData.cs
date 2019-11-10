@@ -179,7 +179,7 @@ namespace generalgff
 		{
 			internal FieldTypes type;
 
-			internal string label; // treated as ASCII
+			internal string label;			// ASCII (GeneralGFF policy: alphanumeric and underscore only)
 
 			internal byte   BYTE;
 			internal sbyte  CHAR;
@@ -194,18 +194,18 @@ namespace generalgff
 			internal float  FLOAT;
 			internal double DOUBLE;
 
-			internal string CResRef;	// treated as ASCII
-			internal string CExoString;	// treated as ASCII
+			internal string CResRef;		// ASCII (eg. saving a blueprint from the toolset changes non-Ascii Unicode chars to "?")
+			internal string CExoString;		// UTF8
 
-			internal uint CExoLocStrref;
+			internal uint CExoLocStrref;	// CExoLocString is actually an integer field.
 			internal List<Locale> Locales;
-			internal uint localeflags; // bitflags stored by a CExoLocString that denote what Locales it currently has.
+			internal uint localeflags;		// bitflags stored by a CExoLocString that denote what Locales it currently has.
 
-			internal uint localeid; // for use by a locale pseudo-field (to find itself within its parent).
+			internal uint localeid;			// for use by a locale pseudo-field (to find itself within its parent).
 
 			internal byte[] VOID;
 
-			internal List<uint> List; // this is irrelevant after the file has loaded.
+			internal List<uint> List;		// this is irrelevant after the file has loaded.
 
 			internal Struct Struct;
 
@@ -288,7 +288,7 @@ namespace generalgff
 			internal Languages langid;
 			internal bool F;
 
-			internal string local; // treated as UTF8
+			internal string local; // UTF8
 
 			/// <summary>
 			/// Converts a GFF-LanguageId into its true LanguageId with

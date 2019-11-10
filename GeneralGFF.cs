@@ -1599,7 +1599,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void click_Revert(object sender, EventArgs e)
 		{
-			SelectField(_tl.SelectedNode);
+			SelectField();
 			_tl.Select();
 		}
 
@@ -1772,13 +1772,12 @@ namespace generalgff
 		/// Populates (or re-populates) the editpanel.
 		/// @note Ensure that 'node' is valid before call.
 		/// </summary>
-		/// <param name="node"></param>
-		internal void SelectField(TreeNode node)
+		internal void SelectField()
 		{
 			ResetEditPanel();
 
 			var labels = new List<string>(); // print tree-path to statusbar ->
-			var curnode = node;
+			var curnode = _tl.SelectedNode;
 			do
 			{
 				if (curnode.Tag == null) // is TopLevelStruct
@@ -1799,7 +1798,7 @@ namespace generalgff
 			tssl_info.Text = path;
 
 
-			if (node.Tag == null) // is TopLevelStruct's node
+			if (_tl.SelectedNode.Tag == null) // is TopLevelStruct's node
 			{
 				la_Des.Text = "ASCII";
 				la_Val.Text = "GFF type + version";
@@ -1811,7 +1810,7 @@ namespace generalgff
 			}
 			else
 			{
-				var field = (GffData.Field)node.Tag;
+				var field = (GffData.Field)_tl.SelectedNode.Tag;
 
 				switch (field.type)
 				{
@@ -2002,7 +2001,7 @@ namespace generalgff
 
 					case FieldTypes.locale:
 					{
-						var parent = (GffData.Field)node.Parent.Tag;
+						var parent = (GffData.Field)_tl.SelectedNode.Parent.Tag;
 						GffData.Locale locale = parent.Locales[(int)field.localeid];
 
 						if (locale.langid == Languages.GffToken)
