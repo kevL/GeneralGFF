@@ -26,7 +26,7 @@ namespace generalgff
 			tb_Label.Text = label;
 			tb_Label.Select();
 
-			if (label == "label")
+			if (label.StartsWith("label", StringComparison.InvariantCulture))
 			{
 				tb_Label.SelectionStart = 0;
 				tb_Label.SelectionLength = label.Length;
