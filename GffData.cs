@@ -71,25 +71,26 @@ namespace generalgff
 		ARE,		//  1
 		BIC,		//  2
 		CAM,		//  3
-		FAC,		//  4
-		GIC,		//  5
-		GIT,		//  6
-		IFO,		//  7
-		JRL,		//  8
-		ROS,		//  9
-		RST,		// 10
-		ULT,		// 11
-		UPE,		// 12
-		UTC,		// 13
-		UTD,		// 14
-		UTE,		// 15
-		UTI,		// 16
-		UTM,		// 17
-		UTP,		// 18
-		UTS,		// 19
-		UTT,		// 20
-		UTW,		// 21
-		WMP			// 22
+		DLG,		//  4
+		FAC,		//  5
+		GIC,		//  6
+		GIT,		//  7
+		IFO,		//  8
+		JRL,		//  9
+		ROS,		// 10
+		RST,		// 11
+		ULT,		// 12
+		UPE,		// 13
+		UTC,		// 14
+		UTD,		// 15
+		UTE,		// 16
+		UTI,		// 17
+		UTM,		// 18
+		UTP,		// 19
+		UTS,		// 20
+		UTT,		// 21
+		UTW,		// 22
+		WMP			// 23
 	}
 	#endregion Enums (global)
 
@@ -380,6 +381,7 @@ namespace generalgff
 				case "ARE": return GffType.ARE; // area
 				case "BIC": return GffType.BIC; // saved player character
 				case "CAM": return GffType.CAM; // campaign info
+				case "DLG": return GffType.DLG; // dialog file
 				case "FAC": return GffType.FAC; // faction table
 				case "GIC": return GffType.GIC; // area object-lists (counts only)
 				case "GIT": return GffType.GIT; // area object-lists (incl/ area-properties and object-data)
@@ -415,6 +417,7 @@ namespace generalgff
 				case GffType.ARE: return "ARE"; // area
 				case GffType.BIC: return "BIC"; // saved player character
 				case GffType.CAM: return "CAM"; // campaign info
+				case GffType.DLG: return "DLG"; // dialog file
 				case GffType.FAC: return "FAC"; // faction table
 				case GffType.GIC: return "GIC"; // area object-lists (counts only)
 				case GffType.GIT: return "GIT"; // area object-lists (incl/ area-properties and object-data)
@@ -448,6 +451,7 @@ namespace generalgff
 				+ "|" + ARE + "|*.ARE"
 				+ "|" + BIC + "|*.BIC"
 				+ "|" + CAM + "|*.CAM"
+				+ "|" + DLG + "|*.DLG"
 				+ "|" + FAC + "|*.FAC"
 				+ "|" + GIC + "|*.GIC"
 				+ "|" + GIT + "|*.GIT"
@@ -476,6 +480,7 @@ namespace generalgff
 		internal const string ARE = "area object";
 		internal const string BIC = "player character";
 		internal const string CAM = "campaign info";
+		internal const string DLG = "dialog file";
 		internal const string FAC = "faction table";
 		internal const string GIC = "area object lists";
 		internal const string GIT = "area properties and objects";
