@@ -113,7 +113,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PostBuildEvent>copy /y C:\GIT\GeneralGFF\bin\Release\GeneralGFF.exe "C:\Program Files\GeneralGFF\"</PostBuildEvent>
   </PropertyGroup>
 </Project>
