@@ -122,9 +122,9 @@ namespace generalgff
 						ContextMenu.MenuItems.Add(new MenuItem("add DWORD64 (8-byte ulong)",        contextclick_AddDword64));
 						ContextMenu.MenuItems.Add(new MenuItem("add INT64 (8-byte long)",           contextclick_AddInt64));
 						ContextMenu.MenuItems.Add(new MenuItem("add FLOAT (4-byte float)",          contextclick_AddFloat));
-						ContextMenu.MenuItems.Add(new MenuItem("add DOUBLE (8-byte double)",        contextclick_AddDouble));
+						ContextMenu.MenuItems.Add(new MenuItem("add DOUBLE (8-byte float)",         contextclick_AddDouble));
 						ContextMenu.MenuItems.Add(new MenuItem("add CResRef (32-chars ASCII)",      contextclick_AddCResRef));
-						ContextMenu.MenuItems.Add(new MenuItem("add CExoString (ASCII)",            contextclick_AddCExoString));
+						ContextMenu.MenuItems.Add(new MenuItem("add CExoString (UTF8)",             contextclick_AddCExoString));
 						ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (24-bit strref)", contextclick_AddCExoLocString));
 						ContextMenu.MenuItems.Add(new MenuItem("add VOID (raw byte data)",          contextclick_AddVoid));
 						ContextMenu.MenuItems.Add(new MenuItem("add List (list of structs)",        contextclick_AddList));
@@ -145,7 +145,7 @@ namespace generalgff
 								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 								else toggle = String.Empty;
 
-								ContextMenu.MenuItems.Add(new MenuItem("add Locale (localized UTF8)", contextclick_AddLocale));
+								ContextMenu.MenuItems.Add(new MenuItem("add Locale (UTF8 localized)", contextclick_AddLocale));
 								break;
 						}
 					}
