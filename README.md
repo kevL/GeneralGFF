@@ -1,0 +1,1 @@
+GeneralGFF - a GFF editor for Neverwinter Nights 2
