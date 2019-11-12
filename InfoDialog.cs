@@ -10,11 +10,6 @@ namespace generalgff
 		:
 			Form
 	{
-		#region Fields
-		string _info;
-		#endregion Fields
-
-
 		#region cTor
 		/// <summary>
 		/// cTor.
@@ -26,7 +21,7 @@ namespace generalgff
 			InitializeComponent();
 
 			Text = title;
-			la_Info.Text = (_info = info);
+			la_Info.Text = info;
 
 			KeyDown += keydown_Copy;
 
@@ -99,7 +94,7 @@ namespace generalgff
 			switch (e.KeyData)
 			{
 				case Keys.Control | Keys.C:
-					Clipboard.SetText(_info);
+					Clipboard.SetText(la_Info.Text);
 					break;
 			}
 		}
