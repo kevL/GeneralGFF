@@ -34,8 +34,11 @@ namespace generalgff
 				}
 				catch (Exception ex)
 				{
-					error("File could not be read." + Environment.NewLine + Environment.NewLine
-								 + pfe + Environment.NewLine + Environment.NewLine + ex);
+					error("File could not be read."
+						  + Environment.NewLine + Environment.NewLine
+						  + pfe
+						  + Environment.NewLine + Environment.NewLine
+						  + ex);
 					return null;
 				}
 			}
@@ -65,7 +68,11 @@ namespace generalgff
 			}
 			catch (Exception ex)
 			{
-				error("File could not be created." + Environment.NewLine + Environment.NewLine + ex);
+				error("File could not be created."
+					  + Environment.NewLine + Environment.NewLine
+					  + pfe
+					  + Environment.NewLine + Environment.NewLine
+					  + ex);
 				return null;
 			}
 			return fs;
@@ -97,7 +104,11 @@ namespace generalgff
 					}
 					catch (Exception ex)
 					{
-						error("File backup could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
+						error("File backup could not be deleted."
+							  + Environment.NewLine + Environment.NewLine
+							  + pfeBackup
+							  + Environment.NewLine + Environment.NewLine
+							  + ex);
 						return false;
 					}
 				}
@@ -113,7 +124,13 @@ namespace generalgff
 				}
 				catch (Exception ex)
 				{
-					error("File could not be replaced." + Environment.NewLine + Environment.NewLine + ex);
+					error("File could not be replaced."
+						  + Environment.NewLine + Environment.NewLine
+						  + "src : " + pfe + EXT_T
+						  + Environment.NewLine
+						  + "dst : " + pfe
+						  + Environment.NewLine + Environment.NewLine
+						  + ex);
 					return false;
 				}
 
@@ -124,7 +141,11 @@ namespace generalgff
 				}
 				catch (Exception ex)
 				{
-					error("File could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
+					error("File could not be deleted."
+						  + Environment.NewLine + Environment.NewLine
+						  + pfeBackup
+						  + Environment.NewLine + Environment.NewLine
+						  + ex);
 					return false;
 				}
 			}
@@ -150,7 +171,13 @@ namespace generalgff
 			}
 			catch (Exception ex)
 			{
-				error("File could not be copied." + Environment.NewLine + Environment.NewLine + ex);
+				error("File could not be copied."
+					  + Environment.NewLine + Environment.NewLine
+					  + "src : " + src
+					  + Environment.NewLine
+					  + "dst : " + dst
+					  + Environment.NewLine + Environment.NewLine
+					  + ex);
 				return false;
 			}
 
@@ -160,7 +187,11 @@ namespace generalgff
 			}
 			catch (Exception ex)
 			{
-				error("File could not be deleted." + Environment.NewLine + Environment.NewLine + ex);
+				error("File could not be deleted."
+					  + Environment.NewLine + Environment.NewLine
+					  + src
+					  + Environment.NewLine + Environment.NewLine
+					  + ex);
 				return false;
 			}
 			return true;
