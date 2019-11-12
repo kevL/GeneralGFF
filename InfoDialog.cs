@@ -10,6 +10,11 @@ namespace generalgff
 		:
 			Form
 	{
+		#region Fields
+		string _info;
+		#endregion Fields
+
+
 		#region cTor
 		/// <summary>
 		/// cTor.
@@ -21,12 +26,14 @@ namespace generalgff
 			InitializeComponent();
 
 			Text = title;
-			la_Info.Text = info;
+			la_Info.Text = (_info = info);
+
+			KeyDown += keydown_Copy;
 
 			switch (title)
 			{
 				case Globals.About:
-					KeyDown += keydown;
+					KeyDown += keydown_Close;
 					break;
 
 				case Globals.Error:
@@ -72,10 +79,29 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void keydown(object sender, KeyEventArgs e)
+		void keydown_Close(object sender, KeyEventArgs e)
 		{
-			if (e.KeyData == Keys.F2)
-				Close();
+			switch (e.KeyData)
+			{
+				case Keys.F2:
+					Close();
+					break;
+			}
+		}
+
+		/// <summary>
+		/// Copys text to clipboard.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void keydown_Copy(object sender, KeyEventArgs e)
+		{
+			switch (e.KeyData)
+			{
+				case Keys.Control | Keys.C:
+					Clipboard.SetText(_info);
+					break;
+			}
 		}
 		#endregion Handlers
 
