@@ -491,7 +491,7 @@ namespace generalgff
 			if (SelectedNode.Tag == null) // is TopLevelStruct's node
 			{
 				delete = false;
-				using (var f = new DeleteDialog(this, "Confirm delete TopLevelStruct"))
+				using (var f = new DeleteDialog("Confirm delete TopLevelStruct"))
 				{
 					f.cb_Bypass.Visible = false;
 					if (f.ShowDialog(this) == DialogResult.Yes)
@@ -510,7 +510,7 @@ namespace generalgff
 					head += " multiple fields";
 
 				delete = false;
-				using (var f = new DeleteDialog(this, head))
+				using (var f = new DeleteDialog(head))
 				{
 					f.cb_Bypass.Visible = true;
 

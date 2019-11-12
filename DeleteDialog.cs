@@ -9,22 +9,20 @@ namespace generalgff
 		:
 			Form
 	{
-		TreeList _tl;
-
+		#region cTor
 		/// <summary>
 		/// cTor.
 		/// </summary>
-		/// <param>tl</param>
 		/// <param>head</param>
-		internal DeleteDialog(TreeList tl, string head)
+		internal DeleteDialog(string head)
 		{
 			InitializeComponent();
 
-			_tl = tl;
 			la_Head.Text = head;
 
 			bt_Accept.Select();
 		}
+		#endregion cTor
 
 
 
