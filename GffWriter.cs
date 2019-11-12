@@ -37,17 +37,16 @@ namespace generalgff
 		/// <returns>true if successful</returns>
 		internal static bool WriteGFFfile(string pfe, TreeView tl, string ver)
 		{
-			//logfile.Log("");
-			//logfile.Log("");
 			//logfile.Log("WriteGFFfile()");
-
-			bool success = false;
+			//logfile.Log(". pfe= " + pfe);
 
 			string pfeT;
 			if (File.Exists(pfe))
 				pfeT = pfe + FileService.EXT_T;
 			else
 				pfeT = pfe;
+
+			//logfile.Log(". pfeT= " + pfeT);
 
 			using (var fs = FileService.CreateFile(pfeT))
 			if (fs != null)
@@ -79,33 +78,21 @@ namespace generalgff
 				// Header STRUCTS ->
 				const uint start_Structs = Globals.Length_HEADER;
 				//logfile.Log("start_Structs= " + start_Structs);
-				buffer = BitConverter.GetBytes(start_Structs);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(start_Structs), 0, Globals.Length_DWORD);
 
 				uint records_Structs = (uint)(Structs.Count / Globals.Length_STRUCT); // count of entries in Structs
 				//logfile.Log("records_Structs= " + records_Structs);
-				buffer = BitConverter.GetBytes(records_Structs);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(records_Structs), 0, Globals.Length_DWORD);
 
 
 				// Header FIELDS ->
 				uint start_Fields = start_Structs + (uint)Structs.Count;
 				//logfile.Log("start_Fields= " + start_Fields);
-				buffer = BitConverter.GetBytes(start_Fields);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(start_Fields), 0, Globals.Length_DWORD);
 
 				uint records_Fields = (uint)(Fields.Count / Globals.Length_FIELD); // count of entries in Fields
 				//logfile.Log("records_Fields= " + records_Fields);
-				buffer = BitConverter.GetBytes(records_Fields);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(records_Fields), 0, Globals.Length_DWORD);
 
 
 				// Header LABELS ->
@@ -113,65 +100,41 @@ namespace generalgff
 
 				uint start_Labels = start_Fields + (uint)Fields.Count;
 				//logfile.Log("start_Labels= " + start_Labels);
-				buffer = BitConverter.GetBytes(start_Labels);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(start_Labels), 0, Globals.Length_DWORD);
 
 				uint records_Labels = (uint)(Labels.Count / Globals.Length_LABEL); // count of entries in Labels
 				//logfile.Log("records_Labels= " + records_Labels);
-				buffer = BitConverter.GetBytes(records_Labels);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(records_Labels), 0, Globals.Length_DWORD);
 
 
 				// Header DATABLOCK ->
 				uint start_Data = start_Labels + (uint)Labels.Count;
 				//logfile.Log("offset_Data= " + start_Data);
-				buffer = BitConverter.GetBytes(start_Data);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(start_Data), 0, Globals.Length_DWORD);
 
 				uint bytes_Data = (uint)(DataBlock.Count); // count of bytes in the DataBlock
 				//logfile.Log("bytes_Data= " + bytes_Data);
-				buffer = BitConverter.GetBytes(bytes_Data);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(bytes_Data), 0, Globals.Length_DWORD);
 
 
 				// Header FIELDIDS ->
 				uint start_FieldIds = start_Data + (uint)DataBlock.Count;
 				//logfile.Log("start_FieldIds= " + start_FieldIds);
-				buffer = BitConverter.GetBytes(start_FieldIds);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(start_FieldIds), 0, Globals.Length_DWORD);
 
 				uint bytes_FieldIds = (uint)(FieldIds.Count); // count of bytes in FieldIds
 				//logfile.Log("bytes_FieldIds= " + bytes_FieldIds);
-				buffer = BitConverter.GetBytes(bytes_FieldIds);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(bytes_FieldIds), 0, Globals.Length_DWORD);
 
 
 				// Header LISTIDS ->
 				uint start_ListIds = start_FieldIds + (uint)FieldIds.Count;
 				//logfile.Log("start_ListIds= " + start_ListIds);
-				buffer = BitConverter.GetBytes(start_ListIds);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(start_ListIds), 0, Globals.Length_DWORD);
 
 				uint bytes_ListIds = (uint)(ListIds.Count); // count of bytes in ListIds
 				//logfile.Log("bytes_ListIds= " + bytes_ListIds);
-				buffer = BitConverter.GetBytes(bytes_ListIds);
-				if (!_le) Array.Reverse(buffer);
-
-				fs.Write(buffer, 0, buffer.Length);
+				fs.Write(GetBytes(bytes_ListIds), 0, Globals.Length_DWORD);
 
 
 				//logfile.Log("");
@@ -206,13 +169,12 @@ namespace generalgff
 				//logfile.Log("ListIds length= " + buffer.Length);
 				fs.Write(buffer, 0, buffer.Length);
 
-				success = true;
+				if (pfeT != pfe)
+					return FileService.ReplaceFile(pfe);
+
+				return true;
 			}
-
-			if (success && pfeT != pfe)
-				FileService.ReplaceFile(pfe);
-
-			return success;
+			return false;
 		}
 
 
