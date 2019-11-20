@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeleteDialog.cs" />
+    <Compile Include="EquippedItemDialog.cs" />
     <Compile Include="FileWatchDialog.cs" />
     <Compile Include="GffLoader.cs" />
     <Compile Include="InfoDialog.cs" />
@@ -77,11 +78,16 @@
     <Compile Include="SearchDialog.cs" />
     <Compile Include="Sortable.cs" />
     <Compile Include="TreeList.cs" />
+    <Compile Include="TreeList_extensions.cs" />
     <Compile Include="TypeDialog.cs" />
+    <Compile Include="VariableDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DeleteDialog.resx">
       <DependentUpon>DeleteDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EquippedItemDialog.resx">
+      <DependentUpon>EquippedItemDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FileWatchDialog.resx">
       <DependentUpon>FileWatchDialog.cs</DependentUpon>
@@ -110,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TypeDialog.resx">
       <DependentUpon>TypeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="VariableDialog.resx">
+      <DependentUpon>VariableDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

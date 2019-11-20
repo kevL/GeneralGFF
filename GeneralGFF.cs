@@ -39,12 +39,18 @@ namespace generalgff
 		#region Fields
 		internal TreeList _tl;
 
-		internal string _prevalText_rt = String.Empty;	// cached text used by Revert
-		internal string _prevalText_tb = String.Empty;	// cached text used by Revert
-		internal bool   _prevalCusto;					// cached check-state used by Revert
+		string _prevalText_rt = String.Empty;	// cached text used by Revert
+		string _prevalText_tb = String.Empty;	// cached text used by Revert
+		bool   _prevalCusto;					// cached check-state used by Revert
 
-		internal string _edittext = String.Empty;	// stored val that's reverted to if user enters an invalid character
-				 int    _posCaret = 0;				// tracks the position of the caret in case text gets reset to '_edittext'
+		string _edittext = String.Empty;	// stored val that's reverted to if user enters an invalid character
+		int    _posCaret = 0;				// tracks the position of the caret in case text gets reset to '_edittext'
+
+		/// <summary>
+		/// A previous file's GffType. Used to deter if Extension should remain
+		/// enabled when a different file loads.
+		/// </summary>
+		GffType _lastGffType = GffType.generic;
 		#endregion Fields
 
 
@@ -58,15 +64,27 @@ namespace generalgff
 			get { return _data; }
 			set
 			{
+				bool @checked;
+
 				if ((_data = value) != null)
 				{
 					Text = TITLE + " - " + _data.Pfe;
 
 					if (_data.Changed)
 						Text += " *";
+
+					@checked = _data.Type != GffType.generic	// TODO: these statements run way more than
+							&& _data.Type == _lastGffType;		// they need to. Do it in file loading and the
+					_lastGffType = _data.Type;					// GffType-editor-dialog instead of here.
 				}
 				else
+				{
 					Text = TITLE;
+					@checked = false;
+				}
+
+				Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked = @checked;
+				SetExtensionEnabled(@checked);
 			}
 		}
 
@@ -160,6 +178,9 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLP].Click += viewclick_CollapseSelected;
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORT].Click += viewclick_Sort;
 
+			Menu.MenuItems[MenuCreator.MI_EXTS].Popup += extensionspop;
+			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Click += extensionsclick_Enable;
+
 			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABT].Click += helpclick_About;
 		}
 		#endregion cTor
@@ -208,13 +229,36 @@ namespace generalgff
 		}
 
 		/// <summary>
+		/// Constructs a string of text for display on a treenode. The text
+		/// prints the equipment-slot per the creature-extension.
+		/// TODO: Toggle these text-fields when the UTC Extension is toggled
+		/// on/off.
+		/// </summary>
+		/// <param name="field"></param>
+		/// <returns></returns>
+		internal static string ConstructNodetextEquipped(GffData.Field field)
+		{
+			string label = field.label; // 16 char limit (GFF specification)
+			while (label.Length != LENGTH_LABEL)
+				label += " ";
+
+			string label2 = " [" + GeneralGFF.GetTypeString(field.type) + "]";
+			while (label2.Length != LENGTH_TYPE)
+				label2 += " ";
+
+			return label + label2
+				 + "= " + GetValueString(field)
+				 + " "  + GetEquippedItemSlot(field.Struct.typeid);
+		}
+
+		/// <summary>
 		/// Converts a FieldTypes into a readable string.
 		/// @note helper for ConstructNodetext()
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="token"></param>
 		/// <returns></returns>
-		static string GetTypeString(FieldTypes type, bool token)
+		static string GetTypeString(FieldTypes type, bool token = false)
 		{
 			switch (type)
 			{
@@ -320,6 +364,37 @@ namespace generalgff
 					return "[" + field.Struct.typeid + "]";
 			}
 			return "ErROr: field type unknown";
+		}
+
+		/// <summary>
+		/// Gets a string value for an Equip_ItemList's Struct's typeid.
+		/// </summary>
+		/// <param name="typeid"></param>
+		/// <returns></returns>
+		static string GetEquippedItemSlot(uint typeid)
+		{
+			switch (typeid)
+			{
+				case EquippedItemDialog.Slot_HEAD:    return "HEAD";
+				case EquippedItemDialog.Slot_CHEST:   return "CHEST";
+				case EquippedItemDialog.Slot_FEET:    return "FEET";
+				case EquippedItemDialog.Slot_WRISTS:  return "WRISTS";
+				case EquippedItemDialog.Slot_RHAND:   return "RIGHTHAND";
+				case EquippedItemDialog.Slot_LHAND:   return "LEFTHAND";
+				case EquippedItemDialog.Slot_BACK:    return "BACK";
+				case EquippedItemDialog.Slot_LRING:   return "LEFTRING";
+				case EquippedItemDialog.Slot_RRING:   return "RIGHTRING";
+				case EquippedItemDialog.Slot_NECK:    return "NECK";
+				case EquippedItemDialog.Slot_WAIST:   return "WAIST";
+				case EquippedItemDialog.Slot_ARROWS:  return "ARROWS";
+				case EquippedItemDialog.Slot_BULLETS: return "BULLETS";
+				case EquippedItemDialog.Slot_BOLTS:   return "BOLTS";
+				case EquippedItemDialog.Slot_WEAP1:   return "WEAPON1";
+				case EquippedItemDialog.Slot_WEAP2:   return "WEAPON2";
+				case EquippedItemDialog.Slot_WEAP3:   return "WEAPON3";
+				case EquippedItemDialog.Slot_SKIN:    return "SKIN";
+			}
+			return "ErROr: typeid unknown";
 		}
 		#endregion Methods (static)
 
@@ -970,6 +1045,58 @@ namespace generalgff
 
 				_tl.EndUpdate();
 			}
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void extensionspop(object sender, EventArgs e)
+		{
+			string type;
+			if (GffData != null) type = " " + GffData.GetGffString(GffData.Type);
+			else                 type = String.Empty;
+
+			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Text = "&Enable" + type;
+			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Enabled = GffData != null
+																						  && GffData.Type == GffType.UTC;
+		}
+
+
+		internal bool _extEnabled;
+
+		/// <summary>
+		/// Enables creature-extensions.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void extensionsclick_Enable(object sender, EventArgs e)
+		{
+			if (GffData != null)
+			{
+				switch (GffData.Type)
+				{
+					case GffType.UTC:
+					{
+						MenuItem it = Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT];
+						SetExtensionEnabled(it.Checked = !it.Checked);
+						break;
+					}
+				}
+			}
+		}
+
+		/// <summary>
+		/// Sets the extension enabled.
+		/// @note This is a workaround for the fact that MenuItem doesn't have
+		/// an OnCheckChanged event.
+		/// </summary>
+		/// <param name="enabled"></param>
+		void SetExtensionEnabled(bool enabled)
+		{
+			_extEnabled = enabled;
 		}
 
 

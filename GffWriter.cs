@@ -22,9 +22,9 @@ namespace generalgff
 		#endregion Fields (static)
 
 
-		#region Fields
+		#region Fields (static)
 		static bool _le;
-		#endregion Fields
+		#endregion Fields (static)
 
 
 		#region Methods (static)

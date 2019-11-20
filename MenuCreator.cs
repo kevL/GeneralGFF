@@ -10,7 +10,8 @@ namespace generalgff
 		internal const int MI_FILE = 0;
 		internal const int MI_EDIT = 1;
 		internal const int MI_VIEW = 2;
-		internal const int MI_HELP = 3;
+		internal const int MI_EXTS = 3;
+		internal const int MI_HELP = 4;
 
 		internal const int MI_FILE_CRAT = 0; // create
 		// 1 is Separator
@@ -34,6 +35,8 @@ namespace generalgff
 		internal const int MI_VIEW_COLP = 1; // collapse
 		// 2 is Separator
 		internal const int MI_VIEW_SORT = 3; // sort
+
+		internal const int MI_EXTS_EXT  = 0; // enable extension
 
 		internal const int MI_HELP_ABT  = 0; // about
 		#endregion Fields (static)
@@ -108,7 +111,13 @@ namespace generalgff
 			Xenu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Shortcut = Shortcut.F7;
 
 
-			Xenu.MenuItems.Add("&Help"); // #3
+			Xenu.MenuItems.Add("E&xtensions"); // #3
+
+			Xenu.MenuItems[MI_EXTS].MenuItems.Add("&Enable"); // #0
+			Xenu.MenuItems[MI_EXTS].MenuItems[MI_EXTS_EXT].Shortcut = Shortcut.F8;
+
+
+			Xenu.MenuItems.Add("&Help"); // #4
 
 //			Xenu.MenuItems[MI_HELP].MenuItems.Add("&Help");		// #
 

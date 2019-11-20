@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace generalgff
 {
-	sealed class TreeList
+	sealed partial class TreeList
 		:
 			TreeView
 	{
@@ -77,6 +77,11 @@ namespace generalgff
 
 
 		#region Context
+		/// <summary>
+		/// Opens the ContextMenu for this treelist.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		void contextpop(object sender, EventArgs e)
 		{
 			ContextMenu.MenuItems.Clear();
@@ -91,122 +96,134 @@ namespace generalgff
 				TreeNode node = info.Node;
 				if (node != null)
 				{
-					SelectedNode = node;
-
-					string toggle = null;
-					if (SelectedNode.Nodes.Count != 0)
-					{
-						if (SelectedNode.IsExpanded)
-							toggle = "Collapse";
-						else
-							toggle = "Expand";
-
-						ContextMenu.MenuItems.Add(new MenuItem(toggle, contextclick_Toggle));
-					}
-
-					FieldTypes type;
-
-					if (SelectedNode.Tag == null // is TopLevelStruct's node
-						|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
-					{
-						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-						else toggle = String.Empty;
-
-						ContextMenu.MenuItems.Add(new MenuItem("add BYTE (1-byte ubyte)",           contextclick_AddByte));
-						ContextMenu.MenuItems.Add(new MenuItem("add CHAR (1-byte byte)",            contextclick_AddChar));
-						ContextMenu.MenuItems.Add(new MenuItem("add WORD (2-byte ushort)",          contextclick_AddWord));
-						ContextMenu.MenuItems.Add(new MenuItem("add SHORT (2-byte short)",          contextclick_AddShort));
-						ContextMenu.MenuItems.Add(new MenuItem("add DWORD (4-byte uint)",           contextclick_AddDword));
-						ContextMenu.MenuItems.Add(new MenuItem("add INT (4-byte int)",              contextclick_AddInt));
-						ContextMenu.MenuItems.Add(new MenuItem("add DWORD64 (8-byte ulong)",        contextclick_AddDword64));
-						ContextMenu.MenuItems.Add(new MenuItem("add INT64 (8-byte long)",           contextclick_AddInt64));
-						ContextMenu.MenuItems.Add(new MenuItem("add FLOAT (4-byte float)",          contextclick_AddFloat));
-						ContextMenu.MenuItems.Add(new MenuItem("add DOUBLE (8-byte float)",         contextclick_AddDouble));
-						ContextMenu.MenuItems.Add(new MenuItem("add CResRef (32-chars ASCII)",      contextclick_AddCResRef));
-						ContextMenu.MenuItems.Add(new MenuItem("add CExoString (UTF8)",             contextclick_AddCExoString));
-						ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (24-bit strref)", contextclick_AddCExoLocString));
-						ContextMenu.MenuItems.Add(new MenuItem("add VOID (raw byte data)",          contextclick_AddVoid));
-						ContextMenu.MenuItems.Add(new MenuItem("add List (list of structs)",        contextclick_AddList));
-						ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)",       contextclick_AddStruct));
-					}
+					if (_f._extEnabled)
+						context_Extensions(node);
 					else
-					{
-						switch (type)
-						{
-							case FieldTypes.List:
-								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-								else toggle = String.Empty;
-
-								ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)", contextclick_AddStruct));
-								break;
-
-							case FieldTypes.CExoLocString:
-								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-								else toggle = String.Empty;
-
-								ContextMenu.MenuItems.Add(new MenuItem("add Locale (UTF8 localized)", contextclick_AddLocale));
-								break;
-						}
-					}
-
-
-					if (SelectedNode.Tag == null) // is TopLevelStruct
-					{
-						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-						else toggle = String.Empty;
-
-						ContextMenu.MenuItems.Add(new MenuItem("edit GFF Type", contextclick_EditGffType));
-					}
-					else // is NOT TopLevelStruct
-					{
-						switch (((GffData.Field)SelectedNode.Tag).type)
-						{
-							case FieldTypes.Struct:
-								if (SelectedNode.Parent.Tag != null
-									&& ((GffData.Field)SelectedNode.Parent.Tag).type == FieldTypes.List)
-								{
-									break;
-								}
-								goto case FieldTypes.BYTE;
-
-							case FieldTypes.BYTE:
-							case FieldTypes.CHAR:
-							case FieldTypes.WORD:
-							case FieldTypes.SHORT:
-							case FieldTypes.DWORD:
-							case FieldTypes.INT:
-							case FieldTypes.DWORD64:
-							case FieldTypes.INT64:
-							case FieldTypes.FLOAT:
-							case FieldTypes.DOUBLE:
-							case FieldTypes.CResRef:
-							case FieldTypes.CExoString:
-							case FieldTypes.CExoLocString:
-							case FieldTypes.VOID:
-							case FieldTypes.List:
-								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-								else toggle = String.Empty;
-
-								ContextMenu.MenuItems.Add(new MenuItem("edit Label", contextclick_EditLabel));
-								break;
-
-							case FieldTypes.locale:
-								if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-								else toggle = String.Empty;
-
-								ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLocale));
-								break;
-						}
-					}
-
-					if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
-					ContextMenu.MenuItems.Add(new MenuItem("DELETE", contextclick_Delete));
+						context_Standard(node);
 				}
 				else if (Nodes.Count == 0) // is blank GFF - req'd.
 				{
 					ContextMenu.MenuItems.Add(new MenuItem("add TopLevelStruct", contextclick_AddTopLevelStruct));
 				}
 			}
+		}
+
+		/// <summary>
+		/// Populates the standard context.
+		/// </summary>
+		/// <param name="node"></param>
+		void context_Standard(TreeNode node)
+		{
+			SelectedNode = node;
+
+			string toggle = null;
+			if (SelectedNode.Nodes.Count != 0)
+			{
+				if (SelectedNode.IsExpanded)
+					toggle = "Collapse";
+				else
+					toggle = "Expand";
+
+				ContextMenu.MenuItems.Add(new MenuItem(toggle, contextclick_Toggle));
+			}
+
+			FieldTypes type;
+
+			if (SelectedNode.Tag == null // is TopLevelStruct's node
+				|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
+			{
+				if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+				else toggle = String.Empty;
+
+				ContextMenu.MenuItems.Add(new MenuItem("add BYTE (1-byte ubyte)",           contextclick_AddByte));
+				ContextMenu.MenuItems.Add(new MenuItem("add CHAR (1-byte byte)",            contextclick_AddChar));
+				ContextMenu.MenuItems.Add(new MenuItem("add WORD (2-byte ushort)",          contextclick_AddWord));
+				ContextMenu.MenuItems.Add(new MenuItem("add SHORT (2-byte short)",          contextclick_AddShort));
+				ContextMenu.MenuItems.Add(new MenuItem("add DWORD (4-byte uint)",           contextclick_AddDword));
+				ContextMenu.MenuItems.Add(new MenuItem("add INT (4-byte int)",              contextclick_AddInt));
+				ContextMenu.MenuItems.Add(new MenuItem("add DWORD64 (8-byte ulong)",        contextclick_AddDword64));
+				ContextMenu.MenuItems.Add(new MenuItem("add INT64 (8-byte long)",           contextclick_AddInt64));
+				ContextMenu.MenuItems.Add(new MenuItem("add FLOAT (4-byte float)",          contextclick_AddFloat));
+				ContextMenu.MenuItems.Add(new MenuItem("add DOUBLE (8-byte float)",         contextclick_AddDouble));
+				ContextMenu.MenuItems.Add(new MenuItem("add CResRef (32-chars ASCII)",      contextclick_AddCResRef));
+				ContextMenu.MenuItems.Add(new MenuItem("add CExoString (UTF8)",             contextclick_AddCExoString));
+				ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (24-bit strref)", contextclick_AddCExoLocString));
+				ContextMenu.MenuItems.Add(new MenuItem("add VOID (raw byte data)",          contextclick_AddVoid));
+				ContextMenu.MenuItems.Add(new MenuItem("add List (list of structs)",        contextclick_AddList));
+				ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)",       contextclick_AddStruct));
+			}
+			else
+			{
+				switch (type)
+				{
+					case FieldTypes.List:
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
+
+						ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)", contextclick_AddStruct));
+						break;
+
+					case FieldTypes.CExoLocString:
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
+
+						ContextMenu.MenuItems.Add(new MenuItem("add Locale (UTF8 localized)", contextclick_AddLocale));
+						break;
+				}
+			}
+
+
+			if (SelectedNode.Tag == null) // is TopLevelStruct
+			{
+				if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+				else toggle = String.Empty;
+
+				ContextMenu.MenuItems.Add(new MenuItem("edit GFF Type", contextclick_EditGffType));
+			}
+			else // is NOT TopLevelStruct
+			{
+				switch (((GffData.Field)SelectedNode.Tag).type)
+				{
+					case FieldTypes.Struct:
+						if (SelectedNode.Parent.Tag != null
+							&& ((GffData.Field)SelectedNode.Parent.Tag).type == FieldTypes.List)
+						{
+							break;
+						}
+						goto case FieldTypes.BYTE;
+
+					case FieldTypes.BYTE:
+					case FieldTypes.CHAR:
+					case FieldTypes.WORD:
+					case FieldTypes.SHORT:
+					case FieldTypes.DWORD:
+					case FieldTypes.INT:
+					case FieldTypes.DWORD64:
+					case FieldTypes.INT64:
+					case FieldTypes.FLOAT:
+					case FieldTypes.DOUBLE:
+					case FieldTypes.CResRef:
+					case FieldTypes.CExoString:
+					case FieldTypes.CExoLocString:
+					case FieldTypes.VOID:
+					case FieldTypes.List:
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
+
+						ContextMenu.MenuItems.Add(new MenuItem("edit Label", contextclick_EditLabel));
+						break;
+
+					case FieldTypes.locale:
+						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+						else toggle = String.Empty;
+
+						ContextMenu.MenuItems.Add(new MenuItem("edit LanguageId", contextclick_EditLocale));
+						break;
+				}
+			}
+
+			if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
+			ContextMenu.MenuItems.Add(new MenuItem("DELETE", contextclick_Delete));
 		}
 
 
