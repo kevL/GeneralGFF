@@ -70,12 +70,12 @@ namespace generalgff
 									break;
 
 								case LABEL_ITEMLIST:
-									it = new MenuItem("add inventory item", contextclick_AddInventoryItem);
+									it = new MenuItem("add inventory Item", contextclick_AddInventoryItem);
 									break;
 
 								case LABEL_EQUIPITEMLIST:
 									if (node.Nodes.Count < Max_EQUIPPED)
-										it = new MenuItem("add equipped item", contextclick_AddEquippedItem);
+										it = new MenuItem("add equipped Item", contextclick_AddEquippedItem);
 									break;
 
 //								case LABEL_TEMPLATELIST: // I have no clue what this is.
@@ -83,17 +83,16 @@ namespace generalgff
 //									break;
 
 								case LABEL_VARTABLE:
-									it = new MenuItem("add variable", contextclick_AddVariable);
+									it = new MenuItem("add Variable", contextclick_AddVariable);
 									break;
 
 								case LABEL_DMGREDUCTION:
-									it = new MenuItem("add damage reduction", contextclick_AddDamageReduction);
+									it = new MenuItem("add Damage Reduction", contextclick_AddDamageReduction);
 									break;
 							}
 							break;
 
 						case FieldTypes.CExoLocString:
-//							if (node.Nodes.Count < Max_LOCALES) // too complicated wrt/ gender
 							it = new MenuItem("add localized string", contextclick_AddLocale);
 							break;
 					}
@@ -124,12 +123,12 @@ namespace generalgff
 
 									case LABEL_ITEMLIST:
 //										_isInventoryIt = true;
-										it = new MenuItem("delete inventory item", contextclick_Delete);
+										it = new MenuItem("delete inventory Item", contextclick_Delete);
 										break;
 
 									case LABEL_EQUIPITEMLIST:
 //										_isInventoryIt = false;
-										it = new MenuItem("delete equipped item", contextclick_Delete);
+										it = new MenuItem("delete equipped Item", contextclick_Delete);
 										break;
 
 //									case LABEL_TEMPLATELIST: // I have no clue what this is.
@@ -139,10 +138,12 @@ namespace generalgff
 
 									case LABEL_VARTABLE:
 //										_isInventoryIt = false;
-										it = new MenuItem("delete variable", contextclick_Delete);
+										it = new MenuItem("delete Variable", contextclick_Delete);
 										break;
 
-									// TODO: DmgReduction
+									case LABEL_DMGREDUCTION:
+										it = new MenuItem("delete Damage Reduction", contextclick_Delete);
+										break;
 								}
 							}
 							break;
