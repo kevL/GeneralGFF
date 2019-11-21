@@ -258,13 +258,13 @@ namespace generalgff
 			SelectedNode.Expand();
 
 			TopNode = top;
-			SelectedNode.Nodes[SelectedNode.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
-
 
 			_f.GffData.Changed = true;
 			_f.GffData = _f.GffData;
 
 			EndUpdate();
+
+			node.EnsureVisible(); // yes those calls are in a specific sequence.
 		}
 
 
@@ -305,13 +305,13 @@ namespace generalgff
 			SelectedNode.Expand();
 
 			TopNode = top;
-			SelectedNode.Nodes[SelectedNode.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
-
 
 			_f.GffData.Changed = true;
 			_f.GffData = _f.GffData;
 
 			EndUpdate();
+
+			node.EnsureVisible(); // yes those calls are in a specific sequence.
 		}
 
 
@@ -394,13 +394,13 @@ namespace generalgff
 			SelectedNode.Expand();
 
 			TopNode = top;
-			SelectedNode.Nodes[SelectedNode.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
-
 
 			_f.GffData.Changed = true;
 			_f.GffData = _f.GffData;
 
 			EndUpdate();
+
+			node.EnsureVisible(); // yes those calls are in a specific sequence.
 		}
 
 
@@ -558,13 +558,13 @@ namespace generalgff
 					SelectedNode.Expand();
 
 					TopNode = top;
-					SelectedNode.Nodes[SelectedNode.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
-
 
 					_f.GffData.Changed = true;
 					_f.GffData = _f.GffData;
 
 					EndUpdate();
+
+					node.EnsureVisible(); // yes those calls are in a specific sequence.
 				}
 			}
 		}
@@ -668,13 +668,13 @@ namespace generalgff
 					SelectedNode.Expand();
 
 					TopNode = top;
-					SelectedNode.Nodes[SelectedNode.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
-
 
 					_f.GffData.Changed = true;
 					_f.GffData = _f.GffData;
 		
 					EndUpdate();
+
+					node.EnsureVisible(); // yes those calls are in a specific sequence.
 				}
 			}
 		}
@@ -807,7 +807,7 @@ namespace generalgff
 
 			EndUpdate();
 
-			@struct.Nodes[@struct.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
+			node.EnsureVisible(); // yes those calls are in a specific sequence.
 		}
 
 
@@ -869,13 +869,13 @@ namespace generalgff
 			SelectedNode.Expand();
 
 			TopNode = top;
-			SelectedNode.Nodes[SelectedNode.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
-
 
 			_f.GffData.Changed = true;
 			_f.GffData = _f.GffData;
 
 			EndUpdate();
+
+			node.EnsureVisible(); // yes those calls are in a specific sequence.
 		}
 	}
 }
