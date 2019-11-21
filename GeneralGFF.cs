@@ -1049,7 +1049,7 @@ namespace generalgff
 
 
 		/// <summary>
-		/// 
+		/// Enables/disables Extension-menu's items appropriately.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>

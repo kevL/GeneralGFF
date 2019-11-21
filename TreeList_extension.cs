@@ -13,6 +13,7 @@ namespace generalgff
 		const string LABEL_EQUIPITEMLIST    = "Equip_ItemList";
 //		const string LABEL_TEMPLATELIST     = "TemplateList";
 		const string LABEL_VARTABLE         = "VarTable";
+		const string LABEL_DMGREDUCTION     = "DmgReduction";
 
 		const string LABEL_PREFIX_KNOWN     = "KnownList";
 		const string LABEL_PREFIX_MEMORIZED = "MemorizedList";
@@ -85,7 +86,9 @@ namespace generalgff
 									it = new MenuItem("add variable", contextclick_AddVariable);
 									break;
 
-								// TODO: DmgReduction
+								case LABEL_DMGREDUCTION:
+									it = new MenuItem("add damage reduction", contextclick_AddDamageReduction);
+									break;
 							}
 							break;
 
@@ -704,6 +707,107 @@ namespace generalgff
 				}
 			}
 			return false;
+		}
+
+
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_AddDamageReduction(object sender, EventArgs e)
+		{
+			BeginUpdate();
+
+			TreeNode top = TopNode;
+
+			var field = new GffData.Field();
+			field.type = FieldTypes.Struct;
+			field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
+			field.Struct = new Struct();
+			field.Struct.typeid = 2; // <- that's what's in the UTCs I've looked at.
+
+			string text = GeneralGFF.ConstructNodetext(field);
+			var node = new Sortable(text, field.label);
+			node.Tag = field;
+			int id = SelectedNode.Nodes.Add(node);
+
+
+			field = new GffData.Field();
+			field.type = FieldTypes.SHORT;
+			field.label = "DmgRedctAmt";
+			field.SHORT = 0;
+
+			text = GeneralGFF.ConstructNodetext(field);
+			node = new Sortable(text, field.label);
+			node.Tag = field;
+			SelectedNode.Nodes[id].Nodes.Add(node);
+
+			field = new GffData.Field();
+			field.type = FieldTypes.SHORT;
+			field.label = "DmgRedctFlags";
+			field.SHORT = 0;
+
+			text = GeneralGFF.ConstructNodetext(field);
+			node = new Sortable(text, field.label);
+			node.Tag = field;
+			SelectedNode.Nodes[id].Nodes.Add(node);
+
+
+			field = new GffData.Field();
+			field.type = FieldTypes.List;
+			field.label = "DmgRedctSubList";
+
+			text = GeneralGFF.ConstructNodetext(field);
+			var list = new Sortable(text, field.label);
+			list.Tag = field;
+			SelectedNode.Nodes[id].Nodes.Add(list);
+
+			field = new GffData.Field();
+			field.type = FieldTypes.Struct;
+			field.label = "0"; // Structs in Lists do not have a Label
+			field.Struct = new Struct();
+			field.Struct.typeid = 2; // <- that's what's in the UTCs I've looked at.
+
+			text = GeneralGFF.ConstructNodetext(field);
+			var @struct = new Sortable(text, field.label);
+			@struct.Tag = field;
+			list.Nodes.Add(@struct);
+
+			field = new GffData.Field();
+			field.type = FieldTypes.SHORT;
+			field.label = "DmgRedctSubType";
+			field.SHORT = 0;
+
+			text = GeneralGFF.ConstructNodetext(field);
+			node = new Sortable(text, field.label);
+			node.Tag = field;
+			@struct.Nodes.Add(node);
+
+			field = new GffData.Field();
+			field.type = FieldTypes.SHORT;
+			field.label = "DmgRedctType";
+			field.SHORT = 0;
+
+			text = GeneralGFF.ConstructNodetext(field);
+			node = new Sortable(text, field.label);
+			node.Tag = field;
+			@struct.Nodes.Add(node);
+
+
+			SelectedNode = SelectedNode.Nodes[id];
+			SelectedNode.Expand();
+			list.Expand();
+			@struct.Expand();
+
+			TopNode = top;
+
+			_f.GffData.Changed = true;
+			_f.GffData = _f.GffData;
+
+			EndUpdate();
+
+			@struct.Nodes[@struct.Nodes.Count - 1].EnsureVisible(); // yes those calls are in a specific sequence.
 		}
 
 
