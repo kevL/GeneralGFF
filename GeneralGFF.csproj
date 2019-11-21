@@ -78,7 +78,7 @@
     <Compile Include="SearchDialog.cs" />
     <Compile Include="Sortable.cs" />
     <Compile Include="TreeList.cs" />
-    <Compile Include="TreeList_extensions.cs" />
+    <Compile Include="TreeList_extension.cs" />
     <Compile Include="TypeDialog.cs" />
     <Compile Include="VariableDialog.cs" />
   </ItemGroup>

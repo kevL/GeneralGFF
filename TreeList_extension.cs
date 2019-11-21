@@ -29,7 +29,7 @@ namespace generalgff
 		/// type of operation will be specific to a node-level (1..4).
 		/// </summary>
 		/// <param name="node"></param>
-		void context_Extensions(TreeNode node)
+		void context_Extension(TreeNode node)
 		{
 			// TODO: Add "Cloak" Struct to root ...
 

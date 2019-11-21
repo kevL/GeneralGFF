@@ -97,7 +97,7 @@ namespace generalgff
 				if (node != null)
 				{
 					if (_f._extEnabled)
-						context_Extensions(node);
+						context_Extension(node);
 					else
 						context_Standard(node);
 				}

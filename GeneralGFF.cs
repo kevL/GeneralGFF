@@ -178,8 +178,8 @@ namespace generalgff
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLP].Click += viewclick_CollapseSelected;
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORT].Click += viewclick_Sort;
 
-			Menu.MenuItems[MenuCreator.MI_EXTS].Popup += extensionspop;
-			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Click += extensionsclick_Enable;
+			Menu.MenuItems[MenuCreator.MI_EXTS].Popup += extensionpop;
+			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Click += extensionclick_Enable;
 
 			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABT].Click += helpclick_About;
 		}
@@ -1053,7 +1053,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void extensionspop(object sender, EventArgs e)
+		void extensionpop(object sender, EventArgs e)
 		{
 			string type;
 			if (GffData != null) type = " " + GffData.GetGffString(GffData.Type);
@@ -1068,11 +1068,11 @@ namespace generalgff
 		internal bool _extEnabled;
 
 		/// <summary>
-		/// Enables creature-extensions.
+		/// Enables creature-extension.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		void extensionsclick_Enable(object sender, EventArgs e)
+		void extensionclick_Enable(object sender, EventArgs e)
 		{
 			if (GffData != null)
 			{
