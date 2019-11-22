@@ -97,7 +97,7 @@ namespace generalgff
 
 			rb_GffToken .Enabled = (bitloc & Loc_GFFTOKEN)      == 0;
 
-			if (edit) // else let .NET choose a default
+			if (edit) // else let .NET choose a default <- why does add choose a default auto but ApparelDialog doesn't ...
 			{
 				if (TreeList._langid == Languages.GffToken)
 				{
@@ -154,7 +154,7 @@ namespace generalgff
 
 		#region Handlers
 		/// <summary>
-		/// Sets the variable's typeid.
+		/// Sets the language and gender.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
@@ -529,6 +529,7 @@ namespace generalgff
 			this.gb_locale.Location = new System.Drawing.Point(0, 20);
 			this.gb_locale.Margin = new System.Windows.Forms.Padding(0);
 			this.gb_locale.Name = "gb_locale";
+			this.gb_locale.Padding = new System.Windows.Forms.Padding(0);
 			this.gb_locale.Size = new System.Drawing.Size(319, 260);
 			this.gb_locale.TabIndex = 1;
 			this.gb_locale.TabStop = false;

@@ -32,8 +32,6 @@ namespace generalgff
 		/// <param name="node"></param>
 		void context_Extension(TreeNode node)
 		{
-			// TODO: Add "Cloak" Struct to root ...
-
 			// if (node.Tag != null) ...
 
 			SelectedNode = node;
@@ -52,6 +50,10 @@ namespace generalgff
 			MenuItem it = null;
 			switch (node.Level)
 			{
+				case 0: // TODO: Add "Cloak" (etc) Struct(s) to root ...
+					it = new MenuItem("add apparel", contextclick_AddApparel);
+					break;
+
 				case 1:
 				{
 					var field = (GffData.Field)node.Tag;
@@ -185,6 +187,167 @@ namespace generalgff
 				if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 				ContextMenu.MenuItems.Add(it);
 			}
+		}
+
+
+		/// <summary>
+		/// Opens a dialog for user to add an apparel-type.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_AddApparel(object sender, EventArgs e)
+		{
+			ApparelBits();
+
+			using (var f = new ApparelDialog())
+			{
+				if (f.ShowDialog(this) == DialogResult.OK
+					&& _apparel != ApparelDialog.TYPE_non)
+				{
+					switch (_apparel)
+					{
+						case ApparelDialog.TYPE_CLOAK:
+							AddCloak();
+							break;
+					}
+				}
+			}
+		}
+
+		internal static int _apparel;
+
+		/// <summary>
+		/// Tallies the currently assigned apparel-types and stores the result
+		/// in '_apparel' bitwise.
+		/// @note Used by ApparelDialog.
+		/// </summary>
+		/// <returns></returns>
+		void ApparelBits()
+		{
+			_apparel = ApparelDialog.TYPE_non;
+
+			for (int i = 0; i != SelectedNode.Nodes.Count; ++i)
+			{
+				switch (((Sortable)SelectedNode.Nodes[i])._label)
+				{
+					// TODO: case all apparel-types ->
+
+					case "Cloak":
+						_apparel |= ApparelDialog.TYPE_CLOAK;
+						break;
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// Adds a cloak.
+		/// </summary>
+		void AddCloak()
+		{
+			BeginUpdate();
+
+			TreeNode top = TopNode;
+
+			var field = new GffData.Field();
+			field.type = FieldTypes.Struct;
+			field.label = "Cloak";
+			field.Struct = new Struct();
+			field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
+
+			string text = GeneralGFF.ConstructNodetext(field);
+			var node = new Sortable(text, field.label);
+			node.Tag = field;
+			int id = SelectedNode.Nodes.Add(node);
+
+
+			field = new GffData.Field();
+			field.type = FieldTypes.Struct;
+			field.label = "ArmorTint";
+			field.Struct = new Struct();
+			field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
+
+			text = GeneralGFF.ConstructNodetext(field);
+			var tint = new Sortable(text, field.label);
+			tint.Tag = field;
+			SelectedNode.Nodes[id].Nodes.Add(tint);
+
+			AddTints(tint);
+
+
+			field = new GffData.Field();
+			field.type = FieldTypes.BYTE;
+			field.BYTE = 0;
+			field.label = "ArmorVisualType";
+
+			text = GeneralGFF.ConstructNodetext(field);
+			node = new Sortable(text, field.label);
+			node.Tag = field;
+			SelectedNode.Nodes[id].Nodes.Add(node);
+
+			field = new GffData.Field();
+			field.type = FieldTypes.BYTE;
+			field.BYTE = 0;
+			field.label = "Variation";
+
+			text = GeneralGFF.ConstructNodetext(field);
+			node = new Sortable(text, field.label);
+			node.Tag = field;
+			SelectedNode.Nodes[id].Nodes.Add(node);
+
+
+			SelectedNode = SelectedNode.Nodes[id];
+			SelectedNode.Expand();
+
+			TopNode = top;
+
+			_f.GffData.Changed = true;
+			_f.GffData = _f.GffData;
+
+			EndUpdate();
+
+			node.EnsureVisible(); // yes those calls are in a specific sequence.
+		}
+
+		/// <summary>
+		/// Adds the three Structs of a tint to a specified node.
+		/// </summary>
+		/// <param name="node"></param>
+		void AddTints(TreeNode node)
+		{
+			GffData.Field field;
+			Sortable part, val;
+
+			for (int i = 1; i != 4; ++i)
+			{
+				field = new GffData.Field();
+				field.type = FieldTypes.Struct;
+				field.label = i.ToString();
+				field.Struct = new Struct();
+				field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
+	
+				string text = GeneralGFF.ConstructNodetext(field);
+				part = new Sortable(text, field.label);
+				part.Tag = field;
+				node.Nodes.Add(part);
+
+
+				var colors = new List<string>() { "a", "b", "g", "r" };
+				foreach (var color in colors)
+				{
+					field = new GffData.Field();
+					field.type = FieldTypes.BYTE;
+					field.BYTE = Byte.MaxValue;
+					field.label = color;
+
+					text = GeneralGFF.ConstructNodetext(field);
+					val = new Sortable(text, field.label);
+					val.Tag = field;
+					part.Nodes.Add(val);
+				}
+				part.Expand();
+			}
+			node.Expand();
 		}
 
 

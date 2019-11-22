@@ -51,6 +51,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApparelDialog.cs" />
     <Compile Include="DeleteDialog.cs" />
     <Compile Include="EquippedItemDialog.cs" />
     <Compile Include="FileWatchDialog.cs" />
@@ -83,6 +84,9 @@
     <Compile Include="VariableDialog.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="ApparelDialog.resx">
+      <DependentUpon>ApparelDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DeleteDialog.resx">
       <DependentUpon>DeleteDialog.cs</DependentUpon>
     </EmbeddedResource>
