@@ -83,7 +83,7 @@ namespace generalgff
 					@checked = false;
 				}
 
-				Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked = @checked;
+				Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked &= @checked;
 				SetExtensionEnabled(@checked);
 			}
 		}
