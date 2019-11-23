@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Windows.Forms;
 
 
@@ -28,6 +29,8 @@ namespace generalgff
 		const string LABEL_APPAREL_GLOVES = "Gloves";
 		const string LABEL_APPAREL_HELM   = "Helm";
 
+		const string LABEL_TINT = "Tint";
+
 
 		/// <summary>
 		/// Populates the extended context.
@@ -46,150 +49,162 @@ namespace generalgff
 			}
 
 			MenuItem it = null;
-			switch (SelectedNode.Level)
+
+			GffData.Field field;
+
+			if (SelectedNode.Parent != null
+				&& (field = (GffData.Field)SelectedNode.Parent.Tag) != null
+				&& field.label == LABEL_TINT)
 			{
-				case 0:
-					it = new MenuItem("add apparel", contextclick_AddApparel);
-					break;
-
-				case 1:
+				it = new MenuItem("pick color", contextclick_PickColor);
+			}
+			else
+			{
+				switch (SelectedNode.Level)
 				{
-					var field = (GffData.Field)SelectedNode.Tag;
-					switch (field.type)
+					case 0:
+						it = new MenuItem("add apparel", contextclick_AddApparel);
+						break;
+
+					case 1:
 					{
-						case FieldTypes.List:
-							switch (field.label)
-							{
-								case LABEL_CLASSLIST:
-									if (SelectedNode.Nodes.Count < Max_CLASSES)
-										it = new MenuItem("add Class", contextclick_AddClass);
-									break;
-
-								case LABEL_FEATLIST:
-									it = new MenuItem("add Feat", contextclick_AddFeat);
-									break;
-
-								case LABEL_ITEMLIST:
-									it = new MenuItem("add inventory Item", contextclick_AddInventoryItem);
-									break;
-
-								case LABEL_EQUIPITEMLIST:
-									if (SelectedNode.Nodes.Count < Max_EQUIPPED)
-										it = new MenuItem("add equipped Item", contextclick_AddEquippedItem);
-									break;
-
-//								case LABEL_TEMPLATELIST: // I have no clue what this is.
-//									it = new MenuItem("add template", contextclick_AddTemplate);
-//									break;
-
-								case LABEL_VARTABLE:
-									it = new MenuItem("add Variable", contextclick_AddVariable);
-									break;
-
-								case LABEL_DMGREDUCTION:
-									it = new MenuItem("add Damage Reduction", contextclick_AddDamageReduction);
-									break;
-							}
-							break;
-
-						case FieldTypes.CExoLocString:
-							it = new MenuItem("add localized string", contextclick_AddLocale);
-							break;
-
-						case FieldTypes.Struct:
-							switch (field.label)
-							{
-								case LABEL_APPAREL_BELT:
-								case LABEL_APPAREL_BOOTS:
-								case LABEL_APPAREL_CLOAK:
-								case LABEL_APPAREL_GLOVES:
-								case LABEL_APPAREL_HELM:
-									it = new MenuItem("delete apparel", contextclick_Delete);
-									break;
-							}
-							break;
-					}
-					break;
-				}
-
-				case 2:
-				{
-					var field = (GffData.Field)SelectedNode.Tag;
-					switch (field.type)
-					{
-						case FieldTypes.Struct: // parent shall be a List here ->
+						field = (GffData.Field)SelectedNode.Tag;
+						switch (field.type)
 						{
-							field = (GffData.Field)(SelectedNode.Parent.Tag);
-							if (field.type == FieldTypes.List)
-							{
+							case FieldTypes.List:
 								switch (field.label)
 								{
 									case LABEL_CLASSLIST:
-//										_isInventoryIt = false;
-										it = new MenuItem("delete Class", contextclick_Delete);
+										if (SelectedNode.Nodes.Count < Max_CLASSES)
+											it = new MenuItem("add Class", contextclick_AddClass);
 										break;
 
 									case LABEL_FEATLIST:
-//										_isInventoryIt = false;
-										it = new MenuItem("delete Feat", contextclick_Delete);
+										it = new MenuItem("add Feat", contextclick_AddFeat);
 										break;
 
 									case LABEL_ITEMLIST:
-//										_isInventoryIt = true;
-										it = new MenuItem("delete inventory Item", contextclick_Delete);
+										it = new MenuItem("add inventory Item", contextclick_AddInventoryItem);
 										break;
 
 									case LABEL_EQUIPITEMLIST:
-//										_isInventoryIt = false;
-										it = new MenuItem("delete equipped Item", contextclick_Delete);
+										if (SelectedNode.Nodes.Count < Max_EQUIPPED)
+											it = new MenuItem("add equipped Item", contextclick_AddEquippedItem);
 										break;
 
 //									case LABEL_TEMPLATELIST: // I have no clue what this is.
-//										_isInventoryIt = false;
-//										it = new MenuItem("delete template", contextclick_Delete);
+//										it = new MenuItem("add template", contextclick_AddTemplate);
 //										break;
 
 									case LABEL_VARTABLE:
-//										_isInventoryIt = false;
-										it = new MenuItem("delete Variable", contextclick_Delete);
+										it = new MenuItem("add Variable", contextclick_AddVariable);
 										break;
 
 									case LABEL_DMGREDUCTION:
-										it = new MenuItem("delete Damage Reduction", contextclick_Delete);
+										it = new MenuItem("add Damage Reduction", contextclick_AddDamageReduction);
 										break;
 								}
-							}
-							break;
+								break;
+
+							case FieldTypes.CExoLocString:
+								it = new MenuItem("add localized string", contextclick_AddLocale);
+								break;
+
+							case FieldTypes.Struct:
+								switch (field.label)
+								{
+									case LABEL_APPAREL_BELT:
+									case LABEL_APPAREL_BOOTS:
+									case LABEL_APPAREL_CLOAK:
+									case LABEL_APPAREL_GLOVES:
+									case LABEL_APPAREL_HELM:
+										it = new MenuItem("delete apparel", contextclick_Delete);
+										break;
+								}
+								break;
 						}
-
-						case FieldTypes.locale:
-							it = new MenuItem("delete localized string", contextclick_Delete);
-							break;
+						break;
 					}
-					break;
-				}
 
-				case 3:
-				{
-					var field = (GffData.Field)SelectedNode.Tag;
-					if (   field.label.StartsWith(LABEL_PREFIX_KNOWN,     StringComparison.Ordinal)
-						|| field.label.StartsWith(LABEL_PREFIX_MEMORIZED, StringComparison.Ordinal))
+					case 2:
 					{
-						it = new MenuItem("add Spell", contextclick_AddSpell);
-					}
-					break;
-				}
+						field = (GffData.Field)SelectedNode.Tag;
+						switch (field.type)
+						{
+							case FieldTypes.Struct: // parent shall be a List here ->
+							{
+								field = (GffData.Field)(SelectedNode.Parent.Tag);
+								if (field.type == FieldTypes.List)
+								{
+									switch (field.label)
+									{
+										case LABEL_CLASSLIST:
+//											_isInventoryIt = false;
+											it = new MenuItem("delete Class", contextclick_Delete);
+											break;
 
-				case 4:
-				{
-					var field = (GffData.Field)SelectedNode.Parent.Tag;
-					if (   field.label.StartsWith(LABEL_PREFIX_KNOWN,     StringComparison.Ordinal)
-						|| field.label.StartsWith(LABEL_PREFIX_MEMORIZED, StringComparison.Ordinal))
-					{
-//						_isInventoryIt = false;
-						it = new MenuItem("delete Spell", contextclick_Delete);
+										case LABEL_FEATLIST:
+//											_isInventoryIt = false;
+											it = new MenuItem("delete Feat", contextclick_Delete);
+											break;
+
+										case LABEL_ITEMLIST:
+//											_isInventoryIt = true;
+											it = new MenuItem("delete inventory Item", contextclick_Delete);
+											break;
+
+										case LABEL_EQUIPITEMLIST:
+//											_isInventoryIt = false;
+											it = new MenuItem("delete equipped Item", contextclick_Delete);
+											break;
+
+//										case LABEL_TEMPLATELIST: // I have no clue what this is.
+//											_isInventoryIt = false;
+//											it = new MenuItem("delete template", contextclick_Delete);
+//											break;
+
+										case LABEL_VARTABLE:
+//											_isInventoryIt = false;
+											it = new MenuItem("delete Variable", contextclick_Delete);
+											break;
+
+										case LABEL_DMGREDUCTION:
+											it = new MenuItem("delete Damage Reduction", contextclick_Delete);
+											break;
+									}
+								}
+								break;
+							}
+
+							case FieldTypes.locale:
+								it = new MenuItem("delete localized string", contextclick_Delete);
+								break;
+						}
+						break;
 					}
-					break;
+
+					case 3:
+					{
+						field = (GffData.Field)SelectedNode.Tag;
+						if (   field.label.StartsWith(LABEL_PREFIX_KNOWN,     StringComparison.Ordinal)
+							|| field.label.StartsWith(LABEL_PREFIX_MEMORIZED, StringComparison.Ordinal))
+						{
+							it = new MenuItem("add Spell", contextclick_AddSpell);
+						}
+						break;
+					}
+
+					case 4:
+					{
+						field = (GffData.Field)SelectedNode.Parent.Tag;
+						if (   field.label.StartsWith(LABEL_PREFIX_KNOWN,     StringComparison.Ordinal)
+							|| field.label.StartsWith(LABEL_PREFIX_MEMORIZED, StringComparison.Ordinal))
+						{
+//							_isInventoryIt = false;
+							it = new MenuItem("delete Spell", contextclick_Delete);
+						}
+						break;
+					}
 				}
 			}
 
@@ -198,6 +213,110 @@ namespace generalgff
 				if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 				ContextMenu.MenuItems.Add(it);
 			}
+		}
+
+
+		int[] _usercolors;
+
+		/// <summary>
+		/// Opens a dialog for the user to pick a color.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		void contextclick_PickColor(object sender, EventArgs e)
+		{
+			using (var f = new ColorDialog())
+			{
+				f.CustomColors = _usercolors;
+				f.FullOpen = true;
+//				f.AnyColor = true;
+
+				f.Color = getCurrentTintColor();
+				int a = f.Color.A;
+
+				if (f.ShowDialog(this) == DialogResult.OK)
+				{
+					bool changed = false;
+
+					TreeNode node;
+
+					GffData.Field field;
+					for (int i = 0; i != SelectedNode.Nodes.Count; ++i)
+					{
+						node = SelectedNode.Nodes[i];
+
+						field = node.Tag as GffData.Field;
+						switch (field.label)
+						{
+							case "a":
+								if (a != (int)field.BYTE)
+								{
+									field.BYTE = (byte)a;
+									changed = true;
+								}
+								break;
+
+							case "r":
+								if (f.Color.R != field.BYTE)
+								{
+									field.BYTE = f.Color.R;
+									changed = true;
+								}
+								break;
+
+							case "g":
+								if (f.Color.G != field.BYTE)
+								{
+									field.BYTE = f.Color.G;
+									changed = true;
+								}
+								break;
+
+							case "b":
+								if (f.Color.B != field.BYTE)
+								{
+									field.BYTE = f.Color.B;
+									changed = true;
+								}
+								break;
+						}
+						node.Text = GeneralGFF.ConstructNodetext(field);
+					}
+
+					if (changed)
+					{
+						_f.GffData.Changed = true;
+						_f.GffData = _f.GffData;
+					}
+				}
+				_usercolors = f.CustomColors; // NOTE: Does not set on Cancel. dipsh*ts ...
+			}
+		}
+
+		/// <summary>
+		/// Gets the color of the currently selected tintable part.
+		/// </summary>
+		/// <returns></returns>
+		Color getCurrentTintColor()
+		{
+			int a = 255,
+				r = 0,
+				g = 0,
+				b = 0;
+
+			GffData.Field field;
+			for (int i = 0; i != SelectedNode.Nodes.Count; ++i)
+			{
+				field = SelectedNode.Nodes[i].Tag as GffData.Field;
+				switch (field.label)
+				{
+					case "a": a = (int)field.BYTE; break;
+					case "r": r = (int)field.BYTE; break;
+					case "g": g = (int)field.BYTE; break;
+					case "b": b = (int)field.BYTE; break;
+				}
+			}
+			return Color.FromArgb(a,r,g,b);
 		}
 
 
