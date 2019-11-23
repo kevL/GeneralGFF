@@ -189,7 +189,7 @@ namespace generalgff
 						{
 							break;
 						}
-						goto case FieldTypes.BYTE;
+						goto case FieldTypes.List;
 
 					case FieldTypes.BYTE:
 					case FieldTypes.CHAR:
