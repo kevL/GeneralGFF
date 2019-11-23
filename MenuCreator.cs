@@ -111,7 +111,7 @@ namespace generalgff
 			Xenu.MenuItems[MI_VIEW].MenuItems[MI_VIEW_SORT].Shortcut = Shortcut.F7;
 
 
-			Xenu.MenuItems.Add("E&xtensions"); // #3
+			Xenu.MenuItems.Add("E&xtension"); // #3
 
 			Xenu.MenuItems[MI_EXTS].MenuItems.Add("&Enable"); // #0
 			Xenu.MenuItems[MI_EXTS].MenuItems[MI_EXTS_EXT].Shortcut = Shortcut.F8;
