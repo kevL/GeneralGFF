@@ -97,7 +97,7 @@ namespace generalgff
 
 			rb_GffToken .Enabled = (bitloc & Loc_GFFTOKEN)      == 0;
 
-			if (edit) // else let .NET choose a default <- why does add choose a default auto but ApparelDialog doesn't ...
+			if (edit) // else let .NET choose a default
 			{
 				if (TreeList._langid == Languages.GffToken)
 				{

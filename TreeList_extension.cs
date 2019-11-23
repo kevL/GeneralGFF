@@ -57,7 +57,7 @@ namespace generalgff
 			switch (node.Level)
 			{
 				case 0:
-					it = new MenuItem("add apparel", contextclick_AddApparel);
+					it = new MenuItem("add Apparel", contextclick_AddApparel);
 					break;
 
 				case 1:
@@ -212,25 +212,11 @@ namespace generalgff
 				{
 					switch (_apparel)
 					{
-						case ApparelDialog.TYPE_BELT:
-							AddApparel(LABEL_APPAREL_BELT);
-							break;
-
-						case ApparelDialog.TYPE_BOOTS:
-							AddApparel(LABEL_APPAREL_BOOTS);
-							break;
-
-						case ApparelDialog.TYPE_CLOAK:
-							AddApparel(LABEL_APPAREL_CLOAK);
-							break;
-
-						case ApparelDialog.TYPE_GLOVES:
-							AddApparel(LABEL_APPAREL_GLOVES);
-							break;
-
-						case ApparelDialog.TYPE_HELM:
-							AddApparel(LABEL_APPAREL_HELM);
-							break;
+						case ApparelDialog.TYPE_BELT:   AddApparel(LABEL_APPAREL_BELT);   break;
+						case ApparelDialog.TYPE_BOOTS:  AddApparel(LABEL_APPAREL_BOOTS);  break;
+						case ApparelDialog.TYPE_CLOAK:  AddApparel(LABEL_APPAREL_CLOAK);  break;
+						case ApparelDialog.TYPE_GLOVES: AddApparel(LABEL_APPAREL_GLOVES); break;
+						case ApparelDialog.TYPE_HELM:   AddApparel(LABEL_APPAREL_HELM);   break;
 					}
 				}
 			}
@@ -252,25 +238,11 @@ namespace generalgff
 			{
 				switch (((Sortable)SelectedNode.Nodes[i])._label)
 				{
-					case LABEL_APPAREL_BELT:
-						_apparel |= ApparelDialog.TYPE_BELT;
-						break;
-
-					case LABEL_APPAREL_BOOTS:
-						_apparel |= ApparelDialog.TYPE_BOOTS;
-						break;
-
-					case LABEL_APPAREL_CLOAK:
-						_apparel |= ApparelDialog.TYPE_CLOAK;
-						break;
-
-					case LABEL_APPAREL_GLOVES:
-						_apparel |= ApparelDialog.TYPE_GLOVES;
-						break;
-
-					case LABEL_APPAREL_HELM:
-						_apparel |= ApparelDialog.TYPE_HELM;
-						break;
+					case LABEL_APPAREL_BELT:   _apparel |= ApparelDialog.TYPE_BELT;   break;
+					case LABEL_APPAREL_BOOTS:  _apparel |= ApparelDialog.TYPE_BOOTS;  break;
+					case LABEL_APPAREL_CLOAK:  _apparel |= ApparelDialog.TYPE_CLOAK;  break;
+					case LABEL_APPAREL_GLOVES: _apparel |= ApparelDialog.TYPE_GLOVES; break;
+					case LABEL_APPAREL_HELM:   _apparel |= ApparelDialog.TYPE_HELM;   break;
 				}
 			}
 		}
