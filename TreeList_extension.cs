@@ -31,9 +31,6 @@ namespace generalgff
 
 		/// <summary>
 		/// Populates the extended context.
-		/// @note UTC files are defined in such a way that only one type of
-		/// operation will be available on any given treenode and further that a
-		/// type of operation will be specific to a node-level (1..4).
 		/// </summary>
 		/// <param name="node"></param>
 		void context_Extension(TreeNode node)
@@ -57,7 +54,7 @@ namespace generalgff
 			switch (node.Level)
 			{
 				case 0:
-					it = new MenuItem("add Apparel", contextclick_AddApparel);
+					it = new MenuItem("add apparel", contextclick_AddApparel);
 					break;
 
 				case 1:
@@ -102,6 +99,19 @@ namespace generalgff
 
 						case FieldTypes.CExoLocString:
 							it = new MenuItem("add localized string", contextclick_AddLocale);
+							break;
+
+						case FieldTypes.Struct:
+							switch (field.label)
+							{
+								case LABEL_APPAREL_BELT:
+								case LABEL_APPAREL_BOOTS:
+								case LABEL_APPAREL_CLOAK:
+								case LABEL_APPAREL_GLOVES:
+								case LABEL_APPAREL_HELM:
+									it = new MenuItem("delete apparel", contextclick_Delete);
+									break;
+							}
 							break;
 					}
 					break;
