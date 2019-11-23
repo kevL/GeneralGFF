@@ -83,7 +83,7 @@ namespace generalgff
 					@checked = false;
 				}
 
-				Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked &= @checked;
+				@checked = (Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked &= @checked);
 				SetExtensionEnabled(@checked);
 			}
 		}
@@ -1096,7 +1096,12 @@ namespace generalgff
 		/// <param name="enabled"></param>
 		void SetExtensionEnabled(bool enabled)
 		{
-			_extEnabled = enabled;
+			if (_extEnabled = enabled)
+			{
+				_tl.BackColor = Color.BurlyWood;
+			}
+			else
+				_tl.BackColor = Color.PaleTurquoise;
 		}
 
 
