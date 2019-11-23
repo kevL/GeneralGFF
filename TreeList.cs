@@ -96,10 +96,12 @@ namespace generalgff
 				TreeNode node = info.Node;
 				if (node != null)
 				{
+					SelectedNode = node;
+
 					if (_f._extEnabled)
-						context_Extension(node);
+						context_Extension();
 					else
-						context_Standard(node);
+						context_Standard();
 				}
 				else if (Nodes.Count == 0) // is blank GFF - req'd.
 				{
@@ -111,11 +113,8 @@ namespace generalgff
 		/// <summary>
 		/// Populates the standard context.
 		/// </summary>
-		/// <param name="node"></param>
-		void context_Standard(TreeNode node)
+		void context_Standard()
 		{
-			SelectedNode = node;
-
 			string toggle = null;
 			if (SelectedNode.Nodes.Count != 0)
 			{

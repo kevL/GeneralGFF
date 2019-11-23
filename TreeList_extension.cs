@@ -32,13 +32,8 @@ namespace generalgff
 		/// <summary>
 		/// Populates the extended context.
 		/// </summary>
-		/// <param name="node"></param>
-		void context_Extension(TreeNode node)
+		void context_Extension()
 		{
-			// if (node.Tag != null) ...
-
-			SelectedNode = node;
-
 			string toggle = null;
 			if (SelectedNode.Nodes.Count != 0)
 			{
@@ -51,7 +46,7 @@ namespace generalgff
 			}
 
 			MenuItem it = null;
-			switch (node.Level)
+			switch (SelectedNode.Level)
 			{
 				case 0:
 					it = new MenuItem("add apparel", contextclick_AddApparel);
@@ -59,14 +54,14 @@ namespace generalgff
 
 				case 1:
 				{
-					var field = (GffData.Field)node.Tag;
+					var field = (GffData.Field)SelectedNode.Tag;
 					switch (field.type)
 					{
 						case FieldTypes.List:
 							switch (field.label)
 							{
 								case LABEL_CLASSLIST:
-									if (node.Nodes.Count < Max_CLASSES)
+									if (SelectedNode.Nodes.Count < Max_CLASSES)
 										it = new MenuItem("add Class", contextclick_AddClass);
 									break;
 
@@ -79,7 +74,7 @@ namespace generalgff
 									break;
 
 								case LABEL_EQUIPITEMLIST:
-									if (node.Nodes.Count < Max_EQUIPPED)
+									if (SelectedNode.Nodes.Count < Max_EQUIPPED)
 										it = new MenuItem("add equipped Item", contextclick_AddEquippedItem);
 									break;
 
@@ -119,12 +114,12 @@ namespace generalgff
 
 				case 2:
 				{
-					var field = (GffData.Field)node.Tag;
+					var field = (GffData.Field)SelectedNode.Tag;
 					switch (field.type)
 					{
 						case FieldTypes.Struct: // parent shall be a List here ->
 						{
-							field = (GffData.Field)(node.Parent.Tag);
+							field = (GffData.Field)(SelectedNode.Parent.Tag);
 							if (field.type == FieldTypes.List)
 							{
 								switch (field.label)
@@ -176,7 +171,7 @@ namespace generalgff
 
 				case 3:
 				{
-					var field = (GffData.Field)node.Tag;
+					var field = (GffData.Field)SelectedNode.Tag;
 					if (   field.label.StartsWith(LABEL_PREFIX_KNOWN,     StringComparison.Ordinal)
 						|| field.label.StartsWith(LABEL_PREFIX_MEMORIZED, StringComparison.Ordinal))
 					{
@@ -187,7 +182,7 @@ namespace generalgff
 
 				case 4:
 				{
-					var field = (GffData.Field)node.Parent.Tag;
+					var field = (GffData.Field)SelectedNode.Parent.Tag;
 					if (   field.label.StartsWith(LABEL_PREFIX_KNOWN,     StringComparison.Ordinal)
 						|| field.label.StartsWith(LABEL_PREFIX_MEMORIZED, StringComparison.Ordinal))
 					{
