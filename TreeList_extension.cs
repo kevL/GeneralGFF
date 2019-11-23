@@ -22,6 +22,12 @@ namespace generalgff
 		const int Max_EQUIPPED = 18;
 //		const int Max_LOCALES  = 20;
 
+		const string LABEL_APPAREL_BELT   = "Belt";
+		const string LABEL_APPAREL_BOOTS  = "Boots";
+		const string LABEL_APPAREL_CLOAK  = "Cloak";
+		const string LABEL_APPAREL_GLOVES = "Gloves";
+		const string LABEL_APPAREL_HELM   = "Helm";
+
 
 		/// <summary>
 		/// Populates the extended context.
@@ -50,7 +56,7 @@ namespace generalgff
 			MenuItem it = null;
 			switch (node.Level)
 			{
-				case 0: // TODO: Add "Cloak" (etc) Struct(s) to root ...
+				case 0:
 					it = new MenuItem("add apparel", contextclick_AddApparel);
 					break;
 
@@ -206,8 +212,24 @@ namespace generalgff
 				{
 					switch (_apparel)
 					{
+						case ApparelDialog.TYPE_BELT:
+							AddApparel(LABEL_APPAREL_BELT);
+							break;
+
+						case ApparelDialog.TYPE_BOOTS:
+							AddApparel(LABEL_APPAREL_BOOTS);
+							break;
+
 						case ApparelDialog.TYPE_CLOAK:
-							AddCloak();
+							AddApparel(LABEL_APPAREL_CLOAK);
+							break;
+
+						case ApparelDialog.TYPE_GLOVES:
+							AddApparel(LABEL_APPAREL_GLOVES);
+							break;
+
+						case ApparelDialog.TYPE_HELM:
+							AddApparel(LABEL_APPAREL_HELM);
 							break;
 					}
 				}
@@ -230,10 +252,24 @@ namespace generalgff
 			{
 				switch (((Sortable)SelectedNode.Nodes[i])._label)
 				{
-					// TODO: case all apparel-types ->
+					case LABEL_APPAREL_BELT:
+						_apparel |= ApparelDialog.TYPE_BELT;
+						break;
 
-					case "Cloak":
+					case LABEL_APPAREL_BOOTS:
+						_apparel |= ApparelDialog.TYPE_BOOTS;
+						break;
+
+					case LABEL_APPAREL_CLOAK:
 						_apparel |= ApparelDialog.TYPE_CLOAK;
+						break;
+
+					case LABEL_APPAREL_GLOVES:
+						_apparel |= ApparelDialog.TYPE_GLOVES;
+						break;
+
+					case LABEL_APPAREL_HELM:
+						_apparel |= ApparelDialog.TYPE_HELM;
 						break;
 				}
 			}
@@ -241,9 +277,9 @@ namespace generalgff
 
 
 		/// <summary>
-		/// Adds a cloak.
+		/// Adds an apparel-type.
 		/// </summary>
-		void AddCloak()
+		void AddApparel(string label)
 		{
 			BeginUpdate();
 
@@ -251,7 +287,7 @@ namespace generalgff
 
 			var field = new GffData.Field();
 			field.type = FieldTypes.Struct;
-			field.label = "Cloak";
+			field.label = label;
 			field.Struct = new Struct();
 			field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
 
