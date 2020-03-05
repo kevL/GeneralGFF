@@ -11,7 +11,7 @@ namespace generalgff
 	{
 		#region Fields (static)
 		internal const string EXT_T = ".t";
-		const string EXT_B = ".ggb";
+				 const string EXT_B = ".tb";
 		#endregion Fields (static)
 
 
@@ -52,7 +52,7 @@ namespace generalgff
 		/// Creates a file and returns a FileStream for writing after backing up
 		/// a pre-existing file if it exists. The file will not be closed.
 		/// IMPORTANT: Dispose the stream in the calling function.
-		/// @note If file exists call this only to create a file_ext_[t.ext]
+		/// @note If file exists call this only to create a file_ext_[.t]
 		/// file. Then call ReplaceFile() by passing in file_ext.
 		/// </summary>
 		/// <param name="pfe">path-file-extension of the file to be created</param>
@@ -80,7 +80,7 @@ namespace generalgff
 
 		/// <summary>
 		/// Replaces a file with another file (that has a ".t" extension) after
-		/// making a backup (".ggf") of the destination file. If the destination
+		/// making a backup (".t1") of the destination file. If the destination
 		/// file does not exist, a copy-delete operation is performed instead of
 		/// a backup.
 		/// IMPORTANT: The source file must have the name and extension of the
@@ -134,7 +134,7 @@ namespace generalgff
 					return false;
 				}
 
-				// this deletes the .GGB backup. Disable this try/catch block to keep the backup.
+				// this deletes the .t1 backup. Disable this try/catch block to keep the backup.
 				try
 				{
 					File.Delete(pfeBackup);
