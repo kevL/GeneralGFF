@@ -116,6 +116,9 @@ namespace generalgff
 			Xenu.MenuItems[MI_EXTS].MenuItems.Add("&Enable"); // #0
 			Xenu.MenuItems[MI_EXTS].MenuItems[MI_EXTS_EXT].Shortcut = Shortcut.F8;
 
+//			Xenu.MenuItems[MI_EXTS].MenuItems.Add("&Creature Visualizer"); // #1
+//			Xenu.MenuItems[MI_EXTS].MenuItems[1].Shortcut = Shortcut.F8;
+
 
 			Xenu.MenuItems.Add("&Help"); // #4
 

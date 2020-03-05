@@ -7,6 +7,10 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
+//using NWN2Toolset.NWN2.Data.Blueprints;
+
+//using OEIShared.IO.GFF;
+
 
 namespace generalgff
 {
@@ -180,6 +184,7 @@ namespace generalgff
 
 			Menu.MenuItems[MenuCreator.MI_EXTS].Popup += extensionpop;
 			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Click += extensionclick_Enable;
+//			Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[1].Click += extensionclick_Visualizer;
 
 			Menu.MenuItems[MenuCreator.MI_HELP].MenuItems[MenuCreator.MI_HELP_ABT].Click += helpclick_About;
 		}
@@ -1103,6 +1108,22 @@ namespace generalgff
 			else
 				_tl.BackColor = Color.PaleTurquoise;
 		}
+
+/*		void extensionclick_Visualizer(object sender, EventArgs e)
+		{
+			var f = new CreatureVisualizerF();
+
+			if (GffData.Pfe != Globals.TopLevelStruct)
+			{
+				var file = new GFFFile(GffData.Pfe);
+				var creature = new NWN2CreatureBlueprint(file.TopLevelStruct);
+//				var @struct = new GFFStruct();
+//				var creature = new NWN2CreatureBlueprint(@struct);
+				f.setCreature(creature);
+			}
+
+			f.Show(this);
+		} */
 
 
 		/// <summary>
