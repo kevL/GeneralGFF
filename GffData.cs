@@ -87,10 +87,11 @@ namespace generalgff
 		UTI,		// 17
 		UTM,		// 18
 		UTP,		// 19
-		UTS,		// 20
-		UTT,		// 21
-		UTW,		// 22
-		WMP			// 23
+		UTR,		// 20
+		UTS,		// 21
+		UTT,		// 22
+		UTW,		// 23
+		WMP			// 24
 	}
 	#endregion Enums (global)
 
@@ -397,6 +398,7 @@ namespace generalgff
 				case "UTI": return GffType.UTI; // item
 				case "UTM": return GffType.UTM; // merchant (store)
 				case "UTP": return GffType.UTP; // placeable
+				case "UTR": return GffType.UTR; // tree
 				case "UTS": return GffType.UTS; // sound
 				case "UTT": return GffType.UTT; // trigger
 				case "UTW": return GffType.UTW; // waypoint
@@ -433,6 +435,7 @@ namespace generalgff
 				case GffType.UTI: return "UTI"; // item
 				case GffType.UTM: return "UTM"; // merchant (store)
 				case GffType.UTP: return "UTP"; // placeable
+				case GffType.UTR: return "UTR"; // tree
 				case GffType.UTS: return "UTS"; // sound
 				case GffType.UTT: return "UTT"; // trigger
 				case GffType.UTW: return "UTW"; // waypoint
@@ -467,6 +470,7 @@ namespace generalgff
 				+ "|" + UTI + "|*.UTI"
 				+ "|" + UTM + "|*.UTM"
 				+ "|" + UTP + "|*.UTP"
+				+ "|" + UTR + "|*.UTR"
 				+ "|" + UTS + "|*.UTS"
 				+ "|" + UTT + "|*.UTT"
 				+ "|" + UTW + "|*.UTW"
@@ -496,6 +500,7 @@ namespace generalgff
 		internal const string UTI = "item object";
 		internal const string UTM = "merchant store";
 		internal const string UTP = "placeable object";
+		internal const string UTR = "tree object";
 		internal const string UTS = "sound object";
 		internal const string UTT = "trigger object";
 		internal const string UTW = "waypoint object";

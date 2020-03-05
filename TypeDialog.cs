@@ -41,6 +41,7 @@ namespace generalgff
 			rb_UTI.Tag = GffType.UTI;
 			rb_UTM.Tag = GffType.UTM;
 			rb_UTP.Tag = GffType.UTP;
+			rb_UTR.Tag = GffType.UTR;
 			rb_UTS.Tag = GffType.UTS;
 			rb_UTT.Tag = GffType.UTT;
 			rb_UTW.Tag = GffType.UTW;
@@ -68,6 +69,7 @@ namespace generalgff
 				case GffType.UTI:     rb_UTI.Checked = true; break;
 				case GffType.UTM:     rb_UTM.Checked = true; break;
 				case GffType.UTP:     rb_UTP.Checked = true; break;
+				case GffType.UTR:     rb_UTR.Checked = true; break;
 				case GffType.UTS:     rb_UTS.Checked = true; break;
 				case GffType.UTT:     rb_UTT.Checked = true; break;
 				case GffType.UTW:     rb_UTW.Checked = true; break;
@@ -101,6 +103,7 @@ namespace generalgff
 			toolTip1.SetToolTip(rb_UTI, GffData.UTI);
 			toolTip1.SetToolTip(rb_UTM, GffData.UTM);
 			toolTip1.SetToolTip(rb_UTP, GffData.UTP);
+			toolTip1.SetToolTip(rb_UTR, GffData.UTR);
 			toolTip1.SetToolTip(rb_UTS, GffData.UTS);
 			toolTip1.SetToolTip(rb_UTT, GffData.UTT);
 			toolTip1.SetToolTip(rb_UTW, GffData.UTW);
@@ -150,14 +153,15 @@ namespace generalgff
 		RadioButton rb_ULT;
 		RadioButton rb_UPE;
 		RadioButton rb_UTC;
-		RadioButton rb_UTW;
-		RadioButton rb_UTT;
-		RadioButton rb_UTS;
-		RadioButton rb_UTP;
-		RadioButton rb_UTM;
-		RadioButton rb_UTI;
-		RadioButton rb_UTE;
 		RadioButton rb_UTD;
+		RadioButton rb_UTE;
+		RadioButton rb_UTI;
+		RadioButton rb_UTM;
+		RadioButton rb_UTP;
+		RadioButton rb_UTR;
+		RadioButton rb_UTS;
+		RadioButton rb_UTT;
+		RadioButton rb_UTW;
 		RadioButton rb_WMP;
 
 		ToolTip toolTip1;
@@ -210,6 +214,7 @@ namespace generalgff
 			this.rb_UTI = new System.Windows.Forms.RadioButton();
 			this.rb_UTM = new System.Windows.Forms.RadioButton();
 			this.rb_UTP = new System.Windows.Forms.RadioButton();
+			this.rb_UTR = new System.Windows.Forms.RadioButton();
 			this.rb_UTS = new System.Windows.Forms.RadioButton();
 			this.rb_UTT = new System.Windows.Forms.RadioButton();
 			this.rb_UTW = new System.Windows.Forms.RadioButton();
@@ -259,7 +264,7 @@ namespace generalgff
 			this.pl_bot.Controls.Add(this.bt_Accept);
 			this.pl_bot.Controls.Add(this.bt_Cancel);
 			this.pl_bot.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.pl_bot.Location = new System.Drawing.Point(0, 280);
+			this.pl_bot.Location = new System.Drawing.Point(0, 300);
 			this.pl_bot.Margin = new System.Windows.Forms.Padding(0);
 			this.pl_bot.Name = "pl_bot";
 			this.pl_bot.Size = new System.Drawing.Size(164, 36);
@@ -287,6 +292,7 @@ namespace generalgff
 			this.gb_locale.Controls.Add(this.rb_UTI);
 			this.gb_locale.Controls.Add(this.rb_UTM);
 			this.gb_locale.Controls.Add(this.rb_UTP);
+			this.gb_locale.Controls.Add(this.rb_UTR);
 			this.gb_locale.Controls.Add(this.rb_UTS);
 			this.gb_locale.Controls.Add(this.rb_UTT);
 			this.gb_locale.Controls.Add(this.rb_UTW);
@@ -295,7 +301,7 @@ namespace generalgff
 			this.gb_locale.Location = new System.Drawing.Point(0, 20);
 			this.gb_locale.Margin = new System.Windows.Forms.Padding(0);
 			this.gb_locale.Name = "gb_locale";
-			this.gb_locale.Size = new System.Drawing.Size(164, 260);
+			this.gb_locale.Size = new System.Drawing.Size(164, 280);
 			this.gb_locale.TabIndex = 1;
 			this.gb_locale.TabStop = false;
 			// 
@@ -445,7 +451,7 @@ namespace generalgff
 			// 
 			// rb_ULT
 			// 
-			this.rb_ULT.Location = new System.Drawing.Point(100, 15);
+			this.rb_ULT.Location = new System.Drawing.Point(20, 255);
 			this.rb_ULT.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_ULT.Name = "rb_ULT";
 			this.rb_ULT.Size = new System.Drawing.Size(45, 20);
@@ -539,13 +545,25 @@ namespace generalgff
 			this.rb_UTP.UseVisualStyleBackColor = true;
 			this.rb_UTP.CheckedChanged += new System.EventHandler(this.checkchanged);
 			// 
+			// rb_UTR
+			// 
+			this.rb_UTR.Location = new System.Drawing.Point(100, 175);
+			this.rb_UTR.Margin = new System.Windows.Forms.Padding(0);
+			this.rb_UTR.Name = "rb_UTR";
+			this.rb_UTR.Size = new System.Drawing.Size(45, 20);
+			this.rb_UTR.TabIndex = 20;
+			this.rb_UTR.TabStop = true;
+			this.rb_UTR.Text = "UTR";
+			this.rb_UTR.UseVisualStyleBackColor = true;
+			this.rb_UTR.CheckedChanged += new System.EventHandler(this.checkchanged);
+			// 
 			// rb_UTS
 			// 
-			this.rb_UTS.Location = new System.Drawing.Point(100, 175);
+			this.rb_UTS.Location = new System.Drawing.Point(100, 195);
 			this.rb_UTS.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTS.Name = "rb_UTS";
 			this.rb_UTS.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTS.TabIndex = 20;
+			this.rb_UTS.TabIndex = 21;
 			this.rb_UTS.TabStop = true;
 			this.rb_UTS.Text = "UTS";
 			this.rb_UTS.UseVisualStyleBackColor = true;
@@ -553,11 +571,11 @@ namespace generalgff
 			// 
 			// rb_UTT
 			// 
-			this.rb_UTT.Location = new System.Drawing.Point(100, 195);
+			this.rb_UTT.Location = new System.Drawing.Point(100, 215);
 			this.rb_UTT.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTT.Name = "rb_UTT";
 			this.rb_UTT.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTT.TabIndex = 21;
+			this.rb_UTT.TabIndex = 22;
 			this.rb_UTT.TabStop = true;
 			this.rb_UTT.Text = "UTT";
 			this.rb_UTT.UseVisualStyleBackColor = true;
@@ -565,11 +583,11 @@ namespace generalgff
 			// 
 			// rb_UTW
 			// 
-			this.rb_UTW.Location = new System.Drawing.Point(100, 215);
+			this.rb_UTW.Location = new System.Drawing.Point(100, 235);
 			this.rb_UTW.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTW.Name = "rb_UTW";
 			this.rb_UTW.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTW.TabIndex = 22;
+			this.rb_UTW.TabIndex = 23;
 			this.rb_UTW.TabStop = true;
 			this.rb_UTW.Text = "UTW";
 			this.rb_UTW.UseVisualStyleBackColor = true;
@@ -577,11 +595,11 @@ namespace generalgff
 			// 
 			// rb_WMP
 			// 
-			this.rb_WMP.Location = new System.Drawing.Point(100, 235);
+			this.rb_WMP.Location = new System.Drawing.Point(100, 255);
 			this.rb_WMP.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_WMP.Name = "rb_WMP";
 			this.rb_WMP.Size = new System.Drawing.Size(45, 20);
-			this.rb_WMP.TabIndex = 23;
+			this.rb_WMP.TabIndex = 24;
 			this.rb_WMP.TabStop = true;
 			this.rb_WMP.Text = "WMP";
 			this.rb_WMP.UseVisualStyleBackColor = true;
@@ -601,7 +619,7 @@ namespace generalgff
 			// 
 			this.AcceptButton = this.bt_Accept;
 			this.CancelButton = this.bt_Cancel;
-			this.ClientSize = new System.Drawing.Size(164, 316);
+			this.ClientSize = new System.Drawing.Size(164, 336);
 			this.Controls.Add(this.gb_locale);
 			this.Controls.Add(this.pl_bot);
 			this.Controls.Add(this.la_head);
