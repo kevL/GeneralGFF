@@ -48,7 +48,7 @@ namespace generalgff
 
 			//logfile.Log(". pfeT= " + pfeT);
 
-			using (var fs = FileService.CreateFile(pfeT))
+			var fs = FileService.CreateFile(pfeT);
 			if (fs != null)
 			{
 				_le = BitConverter.IsLittleEndian;
@@ -168,6 +168,9 @@ namespace generalgff
 				buffer = ListIds.ToArray();
 				//logfile.Log("ListIds length= " + buffer.Length);
 				fs.Write(buffer, 0, buffer.Length);
+
+
+				fs.Close();
 
 				if (pfeT != pfe)
 					return FileService.ReplaceFile(pfe);
