@@ -10,8 +10,8 @@ namespace generalgff
 	static class FileService
 	{
 		#region Fields (static)
-		internal const string EXT_T = ".t";
-				 const string EXT_B = ".tb";
+		internal const string EXT_T = ".t"; // a temporary file
+				 const string EXT_B = ".b"; // a backup file
 		#endregion Fields (static)
 
 
@@ -80,7 +80,7 @@ namespace generalgff
 
 		/// <summary>
 		/// Replaces a file with another file (that has a ".t" extension) after
-		/// making a backup (".t1") of the destination file. If the destination
+		/// making a backup (".b") of the destination file. If the destination
 		/// file does not exist, a copy-delete operation is performed instead of
 		/// a backup.
 		/// IMPORTANT: The source file must have the name and extension of the
@@ -134,7 +134,7 @@ namespace generalgff
 					return false;
 				}
 
-				// this deletes the .t1 backup. Disable this try/catch block to keep the backup.
+				// this deletes the ".b" backup. Disable this try/catch block to keep the backup file.
 				try
 				{
 					File.Delete(pfeBackup);
