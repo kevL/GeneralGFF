@@ -146,7 +146,10 @@ namespace generalgff
 				ContextMenu.MenuItems.Add(new MenuItem("add DOUBLE (8-byte float)",         contextclick_AddDouble));
 				ContextMenu.MenuItems.Add(new MenuItem("add CResRef (32-chars ASCII)",      contextclick_AddCResRef));
 				ContextMenu.MenuItems.Add(new MenuItem("add CExoString (UTF8)",             contextclick_AddCExoString));
-				ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (24-bit strref)", contextclick_AddCExoLocString));
+				// for DAO ->
+				ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (strref)",        contextclick_AddCExoLocString));
+				// for Nwn1/2 ->
+//				ContextMenu.MenuItems.Add(new MenuItem("add CExoLocString (24-bit strref)", contextclick_AddCExoLocString));
 				ContextMenu.MenuItems.Add(new MenuItem("add VOID (raw byte data)",          contextclick_AddVoid));
 				ContextMenu.MenuItems.Add(new MenuItem("add List (list of structs)",        contextclick_AddList));
 				ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)",       contextclick_AddStruct));
@@ -351,7 +354,10 @@ namespace generalgff
 			var field = new GffData.Field();
 			field.type = FieldTypes.CExoLocString;
 			field.label = GetUniqueLabel();
-			field.CExoLocStrref = UInt32.MaxValue;
+			// for DAO ->
+			field.CExoLocStrref = 0;
+			// for Nwn1/2 ->
+//			field.CExoLocStrref = UInt32.MaxValue;
 
 			AddField(field);
 		}

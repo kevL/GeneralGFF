@@ -347,11 +347,15 @@ namespace generalgff
 
 				case FieldTypes.CExoLocString:
 				{
-					uint strref = field.CExoLocStrref;
+					// for DAO ->
+					return field.CExoLocStrref.ToString();
+
+					// for Nwn1/2 ->
+/*					uint strref = field.CExoLocStrref;
 					if (strref != UInt32.MaxValue)
 						return strref.ToString();
 
-					return "-1";
+					return "-1"; */
 				}
 
 				case FieldTypes.VOID:
@@ -1536,9 +1540,12 @@ namespace generalgff
 
 						case FieldTypes.CResRef:
 						{
-							// nwn2-style resrefs (32-chars)
 							// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
-							if (tb_Val.Text.Length < 33 && isPrintableAscii(tb_Val.Text))
+
+							// for DAO ->
+							if (tb_Val.Text.Length <= (int)Byte.MaxValue && isPrintableAscii(tb_Val.Text))
+							// nwn2-style resrefs (32-chars)
+//							if (tb_Val.Text.Length < 33 && isPrintableAscii(tb_Val.Text))
 							{
 								valid = true;
 
@@ -1567,9 +1574,26 @@ namespace generalgff
 						case FieldTypes.CExoLocString:
 						{
 							// NOTE: The GFF-specification stores strrefs as Uint32.
-							val = TrimInteger(tb_Val.Text);
 
-							bool isCust = cb_Custo.Checked;
+							// for DAO -> cf. 'case FieldTypes.DWORD'
+							uint result;
+							if (valid = UInt32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
+							{
+								field.CExoLocStrref = result;
+
+								if (val != tb_Val.Text)
+								{
+									tb_Val.Text = val;
+									RepositionCaret(tb_Val);
+								}
+								_prevalText_tb = val;
+							}
+
+
+							// for Nwn1/2 ->
+/*							bool isCust = cb_Custo.Checked;
+
+							val = TrimInteger(tb_Val.Text);
 
 							uint result;
 							if (val == "-1")
@@ -1619,7 +1643,7 @@ namespace generalgff
 									RepositionCaret(tb_Val);
 								}
 								_prevalText_tb = val;
-							}
+							} */
 							break;
 						}
 
@@ -2078,7 +2102,11 @@ namespace generalgff
 					}
 
 					case FieldTypes.CResRef:
-						la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII lc";
+						// for DAO ->
+						la_Des.Text = "256-chars Max" + Environment.NewLine + "ASCII lc";
+						// for Nwn1/2 ->
+//						la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII lc";
+
 						la_Val.Text = "CResRef";
 
 						tb_Val.Enabled   = true;
@@ -2101,7 +2129,18 @@ namespace generalgff
 
 					case FieldTypes.CExoLocString: // not a string. Is an integer.
 					{
-						la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
+						// for DAO ->
+						la_Des.Text = "strref" + Environment.NewLine + "0.." + UInt32.MaxValue;
+						la_Val.Text = "CExoLocString";
+
+						tb_Val.Enabled   = true;
+						tb_Val.BackColor = Color.Honeydew;
+
+						tb_Val.Text = (_prevalText_tb = _edittext = field.CExoLocStrref.ToString());
+
+
+						// for Nwn1/2 ->
+/*						la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
 						la_Val.Text = "CExoLocString";
 
 						tb_Val.Enabled   = true;
@@ -2118,7 +2157,7 @@ namespace generalgff
 							cb_Custo.Checked = (_prevalCusto = (strref & Globals.BITS_CUSTOM) != 0);
 
 							tb_Val.Text = (_prevalText_tb = _edittext = (strref & Globals.BITS_STRREF).ToString());
-						}
+						} */
 						break;
 					}
 
