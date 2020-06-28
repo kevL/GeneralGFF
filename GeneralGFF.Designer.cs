@@ -237,7 +237,7 @@ namespace generalgff
 			this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.Name = "GeneralGFF";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-			this.Text = "GeneralGFF";
+			this.Text = "daoGFF";
 			this.sc_body.Panel2.ResumeLayout(false);
 			this.sc_body.Panel2.PerformLayout();
 			this.sc_body.ResumeLayout(false);

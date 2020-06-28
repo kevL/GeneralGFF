@@ -22,7 +22,7 @@ namespace generalgff
 			Form
 	{
 		#region Fields (static)
-		const string TITLE = "GeneralGFF";
+		const string TITLE = "daoGFF";
 
 		/// <summary>
 		/// Total width in characters allowed for the label in the treenode text.
@@ -1133,9 +1133,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		void helpclick_About(object sender, EventArgs e)
 		{
-			string text = "GeneralGFF Editor"
+			string text = "daoGFF Editor"
 						+ Environment.NewLine
-						+ "- for Neverwinter Nights 2"
+						+ "- for Dragon Age: Origins"
 						+ Environment.NewLine + Environment.NewLine;
 
 			var an = Assembly.GetExecutingAssembly().GetName();
