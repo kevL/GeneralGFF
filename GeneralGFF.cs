@@ -2153,9 +2153,7 @@ namespace generalgff
 							tb_Val.Text = (_prevalText_tb = _edittext = "-1");
 						}
 						else
-						{
-							tb_Val.Text = (_prevalText_tb = _edittext = field.CExoLocStrref.ToString());
-						}
+							tb_Val.Text = (_prevalText_tb = _edittext = strref.ToString());
 
 
 						// for Nwn1/2 ->
