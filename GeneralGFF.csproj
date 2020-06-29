@@ -131,4 +131,5 @@
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <PostBuildEvent>copy /y C:\GIT\GeneralGFF\bin\Release\GeneralGFF.exe "C:\Program Files\GeneralGFF\"</PostBuildEvent>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'x86' " />
 </Project>
