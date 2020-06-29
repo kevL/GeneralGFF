@@ -135,7 +135,4 @@
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <FileAlignment>4096</FileAlignment>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PostBuildEvent>copy /y C:\GIT\GeneralGFF\bin\Release\GeneralGFF.exe "C:\Program Files\GeneralGFF\"</PostBuildEvent>
-  </PropertyGroup>
 </Project>
