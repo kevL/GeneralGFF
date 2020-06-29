@@ -347,15 +347,11 @@ namespace generalgff
 
 				case FieldTypes.CExoLocString:
 				{
-					// for DAO ->
-					return field.CExoLocStrref.ToString();
-
-					// for Nwn1/2 ->
-/*					uint strref = field.CExoLocStrref;
+					uint strref = field.CExoLocStrref;
 					if (strref != UInt32.MaxValue)
 						return strref.ToString();
 
-					return "-1"; */
+					return "-1";
 				}
 
 				case FieldTypes.VOID:
@@ -1576,8 +1572,23 @@ namespace generalgff
 							// NOTE: The GFF-specification stores strrefs as Uint32.
 
 							// for DAO -> cf. 'case FieldTypes.DWORD'
+							val = TrimInteger(tb_Val.Text);
+
 							uint result;
-							if (valid = UInt32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
+							if (val == "-1")
+							{
+								valid = true;
+								result = UInt32.MaxValue;
+							}
+							else if (UInt32.TryParse(val, out result))
+							{
+								valid = true;
+
+								if (result == UInt32.MaxValue)
+									val = "-1";
+							}
+
+							if (valid)
 							{
 								field.CExoLocStrref = result;
 
@@ -2130,13 +2141,21 @@ namespace generalgff
 					case FieldTypes.CExoLocString: // not a string. Is an integer.
 					{
 						// for DAO ->
-						la_Des.Text = "strref" + Environment.NewLine + "0.." + UInt32.MaxValue;
+						la_Des.Text = "strref" + Environment.NewLine + "-1.." + (UInt32.MaxValue - 1);
 						la_Val.Text = "CExoLocString";
 
 						tb_Val.Enabled   = true;
 						tb_Val.BackColor = Color.Honeydew;
 
-						tb_Val.Text = (_prevalText_tb = _edittext = field.CExoLocStrref.ToString());
+						uint strref = field.CExoLocStrref;
+						if (strref == UInt32.MaxValue)
+						{
+							tb_Val.Text = (_prevalText_tb = _edittext = "-1");
+						}
+						else
+						{
+							tb_Val.Text = (_prevalText_tb = _edittext = field.CExoLocStrref.ToString());
+						}
 
 
 						// for Nwn1/2 ->

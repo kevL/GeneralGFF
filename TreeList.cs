@@ -354,10 +354,7 @@ namespace generalgff
 			var field = new GffData.Field();
 			field.type = FieldTypes.CExoLocString;
 			field.label = GetUniqueLabel();
-			// for DAO ->
-			field.CExoLocStrref = 0;
-			// for Nwn1/2 ->
-//			field.CExoLocStrref = UInt32.MaxValue;
+			field.CExoLocStrref = UInt32.MaxValue;
 
 			AddField(field);
 		}
