@@ -87,7 +87,8 @@ namespace generalgff
 					@checked = false;
 				}
 
-				@checked = (Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked &= @checked);
+				@checked = @checked
+						&& Menu.MenuItems[MenuCreator.MI_EXTS].MenuItems[MenuCreator.MI_EXTS_EXT].Checked;
 				SetExtensionEnabled(@checked);
 			}
 		}
@@ -526,7 +527,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void splitCont_MouseDown(object sender, MouseEventArgs e)
 		{
-			((SplitContainer)sender).IsSplitterFixed = true;
+			(sender as SplitContainer).IsSplitterFixed = true;
 		}
 
 		/// <summary>
@@ -537,7 +538,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void splitCont_MouseUp(object sender, MouseEventArgs e)
 		{
-			((SplitContainer)sender).IsSplitterFixed = false;
+			(sender as SplitContainer).IsSplitterFixed = false;
 			Cursor = Cursors.Default; // kL_add.
 		}
 
@@ -549,28 +550,29 @@ namespace generalgff
 		/// <param name="e"></param>
 		void splitCont_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (((SplitContainer)sender).IsSplitterFixed)
+			var sc = sender as SplitContainer;
+			if (sc.IsSplitterFixed)
 			{
 				if (e.Button.Equals(MouseButtons.Left))
 				{
 					Cursor = Cursors.VSplit; // kL_add.
 
-//					if (((SplitContainer)sender).Orientation.Equals(Orientation.Vertical))
+//					if (sc.Orientation.Equals(Orientation.Vertical))
 //					{
-					if (e.X > 0 && e.X < ((SplitContainer)sender).Width)
+					if (e.X > 0 && e.X < sc.Width)
 					{
-						((SplitContainer)sender).SplitterDistance = e.X;
-						((SplitContainer)sender).Refresh();
+						sc.SplitterDistance = e.X;
+						sc.Refresh();
 					}
 //					}
-//					else if (e.Y > 0 && e.Y < ((SplitContainer)sender).Height)
+//					else if (e.Y > 0 && e.Y < sc.Height)
 //					{
-//						((SplitContainer)sender).SplitterDistance = e.Y;
-//						((SplitContainer)sender).Refresh();
+//						sc.SplitterDistance = e.Y;
+//						sc.Refresh();
 //					}
 				}
 				else
-					((SplitContainer)sender).IsSplitterFixed = false;
+					sc.IsSplitterFixed = false;
 			}
 		}
 		#endregion Handlers (splitter)
