@@ -77,21 +77,22 @@ namespace generalgff
 		GIT,		//  7
 		IFO,		//  8
 		JRL,		//  9
-		ROS,		// 10
-		RST,		// 11
-		ULT,		// 12
-		UPE,		// 13
-		UTC,		// 14
-		UTD,		// 15
-		UTE,		// 16
-		UTI,		// 17
-		UTM,		// 18
-		UTP,		// 19
-		UTR,		// 20
-		UTS,		// 21
-		UTT,		// 22
-		UTW,		// 23
-		WMP			// 24
+		PFB,		// 10
+		ROS,		// 11
+		RST,		// 12
+		ULT,		// 13
+		UPE,		// 14
+		UTC,		// 15
+		UTD,		// 16
+		UTE,		// 17
+		UTI,		// 18
+		UTM,		// 19
+		UTP,		// 20
+		UTR,		// 21
+		UTS,		// 22
+		UTT,		// 23
+		UTW,		// 24
+		WMP			// 25
 	}
 	#endregion Enums (global)
 
@@ -388,6 +389,7 @@ namespace generalgff
 				case "GIT": return GffType.GIT; // area object-lists (incl/ area-properties and object-data)
 				case "IFO": return GffType.IFO; // (1) module info (2) saved player character list and data
 				case "JRL": return GffType.JRL; // journal
+				case "PFB": return GffType.PFB; // prefab
 				case "ROS": return GffType.ROS; // roster character
 				case "RST": return GffType.RST; // rosterlist
 				case "ULT": return GffType.ULT; // light effect
@@ -425,6 +427,7 @@ namespace generalgff
 				case GffType.GIT: return "GIT"; // area object-lists (incl/ area-properties and object-data)
 				case GffType.IFO: return "IFO"; // (1) module info (2) saved player character list and data
 				case GffType.JRL: return "JRL"; // journal
+				case GffType.PFB: return "PFB"; // prefab
 				case GffType.ROS: return "ROS"; // roster character
 				case GffType.RST: return "RST"; // rosterlist
 				case GffType.ULT: return "ULT"; // light effect
@@ -460,6 +463,7 @@ namespace generalgff
 				+ "|" + GIT + "|*.GIT"
 				+ "|" + IFO + "|*.IFO"
 				+ "|" + JRL + "|*.JRL"
+				+ "|" + PFB + "|*.PFB"
 				+ "|" + ROS + "|*.ROS"
 				+ "|" + RST + "|*.RST"
 				+ "|" + ULT + "|*.ULT"
@@ -490,6 +494,7 @@ namespace generalgff
 		internal const string GIT = "area properties and objects";
 		internal const string IFO = "module info or playerlist info";
 		internal const string JRL = "journal";
+		internal const string PFB = "prefab";
 		internal const string ROS = "roster character";
 		internal const string RST = "rosterlist";
 		internal const string ULT = "light effect";

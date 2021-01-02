@@ -31,6 +31,7 @@ namespace generalgff
 			rb_GIT.Tag = GffType.GIT;
 			rb_IFO.Tag = GffType.IFO;
 			rb_JRL.Tag = GffType.JRL;
+			rb_PFB.Tag = GffType.PFB;
 			rb_ROS.Tag = GffType.ROS;
 			rb_RST.Tag = GffType.RST;
 			rb_ULT.Tag = GffType.ULT;
@@ -59,6 +60,7 @@ namespace generalgff
 				case GffType.GIT:     rb_GIT.Checked = true; break;
 				case GffType.IFO:     rb_IFO.Checked = true; break;
 				case GffType.JRL:     rb_JRL.Checked = true; break;
+				case GffType.PFB:     rb_PFB.Checked = true; break;
 				case GffType.ROS:     rb_ROS.Checked = true; break;
 				case GffType.RST:     rb_RST.Checked = true; break;
 				case GffType.ULT:     rb_ULT.Checked = true; break;
@@ -93,6 +95,7 @@ namespace generalgff
 			toolTip1.SetToolTip(rb_GIT, GffData.GIT);
 			toolTip1.SetToolTip(rb_IFO, GffData.IFO);
 			toolTip1.SetToolTip(rb_JRL, GffData.JRL);
+			toolTip1.SetToolTip(rb_PFB, GffData.PFB);
 			toolTip1.SetToolTip(rb_ROS, GffData.ROS);
 			toolTip1.SetToolTip(rb_RST, GffData.RST);
 			toolTip1.SetToolTip(rb_ULT, GffData.ULT);
@@ -120,7 +123,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void checkchanged(object sender, EventArgs e)
 		{
-			TreeList._typeid = (GffType)((RadioButton)sender).Tag;
+			TreeList._typeid = (GffType)(sender as RadioButton).Tag;
 		}
 		#endregion Handlers
 
@@ -137,7 +140,7 @@ namespace generalgff
 		Button bt_Cancel;
 		Panel pl_bot;
 
-		GroupBox gb_locale;
+		GroupBox gb_type;
 		RadioButton rb_Gen;
 		RadioButton rb_ARE;
 		RadioButton rb_BIC;
@@ -148,6 +151,7 @@ namespace generalgff
 		RadioButton rb_GIT;
 		RadioButton rb_IFO;
 		RadioButton rb_JRL;
+		RadioButton rb_PFB;
 		RadioButton rb_ROS;
 		RadioButton rb_RST;
 		RadioButton rb_ULT;
@@ -193,7 +197,7 @@ namespace generalgff
 			this.bt_Accept = new System.Windows.Forms.Button();
 			this.bt_Cancel = new System.Windows.Forms.Button();
 			this.pl_bot = new System.Windows.Forms.Panel();
-			this.gb_locale = new System.Windows.Forms.GroupBox();
+			this.gb_type = new System.Windows.Forms.GroupBox();
 			this.rb_Gen = new System.Windows.Forms.RadioButton();
 			this.rb_ARE = new System.Windows.Forms.RadioButton();
 			this.rb_BIC = new System.Windows.Forms.RadioButton();
@@ -204,6 +208,7 @@ namespace generalgff
 			this.rb_GIT = new System.Windows.Forms.RadioButton();
 			this.rb_IFO = new System.Windows.Forms.RadioButton();
 			this.rb_JRL = new System.Windows.Forms.RadioButton();
+			this.rb_PFB = new System.Windows.Forms.RadioButton();
 			this.rb_ROS = new System.Windows.Forms.RadioButton();
 			this.rb_RST = new System.Windows.Forms.RadioButton();
 			this.rb_ULT = new System.Windows.Forms.RadioButton();
@@ -221,7 +226,7 @@ namespace generalgff
 			this.rb_WMP = new System.Windows.Forms.RadioButton();
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.pl_bot.SuspendLayout();
-			this.gb_locale.SuspendLayout();
+			this.gb_type.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// la_head
@@ -270,40 +275,42 @@ namespace generalgff
 			this.pl_bot.Size = new System.Drawing.Size(164, 36);
 			this.pl_bot.TabIndex = 2;
 			// 
-			// gb_locale
+			// gb_type
 			// 
-			this.gb_locale.Controls.Add(this.rb_Gen);
-			this.gb_locale.Controls.Add(this.rb_ARE);
-			this.gb_locale.Controls.Add(this.rb_BIC);
-			this.gb_locale.Controls.Add(this.rb_CAM);
-			this.gb_locale.Controls.Add(this.rb_DLG);
-			this.gb_locale.Controls.Add(this.rb_FAC);
-			this.gb_locale.Controls.Add(this.rb_GIC);
-			this.gb_locale.Controls.Add(this.rb_GIT);
-			this.gb_locale.Controls.Add(this.rb_IFO);
-			this.gb_locale.Controls.Add(this.rb_JRL);
-			this.gb_locale.Controls.Add(this.rb_ROS);
-			this.gb_locale.Controls.Add(this.rb_RST);
-			this.gb_locale.Controls.Add(this.rb_ULT);
-			this.gb_locale.Controls.Add(this.rb_UPE);
-			this.gb_locale.Controls.Add(this.rb_UTC);
-			this.gb_locale.Controls.Add(this.rb_UTD);
-			this.gb_locale.Controls.Add(this.rb_UTE);
-			this.gb_locale.Controls.Add(this.rb_UTI);
-			this.gb_locale.Controls.Add(this.rb_UTM);
-			this.gb_locale.Controls.Add(this.rb_UTP);
-			this.gb_locale.Controls.Add(this.rb_UTR);
-			this.gb_locale.Controls.Add(this.rb_UTS);
-			this.gb_locale.Controls.Add(this.rb_UTT);
-			this.gb_locale.Controls.Add(this.rb_UTW);
-			this.gb_locale.Controls.Add(this.rb_WMP);
-			this.gb_locale.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.gb_locale.Location = new System.Drawing.Point(0, 20);
-			this.gb_locale.Margin = new System.Windows.Forms.Padding(0);
-			this.gb_locale.Name = "gb_locale";
-			this.gb_locale.Size = new System.Drawing.Size(164, 280);
-			this.gb_locale.TabIndex = 1;
-			this.gb_locale.TabStop = false;
+			this.gb_type.Controls.Add(this.rb_Gen);
+			this.gb_type.Controls.Add(this.rb_ARE);
+			this.gb_type.Controls.Add(this.rb_BIC);
+			this.gb_type.Controls.Add(this.rb_CAM);
+			this.gb_type.Controls.Add(this.rb_DLG);
+			this.gb_type.Controls.Add(this.rb_FAC);
+			this.gb_type.Controls.Add(this.rb_GIC);
+			this.gb_type.Controls.Add(this.rb_GIT);
+			this.gb_type.Controls.Add(this.rb_IFO);
+			this.gb_type.Controls.Add(this.rb_JRL);
+			this.gb_type.Controls.Add(this.rb_PFB);
+			this.gb_type.Controls.Add(this.rb_ROS);
+			this.gb_type.Controls.Add(this.rb_RST);
+			this.gb_type.Controls.Add(this.rb_ULT);
+			this.gb_type.Controls.Add(this.rb_UPE);
+			this.gb_type.Controls.Add(this.rb_UTC);
+			this.gb_type.Controls.Add(this.rb_UTD);
+			this.gb_type.Controls.Add(this.rb_UTE);
+			this.gb_type.Controls.Add(this.rb_UTI);
+			this.gb_type.Controls.Add(this.rb_UTM);
+			this.gb_type.Controls.Add(this.rb_UTP);
+			this.gb_type.Controls.Add(this.rb_UTR);
+			this.gb_type.Controls.Add(this.rb_UTS);
+			this.gb_type.Controls.Add(this.rb_UTT);
+			this.gb_type.Controls.Add(this.rb_UTW);
+			this.gb_type.Controls.Add(this.rb_WMP);
+			this.gb_type.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.gb_type.Location = new System.Drawing.Point(0, 20);
+			this.gb_type.Margin = new System.Windows.Forms.Padding(0);
+			this.gb_type.Name = "gb_type";
+			this.gb_type.Padding = new System.Windows.Forms.Padding(0);
+			this.gb_type.Size = new System.Drawing.Size(164, 280);
+			this.gb_type.TabIndex = 1;
+			this.gb_type.TabStop = false;
 			// 
 			// rb_Gen
 			// 
@@ -425,13 +432,25 @@ namespace generalgff
 			this.rb_JRL.UseVisualStyleBackColor = true;
 			this.rb_JRL.CheckedChanged += new System.EventHandler(this.checkchanged);
 			// 
+			// rb_PFB
+			// 
+			this.rb_PFB.Location = new System.Drawing.Point(20, 215);
+			this.rb_PFB.Margin = new System.Windows.Forms.Padding(0);
+			this.rb_PFB.Name = "rb_PFB";
+			this.rb_PFB.Size = new System.Drawing.Size(45, 20);
+			this.rb_PFB.TabIndex = 10;
+			this.rb_PFB.TabStop = true;
+			this.rb_PFB.Text = "PFB";
+			this.rb_PFB.UseVisualStyleBackColor = true;
+			this.rb_PFB.CheckedChanged += new System.EventHandler(this.checkchanged);
+			// 
 			// rb_ROS
 			// 
-			this.rb_ROS.Location = new System.Drawing.Point(20, 215);
+			this.rb_ROS.Location = new System.Drawing.Point(20, 235);
 			this.rb_ROS.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_ROS.Name = "rb_ROS";
 			this.rb_ROS.Size = new System.Drawing.Size(45, 20);
-			this.rb_ROS.TabIndex = 10;
+			this.rb_ROS.TabIndex = 11;
 			this.rb_ROS.TabStop = true;
 			this.rb_ROS.Text = "ROS";
 			this.rb_ROS.UseVisualStyleBackColor = true;
@@ -439,11 +458,11 @@ namespace generalgff
 			// 
 			// rb_RST
 			// 
-			this.rb_RST.Location = new System.Drawing.Point(20, 235);
+			this.rb_RST.Location = new System.Drawing.Point(20, 255);
 			this.rb_RST.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_RST.Name = "rb_RST";
 			this.rb_RST.Size = new System.Drawing.Size(45, 20);
-			this.rb_RST.TabIndex = 11;
+			this.rb_RST.TabIndex = 12;
 			this.rb_RST.TabStop = true;
 			this.rb_RST.Text = "RST";
 			this.rb_RST.UseVisualStyleBackColor = true;
@@ -451,11 +470,11 @@ namespace generalgff
 			// 
 			// rb_ULT
 			// 
-			this.rb_ULT.Location = new System.Drawing.Point(20, 255);
+			this.rb_ULT.Location = new System.Drawing.Point(100, 15);
 			this.rb_ULT.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_ULT.Name = "rb_ULT";
 			this.rb_ULT.Size = new System.Drawing.Size(45, 20);
-			this.rb_ULT.TabIndex = 12;
+			this.rb_ULT.TabIndex = 13;
 			this.rb_ULT.TabStop = true;
 			this.rb_ULT.Text = "ULT";
 			this.rb_ULT.UseVisualStyleBackColor = true;
@@ -467,7 +486,7 @@ namespace generalgff
 			this.rb_UPE.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UPE.Name = "rb_UPE";
 			this.rb_UPE.Size = new System.Drawing.Size(45, 20);
-			this.rb_UPE.TabIndex = 13;
+			this.rb_UPE.TabIndex = 14;
 			this.rb_UPE.TabStop = true;
 			this.rb_UPE.Text = "UPE";
 			this.rb_UPE.UseVisualStyleBackColor = true;
@@ -479,7 +498,7 @@ namespace generalgff
 			this.rb_UTC.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTC.Name = "rb_UTC";
 			this.rb_UTC.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTC.TabIndex = 14;
+			this.rb_UTC.TabIndex = 15;
 			this.rb_UTC.TabStop = true;
 			this.rb_UTC.Text = "UTC";
 			this.rb_UTC.UseVisualStyleBackColor = true;
@@ -491,7 +510,7 @@ namespace generalgff
 			this.rb_UTD.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTD.Name = "rb_UTD";
 			this.rb_UTD.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTD.TabIndex = 15;
+			this.rb_UTD.TabIndex = 16;
 			this.rb_UTD.TabStop = true;
 			this.rb_UTD.Text = "UTD";
 			this.rb_UTD.UseVisualStyleBackColor = true;
@@ -503,7 +522,7 @@ namespace generalgff
 			this.rb_UTE.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTE.Name = "rb_UTE";
 			this.rb_UTE.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTE.TabIndex = 16;
+			this.rb_UTE.TabIndex = 17;
 			this.rb_UTE.TabStop = true;
 			this.rb_UTE.Text = "UTE";
 			this.rb_UTE.UseVisualStyleBackColor = true;
@@ -515,7 +534,7 @@ namespace generalgff
 			this.rb_UTI.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTI.Name = "rb_UTI";
 			this.rb_UTI.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTI.TabIndex = 17;
+			this.rb_UTI.TabIndex = 18;
 			this.rb_UTI.TabStop = true;
 			this.rb_UTI.Text = "UTI";
 			this.rb_UTI.UseVisualStyleBackColor = true;
@@ -527,7 +546,7 @@ namespace generalgff
 			this.rb_UTM.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTM.Name = "rb_UTM";
 			this.rb_UTM.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTM.TabIndex = 18;
+			this.rb_UTM.TabIndex = 19;
 			this.rb_UTM.TabStop = true;
 			this.rb_UTM.Text = "UTM";
 			this.rb_UTM.UseVisualStyleBackColor = true;
@@ -539,7 +558,7 @@ namespace generalgff
 			this.rb_UTP.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTP.Name = "rb_UTP";
 			this.rb_UTP.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTP.TabIndex = 19;
+			this.rb_UTP.TabIndex = 20;
 			this.rb_UTP.TabStop = true;
 			this.rb_UTP.Text = "UTP";
 			this.rb_UTP.UseVisualStyleBackColor = true;
@@ -551,7 +570,7 @@ namespace generalgff
 			this.rb_UTR.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTR.Name = "rb_UTR";
 			this.rb_UTR.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTR.TabIndex = 20;
+			this.rb_UTR.TabIndex = 21;
 			this.rb_UTR.TabStop = true;
 			this.rb_UTR.Text = "UTR";
 			this.rb_UTR.UseVisualStyleBackColor = true;
@@ -563,7 +582,7 @@ namespace generalgff
 			this.rb_UTS.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTS.Name = "rb_UTS";
 			this.rb_UTS.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTS.TabIndex = 21;
+			this.rb_UTS.TabIndex = 22;
 			this.rb_UTS.TabStop = true;
 			this.rb_UTS.Text = "UTS";
 			this.rb_UTS.UseVisualStyleBackColor = true;
@@ -575,7 +594,7 @@ namespace generalgff
 			this.rb_UTT.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTT.Name = "rb_UTT";
 			this.rb_UTT.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTT.TabIndex = 22;
+			this.rb_UTT.TabIndex = 23;
 			this.rb_UTT.TabStop = true;
 			this.rb_UTT.Text = "UTT";
 			this.rb_UTT.UseVisualStyleBackColor = true;
@@ -587,7 +606,7 @@ namespace generalgff
 			this.rb_UTW.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_UTW.Name = "rb_UTW";
 			this.rb_UTW.Size = new System.Drawing.Size(45, 20);
-			this.rb_UTW.TabIndex = 23;
+			this.rb_UTW.TabIndex = 24;
 			this.rb_UTW.TabStop = true;
 			this.rb_UTW.Text = "UTW";
 			this.rb_UTW.UseVisualStyleBackColor = true;
@@ -599,7 +618,7 @@ namespace generalgff
 			this.rb_WMP.Margin = new System.Windows.Forms.Padding(0);
 			this.rb_WMP.Name = "rb_WMP";
 			this.rb_WMP.Size = new System.Drawing.Size(45, 20);
-			this.rb_WMP.TabIndex = 24;
+			this.rb_WMP.TabIndex = 25;
 			this.rb_WMP.TabStop = true;
 			this.rb_WMP.Text = "WMP";
 			this.rb_WMP.UseVisualStyleBackColor = true;
@@ -620,7 +639,7 @@ namespace generalgff
 			this.AcceptButton = this.bt_Accept;
 			this.CancelButton = this.bt_Cancel;
 			this.ClientSize = new System.Drawing.Size(164, 336);
-			this.Controls.Add(this.gb_locale);
+			this.Controls.Add(this.gb_type);
 			this.Controls.Add(this.pl_bot);
 			this.Controls.Add(this.la_head);
 			this.Font = new System.Drawing.Font("Consolas", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -633,7 +652,7 @@ namespace generalgff
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
 			this.Text = "GFF Type";
 			this.pl_bot.ResumeLayout(false);
-			this.gb_locale.ResumeLayout(false);
+			this.gb_type.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
