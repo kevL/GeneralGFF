@@ -730,8 +730,20 @@ German				2
 Italian				3
 Spanish				4
 Polish				5
+Russian				6 <- nwn2 add (not in the nwn1 doc)
 Korean				128
 Chinese Traditional	129
 Chinese Simplified	130
 Japanese			131
+
+GffToken			4294967294 -> 0xFFFFFFFE
+					// TlkEdit2 defines the Locale: "GffToken".
+					// It can appear (output by the NwN2 executable itself) as either the
+					//   "LocalizedName" (eg. "Battleaxe +2")
+					// or
+					//   "LastName" (eg. "DoneOnce7=1")
+					// within an item's Struct under either
+					//   "ItemList"
+					// or
+					//   "Equip_ItemList"
 */
