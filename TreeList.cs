@@ -425,8 +425,8 @@ namespace generalgff
 		}
 
 
-		internal static Languages _langid;
-		internal static bool      _langf;
+		internal static Language _langid;
+		internal static bool     _langf;
 
 		/// <summary>
 		/// Adds a Locale to a CExoLocString Field.

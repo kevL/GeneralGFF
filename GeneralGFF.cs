@@ -206,7 +206,7 @@ namespace generalgff
 				label += " ";
 
 			bool token = locale != null
-					  && locale.langid == Languages.GffToken;
+					  && locale.langid == Language.GffToken;
 
 			string label2 = " [" + GetTypeString(field.type, token) + "]";
 			while (label2.Length != LENGTH_TYPE)
@@ -2160,7 +2160,7 @@ namespace generalgff
 						var parent = (GffData.Field)_tl.SelectedNode.Parent.Tag;
 						GffData.Locale locale = parent.Locales[(int)field.localeid];
 
-						if (locale.langid == Languages.GffToken)
+						if (locale.langid == Language.GffToken)
 						{
 							la_Des.Text = "UTF8";
 							la_Val.Text = "GffToken";

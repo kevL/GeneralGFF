@@ -552,7 +552,7 @@ namespace generalgff
 
 						locale = ((GffData.Field)node.Tag).Locales[i];
 
-						if (locale.langid != Languages.GffToken)
+						if (locale.langid != Language.GffToken)
 						{
 							langid = (int)locale.langid * 2;
 							if (locale.F) ++langid;

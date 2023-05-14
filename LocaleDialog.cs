@@ -59,18 +59,18 @@ namespace generalgff
 			if (edit) la_head.Text = "edit Locale";
 			else      la_head.Text = "add Locale";
 
-			rb_English .Tag                    = Languages.English;
-			rb_French  .Tag = rb_FrenchF  .Tag = Languages.French;
-			rb_German  .Tag = rb_GermanF  .Tag = Languages.German;
-			rb_Italian .Tag = rb_ItalianF .Tag = Languages.Italian;
-			rb_Spanish .Tag = rb_SpanishF .Tag = Languages.Spanish;
-			rb_Polish  .Tag = rb_PolishF  .Tag = Languages.Polish;
-			rb_Russian .Tag = rb_RussianF .Tag = Languages.Russian;
-			rb_Korean  .Tag = rb_KoreanF  .Tag = Languages.Korean;
-			rb_ChineseT.Tag = rb_ChineseTF.Tag = Languages.ChineseTraditional;
-			rb_ChineseS.Tag = rb_ChineseSF.Tag = Languages.ChineseSimplified;
-			rb_Japanese.Tag = rb_JapaneseF.Tag = Languages.Japanese;
-			rb_GffToken.Tag                    = Languages.GffToken;
+			rb_English .Tag                    = Language.English;
+			rb_French  .Tag = rb_FrenchF  .Tag = Language.French;
+			rb_German  .Tag = rb_GermanF  .Tag = Language.German;
+			rb_Italian .Tag = rb_ItalianF .Tag = Language.Italian;
+			rb_Spanish .Tag = rb_SpanishF .Tag = Language.Spanish;
+			rb_Polish  .Tag = rb_PolishF  .Tag = Language.Polish;
+			rb_Russian .Tag = rb_RussianF .Tag = Language.Russian;
+			rb_Korean  .Tag = rb_KoreanF  .Tag = Language.Korean;
+			rb_ChineseT.Tag = rb_ChineseTF.Tag = Language.ChineseTraditional;
+			rb_ChineseS.Tag = rb_ChineseSF.Tag = Language.ChineseSimplified;
+			rb_Japanese.Tag = rb_JapaneseF.Tag = Language.Japanese;
+			rb_GffToken.Tag                    = Language.GffToken;
 
 			rb_English  .Enabled = (bitloc & Loc_ENGLISH)       == 0;
 			rb_French   .Enabled = (bitloc & Loc_FRENCH)        == 0;
@@ -99,7 +99,7 @@ namespace generalgff
 
 			if (edit) // else let .NET choose a default
 			{
-				if (TreeList._langid == Languages.GffToken)
+				if (TreeList._langid == Language.GffToken)
 				{
 					rb_GffToken.Checked = true;
 				}
@@ -107,33 +107,33 @@ namespace generalgff
 				{
 					switch (TreeList._langid)
 					{
-						case Languages.French:             rb_FrenchF  .Checked = true; break;
-						case Languages.German:             rb_GermanF  .Checked = true; break;
-						case Languages.Italian:            rb_ItalianF .Checked = true; break;
-						case Languages.Spanish:            rb_SpanishF .Checked = true; break;
-						case Languages.Polish:             rb_PolishF  .Checked = true; break;
-						case Languages.Russian:            rb_RussianF .Checked = true; break;
-						case Languages.Korean:             rb_KoreanF  .Checked = true; break;
-						case Languages.ChineseTraditional: rb_ChineseTF.Checked = true; break;
-						case Languages.ChineseSimplified:  rb_ChineseSF.Checked = true; break;
-						case Languages.Japanese:           rb_JapaneseF.Checked = true; break;
+						case Language.French:             rb_FrenchF  .Checked = true; break;
+						case Language.German:             rb_GermanF  .Checked = true; break;
+						case Language.Italian:            rb_ItalianF .Checked = true; break;
+						case Language.Spanish:            rb_SpanishF .Checked = true; break;
+						case Language.Polish:             rb_PolishF  .Checked = true; break;
+						case Language.Russian:            rb_RussianF .Checked = true; break;
+						case Language.Korean:             rb_KoreanF  .Checked = true; break;
+						case Language.ChineseTraditional: rb_ChineseTF.Checked = true; break;
+						case Language.ChineseSimplified:  rb_ChineseSF.Checked = true; break;
+						case Language.Japanese:           rb_JapaneseF.Checked = true; break;
 					}
 				}
 				else
 				{
 					switch (TreeList._langid)
 					{
-						case Languages.English:            rb_English .Checked = true; break;
-						case Languages.French:             rb_French  .Checked = true; break;
-						case Languages.German:             rb_German  .Checked = true; break;
-						case Languages.Italian:            rb_Italian .Checked = true; break;
-						case Languages.Spanish:            rb_Spanish .Checked = true; break;
-						case Languages.Polish:             rb_Polish  .Checked = true; break;
-						case Languages.Russian:            rb_Russian .Checked = true; break;
-						case Languages.Korean:             rb_Korean  .Checked = true; break;
-						case Languages.ChineseTraditional: rb_ChineseT.Checked = true; break;
-						case Languages.ChineseSimplified:  rb_ChineseS.Checked = true; break;
-						case Languages.Japanese:           rb_Japanese.Checked = true; break;
+						case Language.English:            rb_English .Checked = true; break;
+						case Language.French:             rb_French  .Checked = true; break;
+						case Language.German:             rb_German  .Checked = true; break;
+						case Language.Italian:            rb_Italian .Checked = true; break;
+						case Language.Spanish:            rb_Spanish .Checked = true; break;
+						case Language.Polish:             rb_Polish  .Checked = true; break;
+						case Language.Russian:            rb_Russian .Checked = true; break;
+						case Language.Korean:             rb_Korean  .Checked = true; break;
+						case Language.ChineseTraditional: rb_ChineseT.Checked = true; break;
+						case Language.ChineseSimplified:  rb_ChineseS.Checked = true; break;
+						case Language.Japanese:           rb_Japanese.Checked = true; break;
 					}
 				}
 			}
@@ -161,7 +161,7 @@ namespace generalgff
 		void checkchanged(object sender, EventArgs e)
 		{
 			var rb = sender as RadioButton;
-			TreeList._langid = (Languages)rb.Tag;
+			TreeList._langid = (Language)rb.Tag;
 			TreeList._langf  = rb.Name.EndsWith("F", StringComparison.Ordinal);
 		}
 		#endregion Handlers
@@ -174,65 +174,65 @@ namespace generalgff
 		/// <param name="bitloc"></param>
 		/// <param name="langid"></param>
 		/// <param name="f"></param>
-		internal static void SetLocaleFlag(ref uint bitloc, Languages langid, bool f)
+		internal static void SetLocaleFlag(ref uint bitloc, Language langid, bool f)
 		{
 			switch (langid)
 			{
-				case Languages.English:
+				case Language.English:
 					bitloc |= Loc_ENGLISH;
 					break;
 
-				case Languages.French:
+				case Language.French:
 					if (f) bitloc |= Loc_FRENCH_F;
 					else   bitloc |= Loc_FRENCH;
 					break;
 
-				case Languages.German:
+				case Language.German:
 					if (f) bitloc |= Loc_GERMAN_F;
 					else   bitloc |= Loc_GERMAN;
 					break;
 
-				case Languages.Italian:
+				case Language.Italian:
 					if (f) bitloc |= Loc_ITALIAN_F;
 					else   bitloc |= Loc_ITALIAN;
 					break;
 
-				case Languages.Spanish:
+				case Language.Spanish:
 					if (f) bitloc |= Loc_SPANISH_F;
 					else   bitloc |= Loc_SPANISH;
 					break;
 
-				case Languages.Polish:
+				case Language.Polish:
 					if (f) bitloc |= Loc_POLISH_F;
 					else   bitloc |= Loc_POLISH;
 					break;
 
-				case Languages.Russian:
+				case Language.Russian:
 					if (f) bitloc |= Loc_RUSSIAN_F;
 					else   bitloc |= Loc_RUSSIAN;
 					break;
 
-				case Languages.Korean:
+				case Language.Korean:
 					if (f) bitloc |= Loc_KOREAN_F;
 					else   bitloc |= Loc_KOREAN;
 					break;
 
-				case Languages.ChineseTraditional:
+				case Language.ChineseTraditional:
 					if (f) bitloc |= Loc_CHINESETRAD_F;
 					else   bitloc |= Loc_CHINESETRAD;
 					break;
 
-				case Languages.ChineseSimplified:
+				case Language.ChineseSimplified:
 					if (f) bitloc |= Loc_CHINESESIMP_F;
 					else   bitloc |= Loc_CHINESESIMP;
 					break;
 
-				case Languages.Japanese:
+				case Language.Japanese:
 					if (f) bitloc |= Loc_JAPANESE_F;
 					else   bitloc |= Loc_JAPANESE;
 					break;
 
-				case Languages.GffToken:
+				case Language.GffToken:
 					bitloc |= Loc_GFFTOKEN;
 					break;
 			}
@@ -244,65 +244,65 @@ namespace generalgff
 		/// <param name="bitloc"></param>
 		/// <param name="langid"></param>
 		/// <param name="f"></param>
-		internal static void ClearLocaleFlag(ref uint bitloc, Languages langid, bool f)
+		internal static void ClearLocaleFlag(ref uint bitloc, Language langid, bool f)
 		{
 			switch (langid)
 			{
-				case Languages.English:
+				case Language.English:
 					bitloc &= ~Loc_ENGLISH;
 					break;
 
-				case Languages.French:
+				case Language.French:
 					if (f) bitloc &= ~Loc_FRENCH_F;
 					else   bitloc &= ~Loc_FRENCH;
 					break;
 
-				case Languages.German:
+				case Language.German:
 					if (f) bitloc &= ~Loc_GERMAN_F;
 					else   bitloc &= ~Loc_GERMAN;
 					break;
 
-				case Languages.Italian:
+				case Language.Italian:
 					if (f) bitloc &= ~Loc_ITALIAN_F;
 					else   bitloc &= ~Loc_ITALIAN;
 					break;
 
-				case Languages.Spanish:
+				case Language.Spanish:
 					if (f) bitloc &= ~Loc_SPANISH_F;
 					else   bitloc &= ~Loc_SPANISH;
 					break;
 
-				case Languages.Polish:
+				case Language.Polish:
 					if (f) bitloc &= ~Loc_POLISH_F;
 					else   bitloc &= ~Loc_POLISH;
 					break;
 
-				case Languages.Russian:
+				case Language.Russian:
 					if (f) bitloc &= ~Loc_RUSSIAN_F;
 					else   bitloc &= ~Loc_RUSSIAN;
 					break;
 
-				case Languages.Korean:
+				case Language.Korean:
 					if (f) bitloc &= ~Loc_KOREAN_F;
 					else   bitloc &= ~Loc_KOREAN;
 					break;
 
-				case Languages.ChineseTraditional:
+				case Language.ChineseTraditional:
 					if (f) bitloc &= ~Loc_CHINESETRAD_F;
 					else   bitloc &= ~Loc_CHINESETRAD;
 					break;
 
-				case Languages.ChineseSimplified:
+				case Language.ChineseSimplified:
 					if (f) bitloc &= ~Loc_CHINESESIMP_F;
 					else   bitloc &= ~Loc_CHINESESIMP;
 					break;
 
-				case Languages.Japanese:
+				case Language.Japanese:
 					if (f) bitloc &= ~Loc_JAPANESE_F;
 					else   bitloc &= ~Loc_JAPANESE;
 					break;
 
-				case Languages.GffToken:
+				case Language.GffToken:
 					bitloc &= ~Loc_GFFTOKEN;
 					break;
 			}
@@ -317,50 +317,50 @@ namespace generalgff
 		{
 			switch (locale.langid)
 			{
-				case Languages.English:
+				case Language.English:
 					return Loc_ENGLISH;
 
-				case Languages.French:
+				case Language.French:
 					if (locale.F) return Loc_FRENCH_F;
 					return Loc_FRENCH;
 
-				case Languages.German:
+				case Language.German:
 					if (locale.F) return Loc_GERMAN_F;
 					return Loc_GERMAN;
 
-				case Languages.Italian:
+				case Language.Italian:
 					if (locale.F) return Loc_ITALIAN_F;
 					return Loc_ITALIAN;
 
-				case Languages.Spanish:
+				case Language.Spanish:
 					if (locale.F) return Loc_SPANISH_F;
 					return Loc_SPANISH;
 
-				case Languages.Polish:
+				case Language.Polish:
 					if (locale.F) return Loc_POLISH_F;
 					return Loc_POLISH;
 
-				case Languages.Russian:
+				case Language.Russian:
 					if (locale.F) return Loc_RUSSIAN_F;
 					return Loc_RUSSIAN;
 
-				case Languages.Korean:
+				case Language.Korean:
 					if (locale.F) return Loc_KOREAN_F;
 					return Loc_KOREAN;
 
-				case Languages.ChineseTraditional:
+				case Language.ChineseTraditional:
 					if (locale.F) return Loc_CHINESETRAD_F;
 					return Loc_CHINESETRAD;
 
-				case Languages.ChineseSimplified:
+				case Language.ChineseSimplified:
 					if (locale.F) return Loc_CHINESESIMP_F;
 					return Loc_CHINESESIMP;
 
-				case Languages.Japanese:
+				case Language.Japanese:
 					if (locale.F) return Loc_JAPANESE_F;
 					return Loc_JAPANESE;
 
-				case Languages.GffToken:
+				case Language.GffToken:
 					return Loc_GFFTOKEN;
 			}
 			return Loc_non; // error.

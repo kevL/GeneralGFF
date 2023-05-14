@@ -34,7 +34,7 @@ namespace generalgff
 	/// The types of languages available.
 	/// @note The values will be used as integers as well.
 	/// </summary>
-	enum Languages : uint
+	enum Language : uint
 	{
 		English            =   0,
 		French             =   1,
@@ -287,7 +287,7 @@ namespace generalgff
 		/// </summary>
 		internal class Locale
 		{
-			internal Languages langid;
+			internal Language langid;
 			internal bool F;
 
 			internal string local; // UTF8
@@ -299,13 +299,13 @@ namespace generalgff
 			/// <param name="id">a GFF-style languageid</param>
 			internal void SetLocaleLanguage(uint id)
 			{
-				if (id != (uint)Languages.GffToken)
+				if (id != (uint)Language.GffToken)
 				{
-					langid = (Languages)(id / 2);
+					langid = (Language)(id / 2);
 					F      = ((id & 1) != 0);
 				}
 				else
-					langid = Languages.GffToken;
+					langid = Language.GffToken;
 			}
 
 			/// <summary>
@@ -320,25 +320,25 @@ namespace generalgff
 			/// <param name="langid"></param>
 			/// <param name="f">true if feline</param>
 			/// <returns></returns>
-			internal static string GetLanguageString(Languages langid, bool f)
+			internal static string GetLanguageString(Language langid, bool f)
 			{
 				string l;
 
 				switch (langid)
 				{
-					case Languages.English:            l = "English";   break;
-					case Languages.French:             l = "French";    break;
-					case Languages.German:             l = "German";    break;
-					case Languages.Italian:            l = "Italian";   break;
-					case Languages.Spanish:            l = "Spanish";   break;
-					case Languages.Polish:             l = "Polish";    break;
-					case Languages.Russian:            l = "Russian";   break;
-					case Languages.Korean:             l = "Korean";    break;
-					case Languages.ChineseTraditional: l = "Chinese T"; break;
-					case Languages.ChineseSimplified:  l = "Chinese S"; break;
-					case Languages.Japanese:           l = "Japanese";  break;
+					case Language.English:            l = "English";   break;
+					case Language.French:             l = "French";    break;
+					case Language.German:             l = "German";    break;
+					case Language.Italian:            l = "Italian";   break;
+					case Language.Spanish:            l = "Spanish";   break;
+					case Language.Polish:             l = "Polish";    break;
+					case Language.Russian:            l = "Russian";   break;
+					case Language.Korean:             l = "Korean";    break;
+					case Language.ChineseTraditional: l = "Chinese T"; break;
+					case Language.ChineseSimplified:  l = "Chinese S"; break;
+					case Language.Japanese:           l = "Japanese";  break;
 
-					case Languages.GffToken:
+					case Language.GffToken:
 						return "GffToken";
 
 					default:
