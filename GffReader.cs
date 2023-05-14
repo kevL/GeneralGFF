@@ -79,7 +79,7 @@ namespace generalgff
 			byte[] bytes = FileService.ReadFile(pfe);
 			if (bytes != null)
 			{
-				if (bytes.Length != 0)
+				if (bytes.Length >= Globals.Length_HEADER)
 				{
 					uint pos = 0;
 					uint b;
@@ -642,7 +642,7 @@ namespace generalgff
 					return data;
 				}
 
-				FileService.error("That file has no data.");
+				FileService.error("Insufficient header data.");
 			}
 			return null;
 		}
