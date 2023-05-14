@@ -126,10 +126,10 @@ namespace generalgff
 				ContextMenu.MenuItems.Add(new MenuItem(toggle, contextclick_Toggle));
 			}
 
-			FieldTypes type;
+			FieldType type;
 
 			if (SelectedNode.Tag == null // is TopLevelStruct's node
-				|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldTypes.Struct)
+				|| (type = ((GffData.Field)SelectedNode.Tag).type) == FieldType.Struct)
 			{
 				if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 				else toggle = String.Empty;
@@ -155,14 +155,14 @@ namespace generalgff
 			{
 				switch (type)
 				{
-					case FieldTypes.List:
+					case FieldType.List:
 						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 						else toggle = String.Empty;
 
 						ContextMenu.MenuItems.Add(new MenuItem("add Struct (list of fields)", contextclick_AddStruct));
 						break;
 
-					case FieldTypes.CExoLocString:
+					case FieldType.CExoLocString:
 						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 						else toggle = String.Empty;
 
@@ -183,36 +183,36 @@ namespace generalgff
 			{
 				switch (((GffData.Field)SelectedNode.Tag).type)
 				{
-					case FieldTypes.Struct:
+					case FieldType.Struct:
 						if (SelectedNode.Parent.Tag != null
-							&& ((GffData.Field)SelectedNode.Parent.Tag).type == FieldTypes.List)
+							&& ((GffData.Field)SelectedNode.Parent.Tag).type == FieldType.List)
 						{
 							break;
 						}
-						goto case FieldTypes.List;
+						goto case FieldType.List;
 
-					case FieldTypes.BYTE:
-					case FieldTypes.CHAR:
-					case FieldTypes.WORD:
-					case FieldTypes.SHORT:
-					case FieldTypes.DWORD:
-					case FieldTypes.INT:
-					case FieldTypes.DWORD64:
-					case FieldTypes.INT64:
-					case FieldTypes.FLOAT:
-					case FieldTypes.DOUBLE:
-					case FieldTypes.CResRef:
-					case FieldTypes.CExoString:
-					case FieldTypes.CExoLocString:
-					case FieldTypes.VOID:
-					case FieldTypes.List:
+					case FieldType.BYTE:
+					case FieldType.CHAR:
+					case FieldType.WORD:
+					case FieldType.SHORT:
+					case FieldType.DWORD:
+					case FieldType.INT:
+					case FieldType.DWORD64:
+					case FieldType.INT64:
+					case FieldType.FLOAT:
+					case FieldType.DOUBLE:
+					case FieldType.CResRef:
+					case FieldType.CExoString:
+					case FieldType.CExoLocString:
+					case FieldType.VOID:
+					case FieldType.List:
 						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 						else toggle = String.Empty;
 
 						ContextMenu.MenuItems.Add(new MenuItem("edit Label", contextclick_EditLabel));
 						break;
 
-					case FieldTypes.locale:
+					case FieldType.locale:
 						if (toggle != null) ContextMenu.MenuItems.Add(new MenuItem("-"));
 						else toggle = String.Empty;
 
@@ -229,7 +229,7 @@ namespace generalgff
 		void contextclick_AddByte(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.label = GetUniqueLabel();
 			field.BYTE = 0;
 
@@ -239,7 +239,7 @@ namespace generalgff
 		void contextclick_AddChar(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.CHAR;
+			field.type = FieldType.CHAR;
 			field.label = GetUniqueLabel();
 			field.CHAR = 0;
 
@@ -249,7 +249,7 @@ namespace generalgff
 		void contextclick_AddWord(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.WORD;
+			field.type = FieldType.WORD;
 			field.label = GetUniqueLabel();
 			field.WORD = 0;
 
@@ -259,7 +259,7 @@ namespace generalgff
 		void contextclick_AddShort(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.SHORT;
+			field.type = FieldType.SHORT;
 			field.label = GetUniqueLabel();
 			field.SHORT = 0;
 
@@ -269,7 +269,7 @@ namespace generalgff
 		void contextclick_AddDword(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.DWORD;
+			field.type = FieldType.DWORD;
 			field.label = GetUniqueLabel();
 			field.DWORD = 0;
 
@@ -279,7 +279,7 @@ namespace generalgff
 		void contextclick_AddInt(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.INT;
+			field.type = FieldType.INT;
 			field.label = GetUniqueLabel();
 			field.INT = 0;
 
@@ -289,7 +289,7 @@ namespace generalgff
 		void contextclick_AddDword64(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.DWORD64;
+			field.type = FieldType.DWORD64;
 			field.label = GetUniqueLabel();
 			field.DWORD64 = 0;
 
@@ -299,7 +299,7 @@ namespace generalgff
 		void contextclick_AddInt64(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.INT64;
+			field.type = FieldType.INT64;
 			field.label = GetUniqueLabel();
 			field.INT64 = 0;
 
@@ -309,7 +309,7 @@ namespace generalgff
 		void contextclick_AddFloat(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.FLOAT;
+			field.type = FieldType.FLOAT;
 			field.label = GetUniqueLabel();
 			field.FLOAT = 0;
 
@@ -319,7 +319,7 @@ namespace generalgff
 		void contextclick_AddDouble(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.DOUBLE;
+			field.type = FieldType.DOUBLE;
 			field.label = GetUniqueLabel();
 			field.DOUBLE = 0;
 
@@ -329,7 +329,7 @@ namespace generalgff
 		void contextclick_AddCResRef(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.CResRef;
+			field.type = FieldType.CResRef;
 			field.label = GetUniqueLabel();
 			field.CResRef = String.Empty;
 
@@ -339,7 +339,7 @@ namespace generalgff
 		void contextclick_AddCExoString(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.CExoString;
+			field.type = FieldType.CExoString;
 			field.label = GetUniqueLabel();
 			field.CExoString = String.Empty;
 
@@ -349,7 +349,7 @@ namespace generalgff
 		void contextclick_AddCExoLocString(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.CExoLocString;
+			field.type = FieldType.CExoLocString;
 			field.label = GetUniqueLabel();
 			field.CExoLocStrref = UInt32.MaxValue;
 
@@ -359,7 +359,7 @@ namespace generalgff
 		void contextclick_AddVoid(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.VOID;
+			field.type = FieldType.VOID;
 			field.label = GetUniqueLabel();
 			field.VOID = new byte[0];
 
@@ -369,7 +369,7 @@ namespace generalgff
 		void contextclick_AddList(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.List;
+			field.type = FieldType.List;
 			field.label = GetUniqueLabel();
 //			field.List = new List<uint>();
 
@@ -379,10 +379,10 @@ namespace generalgff
 		void contextclick_AddStruct(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 
 			if (SelectedNode.Tag != null
-				&& ((GffData.Field)SelectedNode.Tag).type == FieldTypes.List)
+				&& ((GffData.Field)SelectedNode.Tag).type == FieldType.List)
 			{
 				field.label = SelectedNode.Nodes.Count.ToString();
 			}
@@ -403,7 +403,7 @@ namespace generalgff
 		void contextclick_AddTopLevelStruct(object sender, EventArgs e)
 		{
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 
 			if (_f.GffData != null)
 				field.label = Path.GetFileNameWithoutExtension(_f.GffData.Pfe).ToUpper();
@@ -454,7 +454,7 @@ namespace generalgff
 							field.Locales = new List<GffData.Locale>();
 
 						var fieldloc = new GffData.Field();
-						fieldloc.type = FieldTypes.locale;
+						fieldloc.type = FieldType.locale;
 						fieldloc.label = GffData.Locale.GetLanguageString(_langid, _langf);
 						fieldloc.localeid = (uint)field.Locales.Count;
 
@@ -546,13 +546,13 @@ namespace generalgff
 				{
 					switch (((GffData.Field)SelectedNode.Tag).type)
 					{
-						case FieldTypes.Struct:
+						case FieldType.Struct:
 						{
 							// Structs in Lists do not have a Label so keep their pseudo-labels' sequential order
 
 							var parent = SelectedNode.Parent;
 							if (parent.Tag != null // parent is NOT TopLevelStruct
-								&& ((GffData.Field)parent.Tag).type == FieldTypes.List)
+								&& ((GffData.Field)parent.Tag).type == FieldType.List)
 							{
 								Sortable node;
 
@@ -571,7 +571,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.locale:
+						case FieldType.locale:
 						{
 							var parent = (GffData.Field)SelectedNode.Parent.Tag;
 							var locales = parent.Locales;
@@ -654,7 +654,7 @@ namespace generalgff
 
 						var parent = (GffData.Field)SelectedNode.Parent.Tag;
 						if (parent == null // ie. 'parent' is TopLevelStruct
-							|| parent.type == FieldTypes.Struct)
+							|| parent.type == FieldType.Struct)
 						{
 							for (int i = 0; i != SelectedNode.Parent.Nodes.Count; ++i)
 							{
@@ -830,7 +830,7 @@ namespace generalgff
 		{
 			var field = (GffData.Field)SelectedNode.Tag;
 			if (field == null // is TopLevelStruct
-				|| field.type == FieldTypes.Struct)
+				|| field.type == FieldType.Struct)
 			{
 				string label0 = label;
 				int suf = -1;

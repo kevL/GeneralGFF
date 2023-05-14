@@ -220,11 +220,11 @@ namespace generalgff
 					label += "= " + GetValueString(field);
 					break;
 
-				case FieldTypes.locale:
+				case FieldType.locale:
 					label += "= " + locale.local;
 					break;
 
-				case FieldTypes.List:
+				case FieldType.List:
 					break;
 			}
 
@@ -258,34 +258,34 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Converts a FieldTypes into a readable string.
+		/// Converts a <c><see cref="FieldType"/></c> into a readable string.
 		/// @note helper for ConstructNodetext()
 		/// </summary>
 		/// <param name="type"></param>
 		/// <param name="token"></param>
 		/// <returns></returns>
-		static string GetTypeString(FieldTypes type, bool token = false)
+		static string GetTypeString(FieldType type, bool token = false)
 		{
 			switch (type)
 			{
-				case FieldTypes.BYTE:          return "BYTE";
-				case FieldTypes.CHAR:          return "CHAR";
-				case FieldTypes.WORD:          return "WORD";
-				case FieldTypes.SHORT:         return "SHORT";
-				case FieldTypes.DWORD:         return "DWORD";
-				case FieldTypes.INT:           return "INT";
-				case FieldTypes.DWORD64:       return "DWORD64";
-				case FieldTypes.INT64:         return "INT64";
-				case FieldTypes.FLOAT:         return "FLOAT";
-				case FieldTypes.DOUBLE:        return "DOUBLE";
-				case FieldTypes.CResRef:       return "CResRef";
-				case FieldTypes.CExoString:    return "CExoString";
-				case FieldTypes.CExoLocString: return "CExoLocString";
-				case FieldTypes.VOID:          return "VOID";
-				case FieldTypes.List:          return "List";
-				case FieldTypes.Struct:        return "Struct";
+				case FieldType.BYTE:          return "BYTE";
+				case FieldType.CHAR:          return "CHAR";
+				case FieldType.WORD:          return "WORD";
+				case FieldType.SHORT:         return "SHORT";
+				case FieldType.DWORD:         return "DWORD";
+				case FieldType.INT:           return "INT";
+				case FieldType.DWORD64:       return "DWORD64";
+				case FieldType.INT64:         return "INT64";
+				case FieldType.FLOAT:         return "FLOAT";
+				case FieldType.DOUBLE:        return "DOUBLE";
+				case FieldType.CResRef:       return "CResRef";
+				case FieldType.CExoString:    return "CExoString";
+				case FieldType.CExoLocString: return "CExoLocString";
+				case FieldType.VOID:          return "VOID";
+				case FieldType.List:          return "List";
+				case FieldType.Struct:        return "Struct";
 
-				case FieldTypes.locale:
+				case FieldType.locale:
 					if (token) return "token";
 					return "locale";
 			}
@@ -293,7 +293,8 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Gets the value of a Field by its type.
+		/// Gets the value of a
+		/// <c><see cref="GffData.Field">GffData.Field</see></c> by its type.
 		/// @note helper for ConstructNodetext()
 		/// </summary>
 		/// <param name="field"></param>
@@ -302,51 +303,51 @@ namespace generalgff
 		{
 			switch (field.type)
 			{
-				case FieldTypes.BYTE:
+				case FieldType.BYTE:
 					return field.BYTE.ToString();
 
-				case FieldTypes.CHAR:
+				case FieldType.CHAR:
 					return field.CHAR.ToString();
 
-				case FieldTypes.WORD:
+				case FieldType.WORD:
 					return field.WORD.ToString();
 
-				case FieldTypes.SHORT:
+				case FieldType.SHORT:
 					return field.SHORT.ToString();
 
-				case FieldTypes.DWORD:
+				case FieldType.DWORD:
 					return field.DWORD.ToString();
 
-				case FieldTypes.INT:
+				case FieldType.INT:
 					return field.INT.ToString();
 
-				case FieldTypes.DWORD64:
+				case FieldType.DWORD64:
 					return field.DWORD64.ToString();
 
-				case FieldTypes.INT64:
+				case FieldType.INT64:
 					return field.INT64.ToString();
 
-				case FieldTypes.FLOAT:
+				case FieldType.FLOAT:
 				{
 					string f = field.FLOAT.ToString();
 					if (!f.Contains(".")) f += ".0";
 					return f;
 				}
 
-				case FieldTypes.DOUBLE:
+				case FieldType.DOUBLE:
 				{
 					string d = field.DOUBLE.ToString();
 					if (!d.Contains(".")) d += ".0";
 					return d;
 				}
 
-				case FieldTypes.CResRef:
+				case FieldType.CResRef:
 					return field.CResRef;
 
-				case FieldTypes.CExoString:
+				case FieldType.CExoString:
 					return field.CExoString;
 
-				case FieldTypes.CExoLocString:
+				case FieldType.CExoLocString:
 				{
 					uint strref = field.CExoLocStrref;
 					if (strref != UInt32.MaxValue)
@@ -355,7 +356,7 @@ namespace generalgff
 					return "-1";
 				}
 
-				case FieldTypes.VOID:
+				case FieldType.VOID:
 				{
 					int length = field.VOID.Length;
 					string val = length + " byte";
@@ -363,10 +364,10 @@ namespace generalgff
 					return val;
 				}
 
-				case FieldTypes.List:
+				case FieldType.List:
 					return String.Empty;
 
-				case FieldTypes.Struct:
+				case FieldType.Struct:
 					return "[" + field.Struct.typeid + "]";
 			}
 			return "ErROr: field type unknown";
@@ -614,7 +615,7 @@ namespace generalgff
 				GffData = GffData; // update titlebar text
 
 				var field = new GffData.Field();
-				field.type = FieldTypes.Struct;
+				field.type = FieldType.Struct;
 				field.label = Globals.TopLevelStruct;
 
 				field.Struct = new Struct();
@@ -826,7 +827,7 @@ namespace generalgff
 				Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
 
 				var field = (GffData.Field)_tl.SelectedNode.Tag;
-				if (field.type == FieldTypes.locale) // gotta cache the Locale if relevant
+				if (field.type == FieldType.locale) // gotta cache the Locale if relevant
 				{
 					_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)field.localeid];
 				}
@@ -848,7 +849,7 @@ namespace generalgff
 				GffData.Field field;
 
 				if (_tl.SelectedNode.Tag == null // is TopLevelStruct
-					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldTypes.Struct)
+					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldType.Struct)
 				{
 					string label = _tl.GetUniqueLabel(node._label);
 					if (label != node._label)
@@ -867,7 +868,7 @@ namespace generalgff
 				{
 					switch (field.type)
 					{
-						case FieldTypes.List:
+						case FieldType.List:
 							field = (GffData.Field)node.Tag;
 							field.label = _tl.SelectedNode.Nodes.Count.ToString();
 
@@ -875,7 +876,7 @@ namespace generalgff
 							node.Text = GeneralGFF.ConstructNodetext(field);
 							break;
 
-						case FieldTypes.CExoLocString:
+						case FieldType.CExoLocString:
 							LocaleDialog.SetLocaleFlag(ref field.localeflags,
 													   _refLocale.langid,
 													   _refLocale.F);
@@ -912,14 +913,14 @@ namespace generalgff
 
 				switch (((GffData.Field)_tl.SelectedNode.Tag).type)
 				{
-					case FieldTypes.Struct:
+					case FieldType.Struct:
 						return true;
 
-					case FieldTypes.List:
-						return ((GffData.Field)Copied.Tag).type == FieldTypes.Struct;
+					case FieldType.List:
+						return ((GffData.Field)Copied.Tag).type == FieldType.Struct;
 
-					case FieldTypes.CExoLocString:
-						return ((GffData.Field)Copied.Tag).type == FieldTypes.locale;
+					case FieldType.CExoLocString:
+						return ((GffData.Field)Copied.Tag).type == FieldType.locale;
 				}
 			}
 			return false;
@@ -1255,7 +1256,7 @@ namespace generalgff
 			{
 				object tag = _tl.SelectedNode.Tag;
 				if (tag == null // is TopLevelStruct
-					|| ((GffData.Field)tag).type == FieldTypes.CResRef)
+					|| ((GffData.Field)tag).type == FieldType.CResRef)
 				{
 					if (!isPrintableAscii(tb_Val.Text))
 					{
@@ -1284,7 +1285,7 @@ namespace generalgff
 			if (_tl.SelectedNode != null)
 			{
 				var field = ((GffData.Field)_tl.SelectedNode.Tag);
-				if (field != null && field.type == FieldTypes.VOID)
+				if (field != null && field.type == FieldType.VOID)
 				{
 					if (!isHexadecimal(rt_Val.Text))
 					{
@@ -1366,7 +1367,7 @@ namespace generalgff
 					field = (GffData.Field)node.Tag;
 					switch (field.type)
 					{
-						case FieldTypes.BYTE:
+						case FieldType.BYTE:
 						{
 							byte result;
 							if (valid = Byte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1383,7 +1384,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.CHAR:
+						case FieldType.CHAR:
 						{
 							sbyte result;
 							if (valid = SByte.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1400,7 +1401,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.WORD:
+						case FieldType.WORD:
 						{
 							ushort result;
 							if (valid = UInt16.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1417,7 +1418,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.SHORT:
+						case FieldType.SHORT:
 						{
 							short result;
 							if (valid = Int16.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1434,7 +1435,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.DWORD:
+						case FieldType.DWORD:
 						{
 							uint result;
 							if (valid = UInt32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1451,7 +1452,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.INT:
+						case FieldType.INT:
 						{
 							int result;
 							if (valid = Int32.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1468,7 +1469,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.DWORD64:
+						case FieldType.DWORD64:
 						{
 							ulong result;
 							if (valid = UInt64.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1485,7 +1486,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.INT64:
+						case FieldType.INT64:
 						{
 							long result;
 							if (valid = Int64.TryParse((val = TrimInteger(tb_Val.Text)), out result))
@@ -1502,7 +1503,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.FLOAT:
+						case FieldType.FLOAT:
 						{
 							float result;
 							if (valid = Single.TryParse((val = TrimFloat(tb_Val.Text)), out result))
@@ -1519,7 +1520,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.DOUBLE:
+						case FieldType.DOUBLE:
 						{
 							double result;
 							if (valid = Double.TryParse((val = TrimFloat(tb_Val.Text)), out result))
@@ -1536,7 +1537,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.CResRef:
+						case FieldType.CResRef:
 						{
 							// nwn2-style resrefs (32-chars)
 							// NOTE: The GFF-specification allows CResRef to be 255 bytes in length.
@@ -1557,7 +1558,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.CExoString:
+						case FieldType.CExoString:
 						{
 							editor = rt_Val;
 
@@ -1566,7 +1567,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.CExoLocString:
+						case FieldType.CExoLocString:
 						{
 							// NOTE: The GFF-specification stores strrefs as Uint32.
 							val = TrimInteger(tb_Val.Text);
@@ -1625,7 +1626,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.VOID:
+						case FieldType.VOID:
 						{
 							editor = rt_Val;
 
@@ -1685,9 +1686,9 @@ namespace generalgff
 							break;
 						}
 
-//						case FieldTypes.List: // not editable
+//						case FieldType.List: // not editable
 
-						case FieldTypes.Struct:
+						case FieldType.Struct:
 						{
 							val = tb_Val.Text.Trim();
 							if (   val.StartsWith("[", StringComparison.Ordinal)
@@ -1712,7 +1713,7 @@ namespace generalgff
 							break;
 						}
 
-						case FieldTypes.locale:
+						case FieldType.locale:
 						{
 							editor = rt_Val;
 
@@ -1969,7 +1970,7 @@ namespace generalgff
 
 				switch (field.type)
 				{
-					case FieldTypes.BYTE:
+					case FieldType.BYTE:
 						la_Des.Text = Byte.MinValue + ".." + Byte.MaxValue;
 						la_Val.Text = "BYTE";
 
@@ -1979,7 +1980,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.BYTE.ToString());
 						break;
 
-					case FieldTypes.CHAR:
+					case FieldType.CHAR:
 						la_Des.Text = SByte.MinValue + ".." + SByte.MaxValue;
 						la_Val.Text = "CHAR";
 
@@ -1989,7 +1990,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.CHAR.ToString());
 						break;
 
-					case FieldTypes.WORD:
+					case FieldType.WORD:
 						la_Des.Text = UInt16.MinValue + ".." + UInt16.MaxValue;
 						la_Val.Text = "WORD";
 
@@ -1999,7 +2000,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.WORD.ToString());
 						break;
 
-					case FieldTypes.SHORT:
+					case FieldType.SHORT:
 						la_Des.Text = Int16.MinValue + ".." + Int16.MaxValue;
 						la_Val.Text = "SHORT";
 
@@ -2009,7 +2010,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.SHORT.ToString());
 						break;
 
-					case FieldTypes.DWORD:
+					case FieldType.DWORD:
 						la_Des.Text = UInt32.MinValue + ".." + UInt32.MaxValue;
 						la_Val.Text = "DWORD";
 
@@ -2019,7 +2020,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.DWORD.ToString());
 						break;
 
-					case FieldTypes.INT:
+					case FieldType.INT:
 						la_Des.Text = Int32.MinValue + ".." + Int32.MaxValue;
 						la_Val.Text = "INT";
 
@@ -2029,7 +2030,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.INT.ToString());
 						break;
 
-					case FieldTypes.DWORD64:
+					case FieldType.DWORD64:
 						la_Des.Text = UInt64.MinValue + ".." + UInt64.MaxValue;
 						la_Val.Text = "DWORD64";
 
@@ -2039,7 +2040,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.DWORD64.ToString());
 						break;
 
-					case FieldTypes.INT64:
+					case FieldType.INT64:
 						la_Des.Text = Int64.MinValue + ".." + Int64.MaxValue;
 						la_Val.Text = "INT64";
 
@@ -2049,7 +2050,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.INT64.ToString());
 						break;
 
-					case FieldTypes.FLOAT:
+					case FieldType.FLOAT:
 					{
 						la_Des.Text = Single.MinValue + ".." + Single.MaxValue;
 						la_Val.Text = "FLOAT";
@@ -2064,7 +2065,7 @@ namespace generalgff
 						break;
 					}
 
-					case FieldTypes.DOUBLE:
+					case FieldType.DOUBLE:
 					{
 						la_Des.Text = Double.MinValue + ".." + Double.MaxValue;
 						la_Val.Text = "DOUBLE";
@@ -2079,7 +2080,7 @@ namespace generalgff
 						break;
 					}
 
-					case FieldTypes.CResRef:
+					case FieldType.CResRef:
 						la_Des.Text = "32-chars NwN2 / 16-chars NwN1" + Environment.NewLine + "ASCII lc";
 						la_Val.Text = "CResRef";
 
@@ -2089,7 +2090,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = field.CResRef);
 						break;
 
-					case FieldTypes.CExoString:
+					case FieldType.CExoString:
 						la_Des.Text = "UTF8";
 						la_Val.Text = "CExoString";
 
@@ -2101,7 +2102,7 @@ namespace generalgff
 						rt_Val.Text = (_prevalText_rt = _edittext = field.CExoString);
 						break;
 
-					case FieldTypes.CExoLocString: // not a string. Is an integer.
+					case FieldType.CExoLocString: // not a string. Is an integer.
 					{
 						la_Des.Text = "strref" + Environment.NewLine + "-1.." + Globals.BITS_STRREF;
 						la_Val.Text = "CExoLocString";
@@ -2124,7 +2125,7 @@ namespace generalgff
 						break;
 					}
 
-					case FieldTypes.VOID:
+					case FieldType.VOID:
 					{
 						la_Des.Text = "binary data";
 						la_Val.Text = "VOID";
@@ -2140,11 +2141,11 @@ namespace generalgff
 						break;
 					}
 
-					case FieldTypes.List:
+					case FieldType.List:
 						la_Val.Text = "List";
 						break;
 
-					case FieldTypes.Struct:
+					case FieldType.Struct:
 						la_Des.Text = "TypeId" + Environment.NewLine + UInt32.MinValue + ".." + UInt32.MaxValue;
 						la_Val.Text = "Struct";
 
@@ -2154,7 +2155,7 @@ namespace generalgff
 						tb_Val.Text = (_prevalText_tb = _edittext = "[" + field.Struct.typeid + "]");
 						break;
 
-					case FieldTypes.locale:
+					case FieldType.locale:
 					{
 						var parent = (GffData.Field)_tl.SelectedNode.Parent.Tag;
 						GffData.Locale locale = parent.Locales[(int)field.localeid];

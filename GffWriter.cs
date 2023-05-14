@@ -337,37 +337,37 @@ namespace generalgff
 
 				// Note that if its size is less than 4-bytes it should be
 				// stored in the first bytes of those 4-bytes.
-				case FieldTypes.BYTE:
-				case FieldTypes.CHAR:
-				case FieldTypes.WORD:
-				case FieldTypes.SHORT:
-				case FieldTypes.DWORD:
-				case FieldTypes.INT:
-				case FieldTypes.FLOAT:
+				case FieldType.BYTE:
+				case FieldType.CHAR:
+				case FieldType.WORD:
+				case FieldType.SHORT:
+				case FieldType.DWORD:
+				case FieldType.INT:
+				case FieldType.FLOAT:
 					fieldid = AddSimpleField(node);
 					break;
 
 				// Complex fields ->
 				// return an offset into the DataBlock ->
 				// 8-bytes ->
-				case FieldTypes.DWORD64:
-				case FieldTypes.INT64:
-				case FieldTypes.DOUBLE:
-				case FieldTypes.CResRef:
-				case FieldTypes.CExoString:
-				case FieldTypes.CExoLocString:
-				case FieldTypes.VOID:
+				case FieldType.DWORD64:
+				case FieldType.INT64:
+				case FieldType.DOUBLE:
+				case FieldType.CResRef:
+				case FieldType.CExoString:
+				case FieldType.CExoLocString:
+				case FieldType.VOID:
 					fieldid = AddComplexDataField(node);
 					break;
 
 				// return an offset into ListIds (a list of structids) ->
-				case FieldTypes.List:
+				case FieldType.List:
 					fieldid = AddComplexListField(node);
 					break;
 
 				// return an id into the Fields if count is 1
 				// else an offset into the FieldIds if count is > 1
-				case FieldTypes.Struct:
+				case FieldType.Struct:
 					// if a Struct adds a Struct a Field is created that points to that Struct
 					// This is the only way that a Field points to a Struct.
 					// Structs that are in Lists as well as the TopLevelStruct
@@ -405,18 +405,18 @@ namespace generalgff
 			var a = new byte[4]; // inits to zeros
 			switch (field.type)
 			{
-				case FieldTypes.BYTE:
+				case FieldType.BYTE:
 					a[0] = (byte)field.BYTE;
 					break;
 
-				case FieldTypes.CHAR:
+				case FieldType.CHAR:
 				{
 					var b = (byte[])(object)new[]{ field.CHAR };
 					a[0] = b[0];
 					break;
 				}
 
-				case FieldTypes.WORD:
+				case FieldType.WORD:
 				{
 					var b = BitConverter.GetBytes(field.WORD);
 					if (!_le) Array.Reverse(b);
@@ -425,7 +425,7 @@ namespace generalgff
 					break;
 				}
 
-				case FieldTypes.SHORT:
+				case FieldType.SHORT:
 				{
 					var b = BitConverter.GetBytes(field.SHORT);
 					if (!_le) Array.Reverse(b);
@@ -434,16 +434,16 @@ namespace generalgff
 					break;
 				}
 
-				case FieldTypes.DWORD:
+				case FieldType.DWORD:
 					a = GetBytes(field.DWORD);
 					break;
 
-				case FieldTypes.INT:
+				case FieldType.INT:
 					a = BitConverter.GetBytes(field.INT);
 					if (!_le) Array.Reverse(a);
 					break;
 
-				case FieldTypes.FLOAT:
+				case FieldType.FLOAT:
 					a = BitConverter.GetBytes(field.FLOAT);
 					if (!_le) Array.Reverse(a);
 					break;
@@ -484,26 +484,26 @@ namespace generalgff
 			switch (field.type)
 			{
 				// 8-bytes in the DataBlock ->
-				case FieldTypes.DWORD64:
+				case FieldType.DWORD64:
 					buffer = BitConverter.GetBytes(field.DWORD64); // do not convert to uint
-					goto case FieldTypes.locale;
+					goto case FieldType.locale;
 
-				case FieldTypes.INT64:
+				case FieldType.INT64:
 					buffer = BitConverter.GetBytes(field.INT64); // do not convert to uint
-					goto case FieldTypes.locale;
+					goto case FieldType.locale;
 
-				case FieldTypes.DOUBLE:
+				case FieldType.DOUBLE:
 					buffer = BitConverter.GetBytes(field.DOUBLE); // do not convert to uint
-					goto case FieldTypes.locale;
+					goto case FieldType.locale;
 
-				case FieldTypes.locale: // Is not a locale. Is just a goto-label.
+				case FieldType.locale: // Is not a locale. Is just a goto-label.
 					if (!_le) Array.Reverse(buffer);
 					DataBlock.AddRange(buffer);
 					break;
 
 
 				// arbitrary length in the DataBlock ->
-				case FieldTypes.CResRef:
+				case FieldType.CResRef:
 					// Ensure that user uses only ASCII characters and that the
 					// length is < 256. (16-chars for NwN and 32-chars for NwN2)
 					// [I believe that this is the only difference between NwN and NwN2 GFF-data.]
@@ -515,13 +515,13 @@ namespace generalgff
 					DataBlock.AddRange(buffer);
 					break;
 
-				case FieldTypes.CExoString:
+				case FieldType.CExoString:
 					buffer = Encoding.UTF8.GetBytes(field.CExoString);
 					DataBlock.AddRange(GetBytes((uint)buffer.Length));
 					DataBlock.AddRange(buffer);
 					break;
 
-				case FieldTypes.CExoLocString:
+				case FieldType.CExoLocString:
 				{
 					byte[] bufferStrref = GetBytes((uint)field.CExoLocStrref); // (DWORD)
 
@@ -594,7 +594,7 @@ namespace generalgff
 				}
 
 
-				case FieldTypes.VOID:
+				case FieldType.VOID:
 					DataBlock.AddRange(GetBytes((uint)field.VOID.Length)); // (DWORD)
 					DataBlock.AddRange(field.VOID);
 					break;
@@ -637,7 +637,7 @@ namespace generalgff
 			uint id = (uint)(Fields.Count / Globals.Length_FIELD); // id into Fields
 
 			var field = (GffData.Field)node.Tag;
-			Fields.AddRange(GetBytes((uint)field.type)); // <- FieldTypes.List
+			Fields.AddRange(GetBytes((uint)field.type)); // <- FieldType.List
 			Fields.AddRange(GetBytes(GetLabelId(field.label)));
 			Fields.AddRange(GetBytes((uint)ListIds.Count));
 
@@ -672,7 +672,7 @@ namespace generalgff
 
 			var field = (GffData.Field)node.Tag;
 
-			Fields.AddRange(GetBytes((uint)field.type)); // <- FieldTypes.Struct
+			Fields.AddRange(GetBytes((uint)field.type)); // <- FieldType.Struct
 			Fields.AddRange(GetBytes(GetLabelId(field.label)));
 			Fields.AddRange(GetBytes(structid));
 

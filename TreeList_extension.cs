@@ -71,7 +71,7 @@ namespace generalgff
 						field = (GffData.Field)SelectedNode.Tag;
 						switch (field.type)
 						{
-							case FieldTypes.List:
+							case FieldType.List:
 								switch (field.label)
 								{
 									case LABEL_CLASSLIST:
@@ -106,11 +106,11 @@ namespace generalgff
 								}
 								break;
 
-							case FieldTypes.CExoLocString:
+							case FieldType.CExoLocString:
 								it = new MenuItem("add localized string", contextclick_AddLocale);
 								break;
 
-							case FieldTypes.Struct:
+							case FieldType.Struct:
 								switch (field.label)
 								{
 									case LABEL_APPAREL_BELT:
@@ -131,10 +131,10 @@ namespace generalgff
 						field = (GffData.Field)SelectedNode.Tag;
 						switch (field.type)
 						{
-							case FieldTypes.Struct: // parent shall be a List here ->
+							case FieldType.Struct: // parent shall be a List here ->
 							{
 								field = (GffData.Field)(SelectedNode.Parent.Tag);
-								if (field.type == FieldTypes.List)
+								if (field.type == FieldType.List)
 								{
 									switch (field.label)
 									{
@@ -176,7 +176,7 @@ namespace generalgff
 								break;
 							}
 
-							case FieldTypes.locale:
+							case FieldType.locale:
 								it = new MenuItem("delete localized string", contextclick_Delete);
 								break;
 						}
@@ -382,7 +382,7 @@ namespace generalgff
 			TreeNode top = TopNode;
 
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = label;
 			field.Struct = new Struct();
 			field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
@@ -394,7 +394,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = "ArmorTint";
 			field.Struct = new Struct();
 			field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
@@ -408,7 +408,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.BYTE = 0;
 			field.label = "ArmorVisualType";
 
@@ -418,7 +418,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.BYTE = 0;
 			field.label = "Variation";
 
@@ -453,7 +453,7 @@ namespace generalgff
 			for (int i = 1; i != 4; ++i)
 			{
 				field = new GffData.Field();
-				field.type = FieldTypes.Struct;
+				field.type = FieldType.Struct;
 				field.label = i.ToString();
 				field.Struct = new Struct();
 				field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
@@ -468,7 +468,7 @@ namespace generalgff
 				foreach (var color in colors)
 				{
 					field = new GffData.Field();
-					field.type = FieldTypes.BYTE;
+					field.type = FieldType.BYTE;
 					field.BYTE = Byte.MaxValue;
 					field.label = color;
 
@@ -495,7 +495,7 @@ namespace generalgff
 			TreeNode top = TopNode;
 
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
 			field.Struct = new Struct();
 			field.Struct.typeid = 2; // <- that's what's in the UTCs I've looked at.
@@ -507,7 +507,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.INT;
+			field.type = FieldType.INT;
 			field.label = "Class";
 			field.INT = 0;
 
@@ -517,7 +517,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type  = FieldTypes.SHORT;
+			field.type  = FieldType.SHORT;
 			field.label = "ClassLevel";
 			field.SHORT = 1;
 
@@ -529,7 +529,7 @@ namespace generalgff
 			for (int i = 0; i != 10; ++i)
 			{
 				field = new GffData.Field();
-				field.type = FieldTypes.List;
+				field.type = FieldType.List;
 				field.label = LABEL_PREFIX_KNOWN + i;
 
 				text = GeneralGFF.ConstructNodetext(field);
@@ -541,7 +541,7 @@ namespace generalgff
 			for (int i = 0; i != 10; ++i)
 			{
 				field = new GffData.Field();
-				field.type = FieldTypes.List;
+				field.type = FieldType.List;
 				field.label = LABEL_PREFIX_MEMORIZED + i;
 
 				text = GeneralGFF.ConstructNodetext(field);
@@ -576,7 +576,7 @@ namespace generalgff
 			TreeNode top = TopNode;
 
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
 			field.Struct = new Struct();
 			field.Struct.typeid = 1; // <- that's what's in the UTCs I've looked at.
@@ -588,7 +588,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.WORD;
+			field.type = FieldType.WORD;
 			field.label = "Feat";
 			field.WORD = 0;
 
@@ -625,7 +625,7 @@ namespace generalgff
 			int id = SelectedNode.Nodes.Count;
 
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = id.ToString(); // Structs in Lists do not have a Label
 			field.Struct = new Struct();
 			field.Struct.typeid = (uint)id; // <- that's what's in the UTCs I've looked at.
@@ -637,7 +637,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.label = "Dropable";
 			field.BYTE = 0;
 
@@ -647,7 +647,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.CResRef;
+			field.type = FieldType.CResRef;
 			field.label = "EquippedRes";
 			field.CResRef = String.Empty;
 
@@ -657,7 +657,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.label = "Pickpocketable";
 			field.BYTE = 0;
 
@@ -667,7 +667,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.WORD;
+			field.type = FieldType.WORD;
 			field.label = "Repos_PosX";
 			field.WORD = 0;
 
@@ -677,7 +677,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.WORD;
+			field.type = FieldType.WORD;
 			field.label = "Repos_PosY";
 			field.WORD = 0;
 
@@ -728,7 +728,7 @@ namespace generalgff
 					TreeNode top = TopNode;
 
 					field = new GffData.Field();
-					field.type = FieldTypes.Struct;
+					field.type = FieldType.Struct;
 					field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
 					field.Struct = new Struct();
 					field.Struct.typeid = _bitslot; // <- that's what's in the UTCs I've looked at.
@@ -740,7 +740,7 @@ namespace generalgff
 
 
 					field = new GffData.Field();
-					field.type = FieldTypes.BYTE;
+					field.type = FieldType.BYTE;
 					field.label = "Dropable";
 					field.BYTE = 0;
 
@@ -750,7 +750,7 @@ namespace generalgff
 					SelectedNode.Nodes[id].Nodes.Add(node);
 
 					field = new GffData.Field();
-					field.type = FieldTypes.CResRef;
+					field.type = FieldType.CResRef;
 					field.label = "EquippedRes";
 					field.CResRef = String.Empty;
 
@@ -760,7 +760,7 @@ namespace generalgff
 					SelectedNode.Nodes[id].Nodes.Add(node);
 
 					field = new GffData.Field();
-					field.type = FieldTypes.BYTE;
+					field.type = FieldType.BYTE;
 					field.label = "Pickpocketable";
 					field.BYTE = 0;
 
@@ -770,7 +770,7 @@ namespace generalgff
 					SelectedNode.Nodes[id].Nodes.Add(node);
 
 					field = new GffData.Field();
-					field.type = FieldTypes.WORD;
+					field.type = FieldType.WORD;
 					field.label = "Repos_PosX";
 					field.WORD = 0;
 
@@ -780,7 +780,7 @@ namespace generalgff
 					SelectedNode.Nodes[id].Nodes.Add(node);
 
 					field = new GffData.Field();
-					field.type = FieldTypes.WORD;
+					field.type = FieldType.WORD;
 					field.label = "Repos_PosY";
 					field.WORD = 0;
 
@@ -892,7 +892,7 @@ namespace generalgff
 					TreeNode top = TopNode;
 
 					var field = new GffData.Field();
-					field.type = FieldTypes.Struct;
+					field.type = FieldType.Struct;
 					field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
 					field.Struct = new Struct();
 					field.Struct.typeid = 0; // <- that's what's in the UTCs I've looked at.
@@ -904,7 +904,7 @@ namespace generalgff
 
 
 					field = new GffData.Field();
-					field.type = FieldTypes.CExoString;
+					field.type = FieldType.CExoString;
 					field.label = "Name";
 					field.CExoString = _varLabel;
 
@@ -914,7 +914,7 @@ namespace generalgff
 					SelectedNode.Nodes[id].Nodes.Add(node);
 
 					field = new GffData.Field();
-					field.type = FieldTypes.DWORD;
+					field.type = FieldType.DWORD;
 					field.label = "Type";
 					field.DWORD = _varType;
 
@@ -932,17 +932,17 @@ namespace generalgff
 							return;
 
 						case VariableDialog.Type_INT:
-							field.type = FieldTypes.INT;
+							field.type = FieldType.INT;
 							field.INT = Int32.Parse(_varValue);
 							break;
 
 						case VariableDialog.Type_FLOAT:
-							field.type = FieldTypes.FLOAT;
+							field.type = FieldType.FLOAT;
 							field.FLOAT = Single.Parse(_varValue);
 							break;
 
 						case VariableDialog.Type_STRING:
-							field.type = FieldTypes.CExoString;
+							field.type = FieldType.CExoString;
 							field.CExoString = _varValue;
 							break;
 
@@ -950,7 +950,7 @@ namespace generalgff
 							return;
 
 						case VariableDialog.Type_UINT:		// and I can't see this being useful at all.
-							field.type = FieldTypes.DWORD;
+							field.type = FieldType.DWORD;
 							field.DWORD = UInt32.Parse(_varValue);
 							break;
 					}
@@ -1018,7 +1018,7 @@ namespace generalgff
 			TreeNode top = TopNode;
 
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
 			field.Struct = new Struct();
 			field.Struct.typeid = 2; // <- that's what's in the UTCs I've looked at.
@@ -1030,7 +1030,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.SHORT;
+			field.type = FieldType.SHORT;
 			field.label = "DmgRedctAmt";
 			field.SHORT = 0;
 
@@ -1040,7 +1040,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.SHORT;
+			field.type = FieldType.SHORT;
 			field.label = "DmgRedctFlags";
 			field.SHORT = 0;
 
@@ -1051,7 +1051,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.List;
+			field.type = FieldType.List;
 			field.label = "DmgRedctSubList";
 
 			text = GeneralGFF.ConstructNodetext(field);
@@ -1060,7 +1060,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(list);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = "0"; // Structs in Lists do not have a Label
 			field.Struct = new Struct();
 			field.Struct.typeid = 2; // <- that's what's in the UTCs I've looked at.
@@ -1071,7 +1071,7 @@ namespace generalgff
 			list.Nodes.Add(@struct);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.SHORT;
+			field.type = FieldType.SHORT;
 			field.label = "DmgRedctSubType";
 			field.SHORT = 0;
 
@@ -1081,7 +1081,7 @@ namespace generalgff
 			@struct.Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.SHORT;
+			field.type = FieldType.SHORT;
 			field.label = "DmgRedctType";
 			field.SHORT = 0;
 
@@ -1120,7 +1120,7 @@ namespace generalgff
 			TreeNode top = TopNode;
 
 			var field = new GffData.Field();
-			field.type = FieldTypes.Struct;
+			field.type = FieldType.Struct;
 			field.label = SelectedNode.Nodes.Count.ToString(); // Structs in Lists do not have a Label
 			field.Struct = new Struct();
 			field.Struct.typeid = 3; // <- that's what's in the UTCs I've looked at.
@@ -1132,7 +1132,7 @@ namespace generalgff
 
 
 			field = new GffData.Field();
-			field.type = FieldTypes.WORD;
+			field.type = FieldType.WORD;
 			field.label = "Spell";
 			field.WORD = 0; // default spell-id #0
 
@@ -1142,7 +1142,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.label = "SpellFlags";
 			field.BYTE = 1; // what is that
 
@@ -1152,7 +1152,7 @@ namespace generalgff
 			SelectedNode.Nodes[id].Nodes.Add(node);
 
 			field = new GffData.Field();
-			field.type = FieldTypes.BYTE;
+			field.type = FieldType.BYTE;
 			field.label = "SpellMetaMagic";
 			field.BYTE = 0;
 

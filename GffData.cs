@@ -8,7 +8,7 @@ namespace generalgff
 	/// <summary>
 	/// The types of fields available.
 	/// </summary>
-	enum FieldTypes : byte
+	enum FieldType : byte
 	{
 		BYTE,			//  0
 		CHAR,			//  1
@@ -179,7 +179,7 @@ namespace generalgff
 		/// </summary>
 		internal class Field
 		{
-			internal FieldTypes type;
+			internal FieldType type;
 
 			internal string label;			// ASCII (GeneralGFF policy: alphanumeric and underscore only)
 

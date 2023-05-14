@@ -378,7 +378,7 @@ namespace generalgff
 							buffer[b] = bytes[pos++];
 
 						if (!le) Array.Reverse(buffer);
-						field.type = (FieldTypes)BitConverter.ToUInt32(buffer, 0);
+						field.type = (FieldType)BitConverter.ToUInt32(buffer, 0);
 
 
 						buffer = new byte[4]; // 4-byte DWORD - field label id
@@ -401,18 +401,18 @@ namespace generalgff
 							// equal to 4-bytes are (according to the doc) contained
 							// in the first byte(s) of the dataordataoffset 'DWORD'.
 
-							case FieldTypes.BYTE:
+							case FieldType.BYTE:
 								field.BYTE = buffer[0];
 								break;
 
-							case FieldTypes.CHAR:
+							case FieldType.CHAR:
 							{
 								var a = (sbyte[])(object)new[]{ buffer[0] };
 								field.CHAR = a[0];
 								break;
 							}
 
-							case FieldTypes.WORD:
+							case FieldType.WORD:
 							{
 								var a = new byte[2];
 								if (le)
@@ -430,7 +430,7 @@ namespace generalgff
 								break;
 							}
 
-							case FieldTypes.SHORT:
+							case FieldType.SHORT:
 							{
 								var a = new byte[2];
 								if (le)
@@ -448,17 +448,17 @@ namespace generalgff
 								break;
 							}
 
-							case FieldTypes.DWORD:
+							case FieldType.DWORD:
 								if (!le) Array.Reverse(buffer);
 								field.DWORD = BitConverter.ToUInt32(buffer, 0);
 								break;
 
-							case FieldTypes.INT:
+							case FieldType.INT:
 								if (!le) Array.Reverse(buffer);
 								field.INT = BitConverter.ToInt32(buffer, 0);
 								break;
 
-							case FieldTypes.DWORD64:
+							case FieldType.DWORD64:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 								buffer = new byte[8];
@@ -469,7 +469,7 @@ namespace generalgff
 								field.DWORD64 = BitConverter.ToUInt64(buffer, 0);
 								break;
 
-							case FieldTypes.INT64:
+							case FieldType.INT64:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 								buffer = new byte[8];
@@ -480,12 +480,12 @@ namespace generalgff
 								field.INT64 = BitConverter.ToInt64(buffer, 0);
 								break;
 
-							case FieldTypes.FLOAT:
+							case FieldType.FLOAT:
 								if (!le) Array.Reverse(buffer);
 								field.FLOAT = BitConverter.ToSingle(buffer, 0);
 								break;
 
-							case FieldTypes.DOUBLE:
+							case FieldType.DOUBLE:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 								buffer = new byte[8];
@@ -496,7 +496,7 @@ namespace generalgff
 								field.DOUBLE = BitConverter.ToDouble(buffer, 0);
 								break;
 
-							case FieldTypes.CResRef:
+							case FieldType.CResRef:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 								length = bytes[offset]; // 1-byte size
@@ -509,7 +509,7 @@ namespace generalgff
 								field.CResRef = Encoding.ASCII.GetString(buffer, 0, buffer.Length);
 								break;
 
-							case FieldTypes.CExoString:
+							case FieldType.CExoString:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 
@@ -528,7 +528,7 @@ namespace generalgff
 								field.CExoString = field.CExoString.Replace("\r\n","\n").Replace("\r","\n").Replace("\n","\r\n");
 								break;
 
-							case FieldTypes.CExoLocString:
+							case FieldType.CExoLocString:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 
@@ -590,7 +590,7 @@ namespace generalgff
 								}
 								break;
 
-							case FieldTypes.VOID:
+							case FieldType.VOID:
 								if (!le) Array.Reverse(buffer);
 								offset = FieldDataOffset + BitConverter.ToUInt32(buffer, 0);
 								buffer = new byte[4];
@@ -607,7 +607,7 @@ namespace generalgff
 
 								break;
 
-							case FieldTypes.List: // a list-type Field is an offset into the FieldIndices; the later contains a list of StructIds.
+							case FieldType.List: // a list-type Field is an offset into the FieldIndices; the later contains a list of StructIds.
 								if (!le) Array.Reverse(buffer);
 								offset = ListIndicesOffset + BitConverter.ToUInt32(buffer, 0); // offset into the (not)FieldIndices(not) -> try ListIndices
 
@@ -631,7 +631,7 @@ namespace generalgff
 								field.List = list;
 								break;
 
-							case FieldTypes.Struct:
+							case FieldType.Struct:
 								if (!le) Array.Reverse(buffer);
 								field.Struct = Structs[(int)BitConverter.ToUInt32(buffer, 0)]; // NOTE: That is an id into the Structs not an offset.
 								break;

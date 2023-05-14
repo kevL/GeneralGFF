@@ -70,7 +70,7 @@ namespace generalgff
 
 			switch (field.type)
 			{
-				case FieldTypes.Struct: // childs can be of any Type.
+				case FieldType.Struct: // childs can be of any Type.
 				{
 					List<uint> fieldids = field.Struct.fieldids;
 					for (int i = 0; i != fieldids.Count; ++i)
@@ -80,7 +80,7 @@ namespace generalgff
 					break;
 				}
 
-				case FieldTypes.List: // childs are Structs.
+				case FieldType.List: // childs are Structs.
 				{
 					List<uint> list = field.List;
 					for (int i = 0; i != list.Count; ++i)
@@ -88,7 +88,7 @@ namespace generalgff
 						// NOTE: Structs in Lists do not have a Label inside a GFF-file.
 						// so give Structs in Lists a pseudo-label for their treenode(s)
 						field = new GffData.Field();
-						field.type   = FieldTypes.Struct;
+						field.type   = FieldType.Struct;
 						field.label  = i.ToString();
 						field.Struct = GffReader.Structs[(int)list[i]];
 
@@ -97,7 +97,7 @@ namespace generalgff
 					break;
 				}
 
-				case FieldTypes.CExoLocString: // childs are Locales.
+				case FieldType.CExoLocString: // childs are Locales.
 					if (field.Locales != null)
 					{
 						int locales = field.Locales.Count;
@@ -106,7 +106,7 @@ namespace generalgff
 							locale = field.Locales[i];
 
 							var fieldloc = new GffData.Field();
-							fieldloc.type = FieldTypes.locale;
+							fieldloc.type = FieldType.locale;
 							fieldloc.localeid = (uint)i;
 							fieldloc.label = GffData.Locale.GetLanguageString(locale.langid, locale.F);
 
