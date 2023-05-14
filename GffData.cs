@@ -342,10 +342,10 @@ namespace generalgff
 						return "GffToken";
 
 					default:
-						return "ErROr: language type unknown";
+						return "ErROr:lang na";
 				}
 
-				if (f) l += "[F]";
+				if (f) l += Globals.SUF_F;
 
 				return l;
 			}
