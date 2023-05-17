@@ -41,7 +41,7 @@ namespace generalgff
 
 
 		#region Fields
-		internal TreeList _tl;
+		internal TreeList _tree;
 
 		string _prevalText_rt = String.Empty;	// cached text used by Revert
 		string _prevalText_tb = String.Empty;	// cached text used by Revert
@@ -132,9 +132,9 @@ namespace generalgff
 			logfile.CreateLog(); // works in debug-build only.
 			InitializeComponent();
 
-			_tl = new TreeList(this);
-			sc_body.Panel1.Controls.Add(_tl);
-			_tl.Select();
+			_tree = new TreeList(this);
+			sc_body.Panel1.Controls.Add(_tree);
+			_tree.Select();
 
 			SubscribeOperations();
 
@@ -589,11 +589,11 @@ namespace generalgff
 		{
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_RELD].Enabled = GffData != null
 																						   && File.Exists(GffData.Pfe);
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Enabled = _tl.Nodes.Count != 0
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVE].Enabled = _tree.Nodes.Count != 0
 																						   && GffData.Changed
 																						   && GffData.Pfe != Globals.TopLevelStruct;
 			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_SAVA].Enabled =
-			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_EXPT].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_FILE].MenuItems[MenuCreator.MI_FILE_EXPT].Enabled = _tree.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -606,7 +606,7 @@ namespace generalgff
 		{
 			if (CheckCloseData(Globals.Close))
 			{
-				_tl.Nodes.Clear();
+				_tree.Nodes.Clear();
 
 				GffData = new GffData(); // init GffData! ->
 				GffData.TypeVer = "GFF V3.2";
@@ -621,9 +621,9 @@ namespace generalgff
 				field.Struct = new Struct();
 				field.Struct.typeid = UInt32.MaxValue;
 
-				_tl.Nodes.Add(field.label);
+				_tree.Nodes.Add(field.label);
 
-				_tl.SelectedNode = _tl.Nodes[0];
+				_tree.SelectedNode = _tree.Nodes[0];
 			}
 		}
 
@@ -656,9 +656,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		internal void fileclick_Save(object sender, EventArgs e)
 		{
-			if (_tl.Nodes.Count != 0 && GffData.Changed
+			if (_tree.Nodes.Count != 0 && GffData.Changed
 				&& GffData.Pfe != Globals.TopLevelStruct
-				&& GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.TypeVer))
+				&& GffWriter.WriteGFFfile(GffData.Pfe, _tree, GffData.TypeVer))
 			{
 				FileWatchDialog.Bypass = false;
 				GffData.Latest = File.GetLastWriteTime(GffData.Pfe);
@@ -675,7 +675,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void fileclick_SaveAs(object sender, EventArgs e)
 		{
-			if (_tl.Nodes.Count != 0)
+			if (_tree.Nodes.Count != 0)
 			{
 				using (var sfd = new SaveFileDialog())
 				{
@@ -691,10 +691,10 @@ namespace generalgff
 					}
 
 					if (sfd.ShowDialog(this) == DialogResult.OK
-						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.TypeVer))
+						&& GffWriter.WriteGFFfile(sfd.FileName, _tree, GffData.TypeVer))
 					{
 						string label = Path.GetFileNameWithoutExtension(sfd.FileName).ToUpper();
-						_tl.Nodes[0].Text = label; // update TLS-label
+						_tree.Nodes[0].Text = label; // update TLS-label
 
 						GffData.Pfe = sfd.FileName;
 
@@ -729,7 +729,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void fileclick_Export(object sender, EventArgs e)
 		{
-			if (_tl.Nodes.Count != 0)
+			if (_tree.Nodes.Count != 0)
 			{
 				using (var sfd = new SaveFileDialog())
 				{
@@ -745,7 +745,7 @@ namespace generalgff
 					}
 
 					if (sfd.ShowDialog(this) == DialogResult.OK
-						&& GffWriter.WriteGFFfile(sfd.FileName, _tl, GffData.TypeVer)
+						&& GffWriter.WriteGFFfile(sfd.FileName, _tree, GffData.TypeVer)
 						&& sfd.FileName == GffData.Pfe)
 					{
 						// NOTE: This happens only if user chooses to export/
@@ -780,10 +780,10 @@ namespace generalgff
 		void editpop(object sender, EventArgs e)
 		{
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_CUT].Enabled =
-			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Enabled = _tl.SelectedNode != null
-																						  && _tl.SelectedNode != _tl.Nodes[0];
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_COP].Enabled = _tree.SelectedNode != null
+																						  && _tree.SelectedNode != _tree.Nodes[0];
 			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_PAS].Enabled = EnablePaste();
-			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_DEL].Enabled = _tl.SelectedNode != null;
+			Menu.MenuItems[MenuCreator.MI_EDIT].MenuItems[MenuCreator.MI_EDIT_DEL].Enabled = _tree.SelectedNode != null;
 		}
 
 		/// <summary>
@@ -804,10 +804,10 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Cut(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0])
+			if (_tree.SelectedNode != null && _tree.SelectedNode != _tree.Nodes[0])
 			{
 				editclick_Copy(null, EventArgs.Empty);
-				_tl.contextclick_Delete(null, EventArgs.Empty);
+				_tree.contextclick_Delete(null, EventArgs.Empty);
 			}
 		}
 
@@ -822,14 +822,14 @@ namespace generalgff
 		void editclick_Copy(object sender, EventArgs e)
 		{
 			if (sender == null // called by editclick_Cut()
-				|| (_tl.SelectedNode != null && _tl.SelectedNode != _tl.Nodes[0]))
+				|| (_tree.SelectedNode != null && _tree.SelectedNode != _tree.Nodes[0]))
 			{
-				Copied = Sortable.Duplicate((Sortable)_tl.SelectedNode);
+				Copied = Sortable.Duplicate((Sortable)_tree.SelectedNode);
 
-				var field = (GffData.Field)_tl.SelectedNode.Tag;
+				var field = (GffData.Field)_tree.SelectedNode.Tag;
 				if (field.type == FieldType.locale) // gotta cache the Locale if relevant
 				{
-					_refLocale = ((GffData.Field)_tl.SelectedNode.Parent.Tag).Locales[(int)field.localeid];
+					_refLocale = ((GffData.Field)_tree.SelectedNode.Parent.Tag).Locales[(int)field.localeid];
 				}
 				else
 					_refLocale = null;
@@ -848,10 +848,10 @@ namespace generalgff
 				var node = Sortable.Duplicate(Copied);
 				GffData.Field field;
 
-				if (_tl.SelectedNode.Tag == null // is TopLevelStruct
-					|| (field = (GffData.Field)_tl.SelectedNode.Tag).type == FieldType.Struct)
+				if (_tree.SelectedNode.Tag == null // is TopLevelStruct
+					|| (field = (GffData.Field)_tree.SelectedNode.Tag).type == FieldType.Struct)
 				{
-					string label = _tl.GetUniqueLabel(node._label);
+					string label = _tree.GetUniqueLabel(node._label);
 					if (label != node._label)
 					{
 						field = (GffData.Field)node.Tag;
@@ -870,7 +870,7 @@ namespace generalgff
 					{
 						case FieldType.List:
 							field = (GffData.Field)node.Tag;
-							field.label = _tl.SelectedNode.Nodes.Count.ToString();
+							field.label = _tree.SelectedNode.Nodes.Count.ToString();
 
 							node._label = field.label;
 							node.Text = GeneralGFF.ConstructNodetext(field);
@@ -891,9 +891,9 @@ namespace generalgff
 					}
 				}
 
-				_tl.SelectedNode.Nodes.Add(node);
-				_tl.SelectedNode.Expand();
-				_tl.SelectedNode = node;
+				_tree.SelectedNode.Nodes.Add(node);
+				_tree.SelectedNode.Expand();
+				_tree.SelectedNode = node;
 
 				GffData.Changed = true;
 				GffData = GffData;
@@ -906,12 +906,12 @@ namespace generalgff
 		/// <returns></returns>
 		bool EnablePaste()
 		{
-			if (_tl.SelectedNode != null && Copied != null)
+			if (_tree.SelectedNode != null && Copied != null)
 			{
-				if (_tl.SelectedNode.Tag == null) // is TopLevelStruct
+				if (_tree.SelectedNode.Tag == null) // is TopLevelStruct
 					return true;
 
-				switch (((GffData.Field)_tl.SelectedNode.Tag).type)
+				switch (((GffData.Field)_tree.SelectedNode.Tag).type)
 				{
 					case FieldType.Struct:
 						return true;
@@ -935,7 +935,7 @@ namespace generalgff
 		{
 			if (_refLocale != null)
 			{
-				uint localeflags = ((GffData.Field)_tl.SelectedNode.Tag).localeflags;
+				uint localeflags = ((GffData.Field)_tree.SelectedNode.Tag).localeflags;
 				if ((localeflags & LocaleDialog.GetLocaleFlag(_refLocale)) != 0)
 				{
 					string info = "The currently copied Locale already exists in the branch."
@@ -958,8 +958,8 @@ namespace generalgff
 		/// <param name="e"></param>
 		void editclick_Delete(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null)
-				_tl.contextclick_Delete(null, EventArgs.Empty);
+			if (_tree.SelectedNode != null)
+				_tree.contextclick_Delete(null, EventArgs.Empty);
 		}
 
 
@@ -971,9 +971,9 @@ namespace generalgff
 		void viewpop(object sender, EventArgs e)
 		{
 			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_EXPD].Enabled =
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLP].Enabled = _tl.SelectedNode != null
-																						   && _tl.SelectedNode.Nodes.Count != 0;
-			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORT].Enabled = _tl.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_COLP].Enabled = _tree.SelectedNode != null
+																						   && _tree.SelectedNode.Nodes.Count != 0;
+			Menu.MenuItems[MenuCreator.MI_VIEW].MenuItems[MenuCreator.MI_VIEW_SORT].Enabled = _tree.Nodes.Count != 0;
 		}
 
 		/// <summary>
@@ -983,13 +983,13 @@ namespace generalgff
 		/// <param name="e"></param>
 		void viewclick_ExpandSelected(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null)
+			if (_tree.SelectedNode != null)
 			{
-				_tl.SelectedNode.Expand();
-				ExpandChildren(_tl.SelectedNode);
+				_tree.SelectedNode.Expand();
+				ExpandChildren(_tree.SelectedNode);
 
-				if (!_tl.SelectedNode.IsVisible)
-					_tl.TopNode = _tl.SelectedNode;
+				if (!_tree.SelectedNode.IsVisible)
+					_tree.TopNode = _tree.SelectedNode;
 			}
 		}
 
@@ -1013,10 +1013,10 @@ namespace generalgff
 		/// <param name="e"></param>
 		void viewclick_CollapseSelected(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null)
+			if (_tree.SelectedNode != null)
 			{
-				_tl.SelectedNode.Collapse();
-				CollapseChildren(_tl.SelectedNode);
+				_tree.SelectedNode.Collapse();
+				CollapseChildren(_tree.SelectedNode);
 			}
 		}
 
@@ -1041,17 +1041,17 @@ namespace generalgff
 		/// <param name="e"></param>
 		void viewclick_Sort(object sender, EventArgs e)
 		{
-			if (_tl.Nodes.Count != 0)
+			if (_tree.Nodes.Count != 0)
 			{
-				_tl.BeginUpdate();
+				_tree.BeginUpdate();
 
-				var node = _tl.SelectedNode;
-				_tl.Sort();
+				var node = _tree.SelectedNode;
+				_tree.Sort();
 
-				if (!(_tl.SelectedNode = node).IsVisible)
-					_tl.SelectedNode.EnsureVisible(); // _tl.TopNode = _tl.SelectedNode;
+				if (!(_tree.SelectedNode = node).IsVisible)
+					_tree.SelectedNode.EnsureVisible(); // _tree.TopNode = _tree.SelectedNode;
 
-				_tl.EndUpdate();
+				_tree.EndUpdate();
 			}
 		}
 
@@ -1106,10 +1106,10 @@ namespace generalgff
 		{
 			if (_extEnabled = enabled)
 			{
-				_tl.BackColor = Color.BurlyWood;
+				_tree.BackColor = Color.BurlyWood;
 			}
 			else
-				_tl.BackColor = Color.PaleTurquoise;
+				_tree.BackColor = Color.PaleTurquoise;
 		}
 
 /*		void extensionclick_Visualizer(object sender, EventArgs e)
@@ -1252,9 +1252,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		void textchanged_Single(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null)
+			if (_tree.SelectedNode != null)
 			{
-				object tag = _tl.SelectedNode.Tag;
+				object tag = _tree.SelectedNode.Tag;
 				if (tag == null // is TopLevelStruct
 					|| ((GffData.Field)tag).type == FieldType.CResRef)
 				{
@@ -1282,9 +1282,9 @@ namespace generalgff
 		/// <param name="e"></param>
 		void textchanged_Multi(object sender, EventArgs e)
 		{
-			if (_tl.SelectedNode != null)
+			if (_tree.SelectedNode != null)
 			{
-				var field = ((GffData.Field)_tl.SelectedNode.Tag);
+				var field = ((GffData.Field)_tree.SelectedNode.Tag);
 				if (field != null && field.type == FieldType.VOID)
 				{
 					if (!isHexadecimal(rt_Val.Text))
@@ -1312,7 +1312,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void click_Apply(object sender, EventArgs e)
 		{
-			TreeNode node = _tl.SelectedNode;
+			TreeNode node = _tree.SelectedNode;
 			if (node != null) // safety.
 			{
 				Control editor = tb_Val;
@@ -1736,7 +1736,7 @@ namespace generalgff
 
 					DirtyState = DIRTY_non;
 
-					_tl.Select();
+					_tree.Select();
 				}
 				else
 				{
@@ -1756,7 +1756,7 @@ namespace generalgff
 		void click_Revert(object sender, EventArgs e)
 		{
 			SelectField();
-			_tl.Select();
+			_tree.Select();
 		}
 
 
@@ -1871,7 +1871,7 @@ namespace generalgff
 		/// <returns>true if okay to close</returns>
 		internal bool CheckCloseData(string quitbuttontext)
 		{
-			if (GffData != null && GffData.Changed && _tl.Nodes.Count != 0)
+			if (GffData != null && GffData.Changed && _tree.Nodes.Count != 0)
 			{
 				bool allowsave = GffData.Pfe != Globals.TopLevelStruct
 							  && quitbuttontext != Globals.Reload;
@@ -1883,7 +1883,7 @@ namespace generalgff
 //						case DialogResult.Ignore:	// "Close/Quit/Reload" - close/quit/reload don't save
 
 						case DialogResult.Retry:	// "Save" - save and quit (not allowed unless CurrentData.Pfe is a valid path)
-							return GffWriter.WriteGFFfile(GffData.Pfe, _tl, GffData.TypeVer);
+							return GffWriter.WriteGFFfile(GffData.Pfe, _tree, GffData.TypeVer);
 
 						case DialogResult.Abort:	// "Cancel" - don't quit
 							return false;
@@ -1926,14 +1926,14 @@ namespace generalgff
 
 		/// <summary>
 		/// Populates (or re-populates) the editpanel.
-		/// @note Ensure that '_tl.SelectedNode' is valid before call.
+		/// @note Ensure that '_tree.SelectedNode' is valid before call.
 		/// </summary>
 		internal void SelectField()
 		{
 			ResetEditPanel();
 
 			var labels = new List<string>(); // print tree-path to statusbar ->
-			var node = _tl.SelectedNode;
+			var node = _tree.SelectedNode;
 			do
 			{
 				if (node.Tag == null) // is TopLevelStruct
@@ -1954,7 +1954,7 @@ namespace generalgff
 			tssl_info.Text = path;
 
 
-			if (_tl.SelectedNode.Tag == null) // is TopLevelStruct's node
+			if (_tree.SelectedNode.Tag == null) // is TopLevelStruct's node
 			{
 				la_Des.Text = "ASCII";
 				la_Val.Text = "GFF type + version";
@@ -1966,7 +1966,7 @@ namespace generalgff
 			}
 			else
 			{
-				var field = (GffData.Field)_tl.SelectedNode.Tag;
+				var field = (GffData.Field)_tree.SelectedNode.Tag;
 
 				switch (field.type)
 				{
@@ -2157,7 +2157,7 @@ namespace generalgff
 
 					case FieldType.locale:
 					{
-						var parent = (GffData.Field)_tl.SelectedNode.Parent.Tag;
+						var parent = (GffData.Field)_tree.SelectedNode.Parent.Tag;
 						GffData.Locale locale = parent.Locales[(int)field.localeid];
 
 						if (locale.langid == Language.GffToken)

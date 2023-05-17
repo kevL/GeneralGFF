@@ -101,7 +101,7 @@ namespace generalgff
 		/// <param name="e"></param>
 		void checkchanged_radio(object sender, EventArgs e)
 		{
-			((GeneralGFF)Owner)._tl._bitslot = (uint)((RadioButton)sender).Tag;
+			((GeneralGFF)Owner)._tree._bitslot = (uint)((RadioButton)sender).Tag;
 		}
 
 		/// <summary>

@@ -45,7 +45,7 @@ namespace generalgff
 
 		#region Fields
 		GeneralGFF _f;
-		TreeList _tl;
+		TreeList _tree;
 		TreeNode _start0;
 		bool _reverse;
 		#endregion Fields
@@ -68,7 +68,7 @@ namespace generalgff
 			DontBeepEvent += SearchDontBeep;
 
 			_f  =  f;
-			_tl = _f._tl;
+			_tree = _f._tree;
 
 			if (_x != -1)
 			{
@@ -204,19 +204,19 @@ namespace generalgff
 
 			_text = tb_Search.Text.ToLower(CultureInfo.CurrentCulture);
 
-			if (_tl.Nodes.Count != 0 && !String.IsNullOrEmpty(_text))
+			if (_tree.Nodes.Count != 0 && !String.IsNullOrEmpty(_text))
 			{
-				if (_tl.SelectedNode != null)
-					_start0 = _tl.SelectedNode;
+				if (_tree.SelectedNode != null)
+					_start0 = _tree.SelectedNode;
 				else
-					_start0 = _tl.Nodes[0];
+					_start0 = _tree.Nodes[0];
 
 				TreeNode next = _start0; // find a node after (or before) the SelectedNode to start search at
 				while ((next = GetNextNode(next)) != _start0)
 				{
 					if (Match(next) != null)
 					{
-						_tl.SelectedNode = next;
+						_tree.SelectedNode = next;
 						return;
 					}
 				}
@@ -266,7 +266,7 @@ namespace generalgff
 				}
 
 				if (start == null)				// no living relations so query The Ancestor
-					return _tl.Nodes[0];
+					return _tree.Nodes[0];
 			}
 			else // reverse direction ->		// lalala talk to the hand.
 			{
@@ -284,7 +284,7 @@ namespace generalgff
 					if (start.Parent != null)
 						return start.Parent;
 
-					start = _tl.Nodes[0];
+					start = _tree.Nodes[0];
 					while (start.Nodes.Count != 0)
 						start = start.LastNode;
 				}

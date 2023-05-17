@@ -59,7 +59,7 @@ namespace generalgff
 				&& e.CloseReason != CloseReason.WindowsShutDown
 				&& e.CloseReason != CloseReason.TaskManagerClosing)
 			{
-				TreeList tl = ((GeneralGFF)Owner)._tl;
+				TreeList tree = ((GeneralGFF)Owner)._tree;
 
 				string error = null;
 				if (String.IsNullOrEmpty(tb_var.Text))
@@ -72,7 +72,7 @@ namespace generalgff
 					error = "The variable value cannot be null.";
 					tb_val.Select();
 				}
-				else if (tl.CheckVariableForRedundancy(_varType, tb_var.Text))
+				else if (tree.CheckVariableForRedundancy(_varType, tb_var.Text))
 				{
 					error = "That variable label+type already exists.";
 					tb_var.Select();
@@ -126,9 +126,9 @@ namespace generalgff
 				}
 				else
 				{
-					tl._varLabel = tb_var.Text;
-					tl._varValue = tb_val.Text;
-					tl._varType  = _varType; // uh ...
+					tree._varLabel = tb_var.Text;
+					tree._varValue = tb_val.Text;
+					tree._varType  = _varType; // uh ...
 				}
 			}
 		}

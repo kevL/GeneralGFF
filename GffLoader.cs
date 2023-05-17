@@ -19,8 +19,8 @@ namespace generalgff
 		/// <param name="pfe"></param>
 		internal static void LoadGFFfile(GeneralGFF f, string pfe)
 		{
-			f._tl.BeginUpdate();
-			f._tl.Nodes.Clear();
+			f._tree.BeginUpdate();
+			f._tree.Nodes.Clear();
 
 			f.ResetEditPanel();
 
@@ -32,7 +32,7 @@ namespace generalgff
 				// TreeList has no Tag.
 
 				string label = Path.GetFileNameWithoutExtension(f.GffData.Pfe).ToUpper();
-				TreeNode root = f._tl.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
+				TreeNode root = f._tree.Nodes.Add(label); // NOTE: TreeView doesn't like the root to be a Sortable. or bleh
 
 				// instantiate the TLS's fieldids as treenodes ->
 				List<uint> fieldids = GffReader.Structs[0].fieldids;
@@ -41,11 +41,11 @@ namespace generalgff
 					AddField(GffReader.Fields[(int)fieldids[i]], root);
 				}
 
-				f._tl.Nodes[0].Expand();
-				f._tl.SelectedNode = f._tl.Nodes[0];
+				f._tree.Nodes[0].Expand();
+				f._tree.SelectedNode = f._tree.Nodes[0];
 			}
 
-			f._tl.EndUpdate();
+			f._tree.EndUpdate();
 
 			GffReader.Structs.Clear();
 			GffReader.Fields .Clear();

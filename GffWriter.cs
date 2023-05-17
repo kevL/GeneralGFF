@@ -32,10 +32,10 @@ namespace generalgff
 		/// Writes all data to a GFF file.
 		/// </summary>
 		/// <param name="pfe">path-file-extension to write to</param>
-		/// <param name="tl">the TreeList</param>
+		/// <param name="tree">the TreeList</param>
 		/// <param name="ver">GffReader.Ver</param>
 		/// <returns>true if successful</returns>
-		internal static bool WriteGFFfile(string pfe, TreeView tl, string ver)
+		internal static bool WriteGFFfile(string pfe, TreeView tree, string ver)
 		{
 			//logfile.Log("WriteGFFfile()");
 			//logfile.Log(". pfe= " + pfe);
@@ -64,7 +64,7 @@ namespace generalgff
 				ListIds  .Clear();
 
 				//logfile.Log(". add TopLevelStruct");
-				AddStruct(tl.Nodes[0], true); // add the TopLevelStruct - nearly all else follows.
+				AddStruct(tree.Nodes[0], true); // add the TopLevelStruct - nearly all else follows.
 				SwapTlsToStart();
 
 
