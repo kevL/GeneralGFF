@@ -642,7 +642,7 @@ namespace generalgff
 					return data;
 				}
 
-				FileService.error("Insufficient header data.");
+				FileService.error("Invalid GFF file.");
 			}
 			return null;
 		}
