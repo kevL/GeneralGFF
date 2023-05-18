@@ -49,12 +49,12 @@ namespace generalgff
 		{ get { return _fields; } }
 
 
-/*		static readonly List<uint> _fieldids = new List<uint>();
-		/// <summary>
-		/// 
-		/// </summary>
-		internal static List<uint> FieldIds
-		{ get { return _fieldids; } } */
+//		static readonly List<uint> _fieldids = new List<uint>();
+//		/// <summary>
+//		/// 
+//		/// </summary>
+//		internal static List<uint> FieldIds
+//		{ get { return _fieldids; } }
 		#endregion Properties (static)
 
 

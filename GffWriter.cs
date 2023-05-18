@@ -221,8 +221,9 @@ namespace generalgff
 		/// not the TopLevelStruct) has a Field associated with it.
 		/// </summary>
 		/// <param name="node"></param>
-		/// <param name="tls">true if TopLevelStruct; the TLS does not have a
-		/// typeid or a label and its treenode does not have a (GffData.Field)Tag</param>
+		/// <param name="tls"><c>true</c> if TopLevelStruct; the TLS does not
+		/// have a typeid or a label and its treenode does not have a
+		/// (GffData.Field)Tag</param>
 		/// <returns>the Struct's id for use by a Field</returns>
 		static uint AddStruct(TreeNode node, bool tls = false)
 		{
