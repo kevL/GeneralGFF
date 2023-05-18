@@ -219,27 +219,27 @@ namespace generalgff
 			/// <returns></returns>
 			internal static Field Duplicate(Field field)
 			{
-				var field0 = new Field();
+				var field_ = new Field();
 
-				field0.type          = field.type;
-				field0.label         = field.label;
-				field0.BYTE          = field.BYTE;
-				field0.CHAR          = field.CHAR;
-				field0.WORD          = field.WORD;
-				field0.SHORT         = field.SHORT;
-				field0.DWORD         = field.DWORD;
-				field0.INT           = field.INT;
-				field0.DWORD64       = field.DWORD64;
-				field0.INT64         = field.INT64;
-				field0.FLOAT         = field.FLOAT;
-				field0.DOUBLE        = field.DOUBLE;
-				field0.CResRef       = field.CResRef;
-				field0.CExoString    = field.CExoString;
-				field0.CExoLocStrref = field.CExoLocStrref;
+				field_.type          = field.type;
+				field_.label         = field.label;
+				field_.BYTE          = field.BYTE;
+				field_.CHAR          = field.CHAR;
+				field_.WORD          = field.WORD;
+				field_.SHORT         = field.SHORT;
+				field_.DWORD         = field.DWORD;
+				field_.INT           = field.INT;
+				field_.DWORD64       = field.DWORD64;
+				field_.INT64         = field.INT64;
+				field_.FLOAT         = field.FLOAT;
+				field_.DOUBLE        = field.DOUBLE;
+				field_.CResRef       = field.CResRef;
+				field_.CExoString    = field.CExoString;
+				field_.CExoLocStrref = field.CExoLocStrref;
 
 				if (field.Locales != null)
 				{
-					field0.Locales = new List<Locale>();
+					field_.Locales = new List<Locale>();
 					for (int i = 0; i != field.Locales.Count; ++i)
 					{
 						var locale = new Locale();
@@ -247,34 +247,34 @@ namespace generalgff
 						locale.F      = field.Locales[i].F;
 						locale.local  = field.Locales[i].local;
 
-						field0.Locales.Add(locale);
+						field_.Locales.Add(locale);
 					}
 				}
-				field0.localeflags = field.localeflags;
-				field0.localeid    = field.localeid;
+				field_.localeflags = field.localeflags;
+				field_.localeid    = field.localeid;
 
 				if (field.VOID != null)
 				{
-					field0.VOID = new byte[field.VOID.Length];
+					field_.VOID = new byte[field.VOID.Length];
 					for (int i = 0; i != field.VOID.Length; ++i)
 					{
-						field0.VOID[i] = field.VOID[i];
+						field_.VOID[i] = field.VOID[i];
 					}
 				}
 
-/*				if (field.List != null)
-				{
-					field0.List = new List<uint>();
-					for (int i = 0; i != field.List.Count; ++i)
-					{
-						field0.List.Add(field.List[i]);
-					}
-				} */
+//				if (field.List != null)
+//				{
+//					field_.List = new List<uint>();
+//					for (int i = 0; i != field.List.Count; ++i)
+//					{
+//						field_.List.Add(field.List[i]);
+//					}
+//				}
 
-				field0.Struct.typeid   = field.Struct.typeid;
-//				field0.Struct.fieldids = field.Struct.fieldids;
+				field_.Struct.typeid   = field.Struct.typeid;
+//				field_.Struct.fieldids = field.Struct.fieldids;
 
-				return field0;
+				return field_;
 			}
 		}
 
