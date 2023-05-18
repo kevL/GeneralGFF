@@ -18,10 +18,11 @@
 
 		internal const string About  = "About";
 
-		internal const string Error  = "Error";
-		internal const string Quit   = "Quit";
-		internal const string Close  = "Close";
-		internal const string Reload = "Reload";
+		internal const string Error   = "Error";
+		internal const string Warning = "Warning";
+		internal const string Quit    = "Quit";
+		internal const string Close   = "Close";
+		internal const string Reload  = "Reload";
 
 
 		internal const uint BITS_STRREF = 0x00FFFFFF; // talktable bitflags ->

@@ -860,7 +860,7 @@ namespace generalgff
 						node._label = label;
 						node.Text = GeneralGFF.ConstructNodetext(field);
 
-						using (var f = new InfoDialog("Warning", "Duplicate labels detected: Label changed."))
+						using (var f = new InfoDialog(Globals.Warning, "Duplicate labels detected: Label changed."))
 							f.ShowDialog(this);
 					}
 				}
