@@ -358,13 +358,13 @@ namespace generalgff
 			/// <returns></returns>
 			internal static Locale Duplicate(Locale locale)
 			{
-				var locale0 = new Locale();
+				var locale_ = new Locale();
 
-				locale0.langid = locale.langid;
-				locale0.F      = locale.F;
-				locale0.local  = locale.local;
+				locale_.langid = locale.langid;
+				locale_.F      = locale.F;
+				locale_.local  = locale.local;
 
-				return locale0;
+				return locale_;
 			}
 		}
 
