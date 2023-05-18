@@ -832,7 +832,7 @@ namespace generalgff
 			if (field == null // is TopLevelStruct
 				|| field.type == FieldType.Struct)
 			{
-				string label0 = label;
+				string label_ = label;
 				int suf = -1;
 
 				bool valid = false;
@@ -844,7 +844,7 @@ namespace generalgff
 					{
 						if (((Sortable)SelectedNode.Nodes[i])._label == label)
 						{
-							label = label0 + (++suf);
+							label = label_ + (++suf);
 							if (label.Length > Globals.Length_LABEL)
 								label = label.Substring(label.Length - Globals.Length_LABEL);
 
