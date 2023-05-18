@@ -46,7 +46,7 @@ namespace generalgff
 		#region Fields
 		GeneralGFF _f;
 		TreeList _tree;
-		TreeNode _start0;
+		TreeNode _start;
 		bool _reverse;
 		#endregion Fields
 
@@ -93,7 +93,7 @@ namespace generalgff
 
 		#region Handlers (override)
 		/// <summary>
-		/// Closes the dialog on [Escape].
+		/// Closes the dialog on <c>[Escape]</c>.
 		/// </summary>
 		/// <param name="e"></param>
 		protected override void OnKeyDown(KeyEventArgs e)
@@ -207,12 +207,12 @@ namespace generalgff
 			if (_tree.Nodes.Count != 0 && !String.IsNullOrEmpty(_text))
 			{
 				if (_tree.SelectedNode != null)
-					_start0 = _tree.SelectedNode;
+					_start = _tree.SelectedNode;
 				else
-					_start0 = _tree.Nodes[0];
+					_start = _tree.Nodes[0];
 
-				TreeNode next = _start0; // find a node after (or before) the SelectedNode to start search at
-				while ((next = GetNextNode(next)) != _start0)
+				TreeNode next = _start; // find a node after (or before) the SelectedNode to start search at
+				while ((next = GetNextNode(next)) != _start)
 				{
 					if (Match(next) != null)
 					{
@@ -245,51 +245,51 @@ namespace generalgff
 		/// <summary>
 		/// Gets the next node to check (in the appropriate direction).
 		/// </summary>
-		/// <param name="start"></param>
+		/// <param name="node"></param>
 		/// <returns></returns>
-		TreeNode GetNextNode(TreeNode start)
+		TreeNode GetNextNode(TreeNode node)
 		{
 			if (!_reverse)
 			{
-				if (start.Nodes.Count != 0)		// check for child-node
-					return start.Nodes[0];
+				if (node.Nodes.Count != 0)	// check for child-node
+					return node.Nodes[0];
 
-				if (start.NextNode != null)		// check for next sibling-node
-					return start.NextNode;
+				if (node.NextNode != null)	// check for next sibling-node
+					return node.NextNode;
 
-				while (start.Parent != null)	// check for next of kin (next sibling of parent, or grandparent, etc)
+				while (node.Parent != null)	// check for next of kin (next sibling of parent, or grandparent, etc)
 				{
-					if (start.Parent.NextNode != null)
-						return start.Parent.NextNode;
+					if (node.Parent.NextNode != null)
+						return node.Parent.NextNode;
 
-					start = start.Parent;
+					node = node.Parent;
 				}
 
-				if (start == null)				// no living relations so query The Ancestor
+				if (node == null)			// no living relations so query The Ancestor
 					return _tree.Nodes[0];
 			}
-			else // reverse direction ->		// lalala talk to the hand.
+			else // reverse direction ->	// lalala talk to the hand.
 			{
-				if (start.PrevNode != null)
+				if (node.PrevNode != null)
 				{
-					if (start.PrevNode.Nodes.Count == 0)
-						return start.PrevNode;
+					if (node.PrevNode.Nodes.Count == 0)
+						return node.PrevNode;
 
-					start = start.PrevNode.LastNode;
-					while (start.Nodes.Count != 0)
-						start = start.LastNode;
+					node = node.PrevNode.LastNode;
+					while (node.Nodes.Count != 0)
+						node = node.LastNode;
 				}
 				else
 				{
-					if (start.Parent != null)
-						return start.Parent;
+					if (node.Parent != null)
+						return node.Parent;
 
-					start = _tree.Nodes[0];
-					while (start.Nodes.Count != 0)
-						start = start.LastNode;
+					node = _tree.Nodes[0];
+					while (node.Nodes.Count != 0)
+						node = node.LastNode;
 				}
 			}
-			return start; // shall never return null
+			return node; // shall never return null
 		}
 		#endregion Methods
 
