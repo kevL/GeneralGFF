@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 
@@ -112,11 +111,6 @@ namespace generalgff
 
 
 		#region Designer
-		/// <summary>
-		/// Designer variable used to keep track of non-visual components.
-		/// </summary>
-		IContainer components = null;
-
 		Button btn_Cancel;
 		Button btn_Action;
 		Label la_Info;
@@ -124,19 +118,6 @@ namespace generalgff
 		Panel pnl_Bot;
 		Panel pnl_Top;
 
-
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && components != null)
-				components.Dispose();
-
-			base.Dispose(disposing);
-		}
-		
 		/// <summary>
 		/// This method is required for Windows Forms designer support.
 		/// Do not change the method contents inside the source code editor. The

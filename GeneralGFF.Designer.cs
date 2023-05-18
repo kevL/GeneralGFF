@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows.Forms;
 
 
@@ -7,11 +6,6 @@ namespace generalgff
 {
 	partial class GeneralGFF
 	{
-		/// <summary>
-		/// Designer variable used to keep track of non-visual components.
-		/// </summary>
-		IContainer components = null;
-
 		SplitContainerCp sc_body;
 
 		internal Label la_Des;
@@ -26,20 +20,6 @@ namespace generalgff
 
 		StatusStrip ss_bot;
 		internal ToolStripStatusLabel tssl_info;
-
-
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && components != null)
-				components.Dispose();
-
-			base.Dispose(disposing);
-		}
-
 
 		/// <summary>
 		/// This method is required for Windows Forms designer support.
