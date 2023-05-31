@@ -607,7 +607,8 @@ namespace generalgff
 
 								break;
 
-							case FieldType.List: // a list-type Field is an offset into the FieldIndices; the later contains a list of StructIds.
+							case FieldType.List: // a list-type Field is an offset into the FieldIndices; the latter contains a list of StructIds.
+							{
 								if (!le) Array.Reverse(buffer);
 								offset = ListIndicesOffset + BitConverter.ToUInt32(buffer, 0); // offset into the (not)FieldIndices(not) -> try ListIndices
 
@@ -630,6 +631,7 @@ namespace generalgff
 								}
 								field.List = list;
 								break;
+							}
 
 							case FieldType.Struct:
 								if (!le) Array.Reverse(buffer);
