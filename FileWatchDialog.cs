@@ -94,6 +94,7 @@ namespace generalgff
 						switch (_fwType)
 						{
 							case FILE_DEL:
+								_f.GffData.Changed = true;
 								_f.fileclick_Save(null, EventArgs.Empty);
 								break;
 
