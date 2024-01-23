@@ -682,7 +682,7 @@ namespace generalgff
 					sfd.Title  = "Save as GFF file";
 					sfd.Filter = GffData.FileDialogFilter;
 
-//					sfd.DefaultExt = GffData.GetGffString(GffData.Type);
+					sfd.DefaultExt = GffData.GetGffString(GffData.Type);
 
 					if (GffData.Pfe != Globals.TopLevelStruct)
 					{

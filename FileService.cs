@@ -10,8 +10,19 @@ namespace generalgff
 	static class FileService
 	{
 		#region Fields (static)
-		internal const string EXT_T = ".t"; // a temporary file
-				 const string EXT_B = ".b"; // a backup file
+		// Note: .NET intermittently bugs out if these suffixes are appended as
+		// extensions; it can cause the real extension to be duplicated in the
+		// final file+extension -> file+extension+extension. The bug is not
+		// reliably reproducible and happens independently of a SaveFileDialog's
+		// DefaultExt/AddExtension properties; in fact it can happen when a Save
+		// is done without a dialog (can't recall for sure).
+		// See: SaveFileDialog extension added unexpectedly on multidotExtension
+		// https://stackoverflow.com/questions/30747664/savefiledialog-extension-added-unexpectedly-on-multidotextension
+		// I did not test the SupportMultiDottedExtensions property but it's
+		// unlikely to alleviate the issue since it can occur even without a
+		// dialog (I think).
+		internal const string EXT_T = "t"; // a temporary file
+				 const string EXT_B = "b"; // a backup file
 		#endregion Fields (static)
 
 
@@ -21,7 +32,7 @@ namespace generalgff
 		/// The file will be closed.
 		/// </summary>
 		/// <param name="pfe">path-file-extension of the file to read</param>
-		/// <returns>an array of bytes else null</returns>
+		/// <returns>an array of <c>bytes</c> else null</returns>
 		public static byte[] ReadFile(string pfe)
 		{
 			byte[] bytes = null;
@@ -49,14 +60,16 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Creates a file and returns a FileStream for writing after backing up
-		/// a pre-existing file if it exists. The file will not be closed.
+		/// Creates a file and returns a <c>FileStream</c> for writing after
+		/// backing up a pre-existing file if it exists. The file will not be
+		/// closed.
 		/// IMPORTANT: Dispose the stream in the calling function.
-		/// @note If file exists call this only to create a file_ext_[.t]
-		/// file. Then call ReplaceFile() by passing in file_ext.
+		/// @note If file exists call this only to create a file+ext+[t] file.
+		/// Then call <c><see cref="ReplaceFile()">ReplaceFile()</see></c> by
+		/// passing in file+ext.
 		/// </summary>
 		/// <param name="pfe">path-file-extension of the file to be created</param>
-		/// <returns>the filestream if valid else null</returns>
+		/// <returns>the <c>FileStream</c> if valid else <c>null</c></returns>
 		internal static FileStream CreateFile(string pfe)
 		{
 			FileStream fs = null;
@@ -79,17 +92,18 @@ namespace generalgff
 		}
 
 		/// <summary>
-		/// Replaces a file with another file (that has a ".t" extension) after
-		/// making a backup (".b") of the destination file. If the destination
+		/// Replaces a file with another file (that has a "t" extension) after
+		/// making a backup ("b") of the destination file. If the destination
 		/// file does not exist, a copy-delete operation is performed instead of
 		/// a backup.
 		/// IMPORTANT: The source file must have the name and extension of the
-		/// destination file plus the extension ".t". In other words, the
-		/// standard save-procedure is to write to file_ext_[.t] then call
-		/// ReplaceFile() by passing in the original file_ext.
+		/// destination file plus the extension "t". In other words, the
+		/// standard save-procedure is to write to file+ext+[t] then call
+		/// <c><see cref="ReplaceFile()">ReplaceFile()</see></c> by passing in
+		/// the original file+ext.
 		/// </summary>
 		/// <param name="pfe">path-file-extension of the destination file</param>
-		/// <returns>true if everything goes according to plan</returns>
+		/// <returns><c>true</c> if everything goes according to plan</returns>
 		internal static bool ReplaceFile(string pfe)
 		{
 			if (File.Exists(pfe))
@@ -134,7 +148,7 @@ namespace generalgff
 					return false;
 				}
 
-				// this deletes the ".b" backup. Disable this try/catch block to keep the backup file.
+				// this deletes the "b" backup. Disable this try/catch block to keep the backup file.
 				try
 				{
 					File.Delete(pfeBackup);
@@ -162,7 +176,7 @@ namespace generalgff
 		/// </summary>
 		/// <param name="src"></param>
 		/// <param name="dst"></param>
-		/// <returns></returns>
+		/// <returns><c>true</c> if everything goes according to plan</returns>
 		internal static bool MoveFile(string src, string dst)
 		{
 			try

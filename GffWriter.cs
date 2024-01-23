@@ -37,7 +37,7 @@ namespace generalgff
 		/// <returns>true if successful</returns>
 		internal static bool WriteGFFfile(string pfe, TreeView tree, string ver)
 		{
-			//logfile.Log("WriteGFFfile()");
+			//logfile.Log("GffWriter.WriteGFFfile()");
 			//logfile.Log(". pfe= " + pfe);
 
 			string pfeT;
